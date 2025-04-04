@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class InitCommand extends InventorioCommand
 {
     private const string SERVER_ID_PREFIX = 'inv-srv-';
-
+    
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->isInitialized()) {
