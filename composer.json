@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Startwind\\Inventorio\\": "src"
+        }
+    },
+    "require": {
+        "symfony/console": "^7.2"
+    }
+}
