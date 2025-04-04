@@ -6,6 +6,7 @@ use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Reporter\CliReporter;
+use Startwind\Inventorio\Reporter\InventorioReporter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,9 +42,9 @@ class CollectCommand extends InventorioCommand
             }
         }
 
-        $reporter = new CliReporter($output);
+        $reporter = new InventorioReporter($output);
 
-        $reporter->report($inventory);
+        $reporter->report($inventory, $this->getServerId());
 
         return Command::SUCCESS;
     }
