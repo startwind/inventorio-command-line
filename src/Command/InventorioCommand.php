@@ -33,4 +33,15 @@ abstract class InventorioCommand extends Command
 
         return $config['serverId'];
     }
+
+    protected function getUserId(): string
+    {
+        if (!$this->isInitialized()) {
+            throw new \RuntimeException('System was not initialized yet.');
+        }
+
+        $config = json_decode(file_get_contents($this->getConfigFile()));
+
+        return $config['userId'];
+    }
 }

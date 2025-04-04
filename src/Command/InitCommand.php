@@ -4,6 +4,7 @@ namespace Startwind\Inventorio\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -11,7 +12,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 class InitCommand extends InventorioCommand
 {
     private const string SERVER_ID_PREFIX = 'inv-srv-';
-    
+
+    protected function configure()
+    {
+        $this->addArgument('userId', InputArgument::REQUIRED, 'The inventorio user id.');
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->isInitialized()) {
@@ -21,13 +27,19 @@ class InitCommand extends InventorioCommand
 
         $configFile = $this->getConfigFile();
         $serverId = $this->createServerId();
+        $userId = $input->getArgument('userId');
+
+        // @todo check if user id exists via API
 
         $config = [
-            'serverId' => $serverId
+            'serverId' => $serverId,
+            'userId' => $userId
         ];
 
         @mkdir(dirname($configFile), 0777, true);
         file_put_contents($configFile, json_encode($config), JSON_PRETTY_PRINT);
+
+        $output->writeln('<info>System initialized. You can now run the collect command.</info>');
 
         return Command::SUCCESS;
     }

@@ -5,7 +5,6 @@ namespace Startwind\Inventorio\Command;
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
-use Startwind\Inventorio\Reporter\CliReporter;
 use Startwind\Inventorio\Reporter\InventorioReporter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -30,6 +29,9 @@ class CollectCommand extends InventorioCommand
         }
 
         $this->initCollectors();
+
+        var_dump('UserId:   ' . $this->getUserId());
+        var_dump('ServerId: ' . $this->getServerId());
 
         $inventory = [];
 
