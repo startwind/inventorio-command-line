@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:collect')]
-class CollectCommand extends Command
+class CollectCommand extends InventorioCommand
 {
     private const string NOT_APPLICABLE = 'not applicable';
 
@@ -23,6 +23,11 @@ class CollectCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->isInitialized()) {
+            $output->writeln('<error>System was not initialized. Please run app:init.</error>');
+            return Command::FAILURE;
+        }
+
         $this->initCollectors();
 
         $inventory = [];

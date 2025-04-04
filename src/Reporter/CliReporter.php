@@ -16,7 +16,7 @@ class CliReporter implements Reporter
         $this->output = $output;
     }
 
-    public function report(array $collectionData): void
+    public function report(array $collectionData, string $serverId): void
     {
         $this->output->writeln(json_encode($collectionData, JSON_PRETTY_PRINT));
     }
