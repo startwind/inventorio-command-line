@@ -21,8 +21,13 @@ class InitCommand extends InventorioCommand
 
         $configFile = $this->getConfigFile();
         $serverId = $this->createServerId();
-        mkdir(dirname($configFile), 0777, true);
-        file_put_contents($configFile, $serverId);
+
+        $config = [
+            'serverId' => $serverId
+        ];
+
+        @mkdir(dirname($configFile), 0777, true);
+        file_put_contents($configFile, json_encode($config), JSON_PRETTY_PRINT);
 
         return Command::SUCCESS;
     }
@@ -30,14 +35,10 @@ class InitCommand extends InventorioCommand
     private function createServerId(): string
     {
         $data = random_bytes(16);
-        assert(strlen($data) == 16);
 
-        // Set version to 0100
         $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
-        // Set bits 6-7 to 10
         $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
 
-        // Output the 36 character UUID.
         return self::SERVER_ID_PREFIX . vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 }

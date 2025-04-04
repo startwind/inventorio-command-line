@@ -27,6 +27,8 @@ abstract class InventorioCommand extends Command
             throw new \RuntimeException('System was not initialized yet.');
         }
 
-        return file_get_contents($this->getConfigFile());
+        $config = json_decode(file_get_contents($this->getConfigFile()));
+
+        return $config['serverId'];
     }
 }

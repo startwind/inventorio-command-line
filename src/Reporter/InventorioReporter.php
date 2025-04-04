@@ -6,6 +6,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class InventorioReporter implements Reporter
 {
+    private const string ENDPOINT_COLLECT = '';
+
     /**
      * @var \Symfony\Component\Console\Output\OutputInterface
      */
