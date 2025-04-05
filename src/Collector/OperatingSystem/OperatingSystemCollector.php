@@ -21,11 +21,17 @@ class OperatingSystemCollector implements Collector
 
     protected const string COLLECTION_IDENTIFIER = 'OperatingSystem';
 
+    /**
+     * @inheritDoc
+     */
     public function getIdentifier(): string
     {
         return self::COLLECTION_IDENTIFIER;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function collect(): array
     {
         $osFamily = $this->getOsFamily();
@@ -36,6 +42,9 @@ class OperatingSystemCollector implements Collector
         ];
     }
 
+    /**
+     * Return the version of the operating system
+     */
     private function getOsVersion(string $family): string
     {
         switch ($family) {
@@ -52,6 +61,9 @@ class OperatingSystemCollector implements Collector
         }
     }
 
+    /**
+     * Return the operating system family (supported: MacOs, Windows, Linux)
+     */
     private function getOsFamily(): string
     {
         switch (strtolower(PHP_OS_FAMILY)) {

@@ -47,6 +47,11 @@ class CollectCommand extends InventorioCommand
         return Command::SUCCESS;
     }
 
+    /**
+     * Initialize all collectors.
+     *
+     * @todo use a config file to
+     */
     private function initCollectors(): void
     {
         $this->collectors[] = new OperatingSystemCollector();

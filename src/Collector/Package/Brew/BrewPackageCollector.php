@@ -11,11 +11,17 @@ class BrewPackageCollector implements Collector
 {
     protected const string COLLECTION_IDENTIFIER = 'HomeBrewPackages';
 
+    /**
+     * @inheritDoc
+     */
     public function getIdentifier(): string
     {
         return self::COLLECTION_IDENTIFIER;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function collect(): array
     {
         $installed = shell_exec('command -v brew');

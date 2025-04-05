@@ -13,7 +13,7 @@ class InitCommand extends InventorioCommand
 {
     private const string SERVER_ID_PREFIX = 'inv-srv-';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('userId', InputArgument::REQUIRED, 'The inventorio user id.');
     }

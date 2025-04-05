@@ -58,8 +58,6 @@ class InventorioReporter implements Reporter
 
     /**
      * Return the final endpoint where the collected data should be sent to.
-     *
-     * @return string
      */
     private function getPreparedEndpoint(): string
     {
