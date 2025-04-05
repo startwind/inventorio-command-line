@@ -42,7 +42,16 @@ class CollectCommand extends InventorioCommand
 
         $reporter = new InventorioReporter($output, $this->getServerId(), $this->getUserId());
 
-        $reporter->report($inventory);
+        try {
+            $reporter->report($inventory);
+        } catch (\Exception $exception) {
+            $output->writeln('<error>                           ');
+            $output->writeln('  Unable to run reporter.  ');
+            $output->writeln('                           </error>');
+            $output->writeln('');
+            $output->writeln(' <comment>Message: ' . $exception->getMessage() . '</comment>');
+            return Command::FAILURE;
+        }
 
         return Command::SUCCESS;
     }
