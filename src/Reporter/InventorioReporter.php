@@ -58,6 +58,8 @@ class InventorioReporter implements Reporter
             throw new \RuntimeException($result['message']);
         }
 
+        var_dump($result);
+
         $this->output->writeln('<info>Data successfully sent to Inventorio Cloud.</info>');
     }
 

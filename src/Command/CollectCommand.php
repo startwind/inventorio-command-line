@@ -20,6 +20,9 @@ class CollectCommand extends InventorioCommand
      */
     private array $collectors = [];
 
+    /**
+     * @inheritDoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->isInitialized()) {

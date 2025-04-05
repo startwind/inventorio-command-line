@@ -2,6 +2,9 @@
 
 namespace Startwind\Inventorio\Command;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\RequestOptions;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -11,6 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:init')]
 class InitCommand extends InventorioCommand
 {
+    private const string ENDPOINT_INIT = InventorioCommand::INVENTORIO_SERVER . '/inventory/server/{serverId}';
+
     private const string SERVER_ID_PREFIX = 'inv-srv-';
 
     protected function configure(): void
@@ -30,7 +35,22 @@ class InitCommand extends InventorioCommand
 
         $userId = $input->getArgument('userId');
 
-        // @todo check if user id exists via API
+        $client = new Client();
+
+        $payload = [
+            'userId' => $userId,
+            'serverId' => $serverId
+        ];
+
+        try {
+            $client->post($this->getPreparedEndpoint($serverId), [
+                RequestOptions::JSON => $payload
+            ]);
+        } catch (ClientException $exception) {
+            $result = json_decode((string)$exception->getResponse()->getBody(), true);
+            $output->writeln('<error>Unable to initialize: ' . $result['message'] . '</error>');
+            return Command::FAILURE;
+        }
 
         $config = [
             'serverId' => $serverId,
@@ -43,6 +63,14 @@ class InitCommand extends InventorioCommand
         $output->writeln('<info>System initialized. You can now run the collect command.</info>');
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * Return the final endpoint where the collected data should be sent to.
+     */
+    private function getPreparedEndpoint($serverId): string
+    {
+        return str_replace('{serverId}', $serverId, self::ENDPOINT_INIT);
     }
 
     private function createServerId(): string
