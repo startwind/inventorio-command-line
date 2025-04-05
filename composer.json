@@ -5,6 +5,7 @@
         }
     },
     "require": {
-        "symfony/console": "^7.2"
+        "symfony/console": "^7.2",
+        "guzzlehttp/guzzle": "^7.9"
     }
 }

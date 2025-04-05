@@ -27,6 +27,7 @@ class InitCommand extends InventorioCommand
 
         $configFile = $this->getConfigFile();
         $serverId = $this->createServerId();
+
         $userId = $input->getArgument('userId');
 
         // @todo check if user id exists via API

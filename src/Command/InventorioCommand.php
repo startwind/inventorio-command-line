@@ -29,7 +29,7 @@ abstract class InventorioCommand extends Command
             throw new \RuntimeException('System was not initialized yet.');
         }
 
-        $config = json_decode(file_get_contents($this->getConfigFile()));
+        $config = json_decode(file_get_contents($this->getConfigFile()), true);
 
         return $config['serverId'];
     }
@@ -40,7 +40,7 @@ abstract class InventorioCommand extends Command
             throw new \RuntimeException('System was not initialized yet.');
         }
 
-        $config = json_decode(file_get_contents($this->getConfigFile()));
+        $config = json_decode(file_get_contents($this->getConfigFile()), true);
 
         return $config['userId'];
     }

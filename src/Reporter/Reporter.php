@@ -4,5 +4,11 @@ namespace Startwind\Inventorio\Reporter;
 
 interface Reporter
 {
-    public function report(array $collectionData, string $serverId): void;
+    /**
+     * Reporters are used to handle the collected data.
+     *
+     * @param array $collectionData
+     * @return void
+     */
+    public function report(array $collectionData): void;
 }
