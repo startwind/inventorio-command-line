@@ -34,7 +34,7 @@ class OperatingSystemCollector implements Collector
      */
     public function collect(): array
     {
-        $osFamily = $this->getOsFamily();
+        $osFamily = self::getOsFamily();
 
         $data = [
             'family' => $osFamily,
@@ -91,7 +91,7 @@ class OperatingSystemCollector implements Collector
     /**
      * Return the operating system family (supported: MacOs, Windows, Linux)
      */
-    private function getOsFamily(): string
+    public static function getOsFamily(): string
     {
         switch (strtolower(PHP_OS_FAMILY)) {
             case 'darwin':
