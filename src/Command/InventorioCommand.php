@@ -2,13 +2,22 @@
 
 namespace Startwind\Inventorio\Command;
 
+use Startwind\Inventorio\Config\Config;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputOption;
 
 abstract class InventorioCommand extends Command
 {
     public const string INVENTORIO_SERVER = 'http://localhost:8080';
     private const string USER_CONFIG_DIR = '.inventorio';
     private const string USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
+
+    protected Config $config;
+
+    protected function configure(): void
+    {
+        $this->addOption('configFile', 'c', InputOption::VALUE_OPTIONAL, 'The configuration file', __DIR__ . '/../../config/default.yml');
+    }
 
     /**
      * Return the path to the configuration file.
@@ -17,6 +26,11 @@ abstract class InventorioCommand extends Command
     {
         $home = getenv("HOME");
         return $home . DIRECTORY_SEPARATOR . self::USER_CONFIG_FILE;
+    }
+
+    protected function initConfiguration(string $configFile): void
+    {
+        $this->config = new Config($configFile);
     }
 
     /**

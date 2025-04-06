@@ -5,7 +5,6 @@ namespace Startwind\Inventorio\Reporter;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\RequestOptions;
-use Startwind\Inventorio\Command\InventorioCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -13,17 +12,19 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class InventorioReporter implements Reporter
 {
-    private const string ENDPOINT_COLLECT = InventorioCommand::INVENTORIO_SERVER . '/inventory/collect/{serverId}';
+    private const string ENDPOINT_COLLECT = '/inventory/collect/{serverId}';
 
     private OutputInterface $output;
     private string $userId;
     private string $serverId;
+    private string $inventorioServer;
 
-    public function __construct(OutputInterface $output, string $serverId, string $userId)
+    public function __construct(OutputInterface $output, string $inventorioServer, string $serverId, string $userId)
     {
         $this->output = $output;
         $this->userId = $userId;
         $this->serverId = $serverId;
+        $this->inventorioServer = $inventorioServer;
     }
 
     /**
@@ -66,6 +67,6 @@ class InventorioReporter implements Reporter
      */
     private function getPreparedEndpoint(): string
     {
-        return str_replace('{serverId}', $this->serverId, self::ENDPOINT_COLLECT);
+        return str_replace('{serverId}', $this->serverId, $this->inventorioServer . self::ENDPOINT_COLLECT);
     }
 }

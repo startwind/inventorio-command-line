@@ -16,18 +16,22 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'app:init')]
 class InitCommand extends InventorioCommand
 {
-    private const string ENDPOINT_INIT = InventorioCommand::INVENTORIO_SERVER . '/inventory/server/{serverId}';
+    private const string ENDPOINT_INIT = '/inventory/server/{serverId}';
 
     private const string SERVER_ID_PREFIX = 'inv-srv-';
 
     protected function configure(): void
     {
+        parent::configure();
+
         $this->addArgument('userId', InputArgument::REQUIRED, 'The inventorio user id.');
         $this->addOption('serverName', 's', InputOption::VALUE_OPTIONAL, 'The server name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->initConfiguration($input->getOption('configFile'));
+
         if ($this->isInitialized()) {
             $output->writeln('<info>System is already initialized.</info>');
             return Command::SUCCESS;
@@ -93,7 +97,7 @@ class InitCommand extends InventorioCommand
      */
     private function getPreparedEndpoint($serverId): string
     {
-        return str_replace('{serverId}', $serverId, self::ENDPOINT_INIT);
+        return str_replace('{serverId}', $serverId, $this->config->getInventorioServer() . self::ENDPOINT_INIT);
     }
 
     private function createServerId(): string

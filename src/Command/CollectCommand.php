@@ -27,6 +27,8 @@ class CollectCommand extends InventorioCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->initConfiguration($input->getOption('configFile'));
+
         if (!$this->isInitialized()) {
             $output->writeln('<error>System was not initialized. Please run app:init.</error>');
             return Command::FAILURE;
@@ -45,7 +47,7 @@ class CollectCommand extends InventorioCommand
             }
         }
 
-        $reporter = new InventorioReporter($output, $this->getServerId(), $this->getUserId());
+        $reporter = new InventorioReporter($output, $this->config->getInventorioServer(),  $this->getServerId(), $this->getUserId());
 
         try {
             $reporter->report($inventory);
