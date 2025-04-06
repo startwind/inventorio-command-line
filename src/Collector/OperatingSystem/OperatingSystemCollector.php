@@ -13,11 +13,11 @@ use Startwind\Inventorio\Collector\Collector;
  */
 class OperatingSystemCollector implements Collector
 {
-    public const string OS_FAMILY_MAC = 'MacOs';
-    public const string OS_FAMILY_LINUX = 'Linux';
-    public const string OS_FAMILY_WINDOWS = 'Windows';
-    public const string OS_FAMILY_UNKNOWN = 'Unknown';
-    public const string OS_VERSION_UNKNOWN = 'Unknown';
+    public const string OS_FAMILY_MAC = 'macos';
+    public const string OS_FAMILY_LINUX = 'linux';
+    public const string OS_FAMILY_WINDOWS = 'windows';
+    public const string OS_FAMILY_UNKNOWN = 'unknown';
+    public const string OS_VERSION_UNKNOWN = 'unknown';
 
     protected const string COLLECTION_IDENTIFIER = 'OperatingSystem';
 
@@ -36,10 +36,16 @@ class OperatingSystemCollector implements Collector
     {
         $osFamily = $this->getOsFamily();
 
-        return [
+        $data = [
             'family' => $osFamily,
             'version' => $this->getOsVersion($osFamily)
         ];
+
+        if ($osFamily == self::OS_FAMILY_LINUX) {
+            $data['distribution'] = $this->getOsDistribution();
+        }
+
+        return $data;
     }
 
     /**
@@ -59,6 +65,28 @@ class OperatingSystemCollector implements Collector
             default:
                 return self::OS_VERSION_UNKNOWN;
         }
+    }
+
+    /**
+     * Return the distribution of the linux operating system
+     */
+    private function getOsDistribution(): string
+    {
+        $osRelease = file_get_contents('/etc/os-release');
+        $lines = explode("\n", $osRelease);
+        $osInfo = array();
+        foreach ($lines as $line) {
+            if (str_contains($line, "=")) {
+                list($key, $value) = explode("=", $line, 2);
+                $value = trim($value, '"');
+                $osInfo[$key] = $value;
+            }
+        }
+
+        print_r($osInfo);
+        die;
+
+        return '';
     }
 
     /**
