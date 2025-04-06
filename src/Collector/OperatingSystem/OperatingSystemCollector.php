@@ -83,10 +83,7 @@ class OperatingSystemCollector implements Collector
             }
         }
 
-        print_r($osInfo);
-        die;
-
-        return '';
+        return $osInfo['NAME'];
     }
 
     /**
