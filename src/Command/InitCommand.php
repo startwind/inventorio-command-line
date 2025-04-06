@@ -74,6 +74,9 @@ class InitCommand extends InventorioCommand
                 RequestOptions::JSON => $payload
             ]);
         } catch (ClientException $exception) {
+
+            var_dump((string)$exception->getResponse()->getBody());
+
             $result = json_decode((string)$exception->getResponse()->getBody(), true);
             $output->writeln('<error>Unable to initialize: ' . $result['message'] . '</error>');
             return Command::FAILURE;
