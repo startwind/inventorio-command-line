@@ -57,11 +57,8 @@ class OperatingSystemCollector implements Collector
             case self::OS_FAMILY_MAC:
                 return trim(shell_exec('sw_vers -productVersion'));
             case self::OS_FAMILY_LINUX:
-                $linux_version = trim(shell_exec('lsb_release -d 2>/dev/null | cut -f2'));
-                if (!$linux_version) {
-                    $linux_version = trim(shell_exec('cat /etc/os-release 2>/dev/null | grep PRETTY_NAME | cut -d= -f2 | tr -d \'"\''));
-                }
-                return $linux_version;
+                $osInfo = $this->getLinuxOsInfo();
+                return $osInfo['VERSION_ID'];
             default:
                 return self::OS_VERSION_UNKNOWN;
         }
@@ -71,6 +68,12 @@ class OperatingSystemCollector implements Collector
      * Return the distribution of the linux operating system
      */
     private function getOsDistribution(): string
+    {
+        $osInfo = $this->getLinuxOsInfo();
+        return $osInfo['NAME'];
+    }
+
+    public function getLinuxOsInfo(): array
     {
         $osRelease = file_get_contents('/etc/os-release');
         $lines = explode("\n", $osRelease);
@@ -82,8 +85,7 @@ class OperatingSystemCollector implements Collector
                 $osInfo[$key] = $value;
             }
         }
-
-        return $osInfo['NAME'];
+        return $osInfo;
     }
 
     /**
