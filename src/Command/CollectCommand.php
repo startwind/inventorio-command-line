@@ -3,7 +3,9 @@
 namespace Startwind\Inventorio\Command;
 
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
+use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
+use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Reporter\InventorioReporter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -66,10 +68,14 @@ class CollectCommand extends InventorioCommand
      */
     private function initCollectors(): void
     {
+        // Inventorio
+        $this->collectors[] = new InventorioCollector();
+
+        // General
         $this->collectors[] = new OperatingSystemCollector();
 
         // Package Managers
-        // $this->collectors[] = new BrewPackageCollector();
+        $this->collectors[] = new BrewPackageCollector();
 
         // Application / Programming Language
         $this->collectors[] = new PhpCollector();

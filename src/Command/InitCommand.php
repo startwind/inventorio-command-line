@@ -9,7 +9,9 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(name: 'app:init')]
 class InitCommand extends InventorioCommand
@@ -21,6 +23,7 @@ class InitCommand extends InventorioCommand
     protected function configure(): void
     {
         $this->addArgument('userId', InputArgument::REQUIRED, 'The inventorio user id.');
+        $this->addOption('serverName', 's', InputOption::VALUE_OPTIONAL, 'The server name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -28,6 +31,25 @@ class InitCommand extends InventorioCommand
         if ($this->isInitialized()) {
             $output->writeln('<info>System is already initialized.</info>');
             return Command::SUCCESS;
+        }
+
+        if (!$input->getOption('serverName')) {
+            $io = new SymfonyStyle($input, $output);
+
+            $defaultName = gethostname(); // Hostname des Rechners
+
+            $serverName = $io->ask(
+                'Please provide the name of the server (default: ' . $defaultName . ')',
+                $defaultName,
+                function (?string $value) {
+                    if (strlen($value ?? '') < 3) {
+                        throw new \RuntimeException('The server name has to be at least three characters long.');
+                    }
+                    return $value;
+                }
+            );
+        } else {
+            $serverName = $input->getOption('serverName');
         }
 
         $configFile = $this->getConfigFile();
@@ -39,7 +61,8 @@ class InitCommand extends InventorioCommand
 
         $payload = [
             'userId' => $userId,
-            'serverId' => $serverId
+            'serverId' => $serverId,
+            'serverName' => $serverName
         ];
 
         try {
