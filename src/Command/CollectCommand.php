@@ -3,10 +3,12 @@
 namespace Startwind\Inventorio\Command;
 
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
+use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Collector\Package\Dpkg\DpkgPackageCollector;
+use Startwind\Inventorio\Collector\System\General\IpCollector;
 use Startwind\Inventorio\Reporter\InventorioReporter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -79,11 +81,17 @@ class CollectCommand extends InventorioCommand
         // General
         $this->collectors[] = new OperatingSystemCollector();
 
+        // System / General
+        $this->collectors[] = new IpCollector();
+
         // Package Managers
         $this->collectors[] = new BrewPackageCollector();
         $this->collectors[] = new DpkgPackageCollector();
 
         // Application / Programming Language
         $this->collectors[] = new PhpCollector();
+
+        // Application / WebServer
+        $this->collectors[] = new ApacheServerNameCollector();
     }
 }
