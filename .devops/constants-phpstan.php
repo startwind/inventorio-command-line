@@ -1,0 +1,3 @@
+<?php
+
+const INVENTORIO_VERSION = '##INVENTORIO_VERSION##';
