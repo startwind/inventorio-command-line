@@ -38,7 +38,7 @@ class InitCommand extends InventorioCommand
             return Command::SUCCESS;
         }
 
-        $serverName = $this->getServerName();
+        $serverName = $this->getServerName($input, $output);
 
         $configFile = $this->getConfigFile();
         $serverId = $this->createServerId();
