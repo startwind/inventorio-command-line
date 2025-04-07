@@ -1,5 +1,8 @@
 # Inventorio Command Line
 
+[![Build Status](https://scrutinizer-ci.com/g/startwind/inventorio-command-line/badges/build.png?b=master)](https://scrutinizer-ci.com/g/startwind/inventorio-command-line/build-status/master)&nbsp;&nbsp;
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/startwind/inventorio-command-line/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/startwind/inventorio-command-line/?branch=master)
+
 ## Installation
 
 Download the latest version of our PHAR archive and give it afterwards rights to be executed. To run Forrest you need
