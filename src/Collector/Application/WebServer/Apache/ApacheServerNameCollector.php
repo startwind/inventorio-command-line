@@ -33,7 +33,7 @@ class ApacheServerNameCollector implements Collector
         }
 
         return [
-            'serverNames' => array_unique($serverNames)
+            'serverNames' => array_values(array_unique($serverNames))
         ];
     }
 
