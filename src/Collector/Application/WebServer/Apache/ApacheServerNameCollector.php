@@ -32,8 +32,11 @@ class ApacheServerNameCollector implements Collector
             return [];
         }
 
+        $uniqueServerNames = array_values(array_unique($serverNames));
+        sort($uniqueServerNames);
+
         return [
-            'serverNames' => array_values(array_unique($serverNames))
+            'serverNames' => $uniqueServerNames
         ];
     }
 
