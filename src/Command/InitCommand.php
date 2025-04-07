@@ -85,7 +85,10 @@ class InitCommand extends InventorioCommand
             'userId' => $userId
         ];
 
-        @mkdir(dirname($configFile), 0777, true);
+        if (!file_exists(dirname($configFile))) {
+            mkdir(dirname($configFile), 0777, true);
+        }
+
         file_put_contents($configFile, json_encode($config), JSON_PRETTY_PRINT);
 
         $output->writeln('<info>Server registered. Please run the following command to set up  the cron job:</info>');

@@ -29,6 +29,11 @@ class IpCollector implements Collector
     public function collect(): array
     {
         $ip = @file_get_contents('https://checkip.amazonaws.com');
+
+        if (!$ip) {
+            return [];
+        }
+
         $ip = trim($ip);
 
         return ['ip' => filter_var($ip, FILTER_VALIDATE_IP) ? $ip : null];
