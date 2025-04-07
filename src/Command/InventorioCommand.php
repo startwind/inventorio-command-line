@@ -8,9 +8,6 @@ use Symfony\Component\Console\Input\InputOption;
 
 abstract class InventorioCommand extends Command
 {
-    private const USER_CONFIG_DIR = '.inventorio';
-    private const USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
-
     protected Config $config;
 
     protected function configure(): void
