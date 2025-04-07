@@ -17,7 +17,6 @@ class InitCommand extends InventorioCommand
     protected static $defaultName = 'init';
     protected static $defaultDescription = 'Initialize Inventorio';
 
-
     private const ENDPOINT_INIT = '/inventory/server/{serverId}';
 
     private const SERVER_ID_PREFIX = 'inv-srv-';
@@ -42,7 +41,7 @@ class InitCommand extends InventorioCommand
         if (!$input->getOption('serverName')) {
             $io = new SymfonyStyle($input, $output);
 
-            $defaultName = gethostname(); // Hostname des Rechners
+            $defaultName = gethostname();
 
             $serverName = $io->ask(
                 'Please provide the name of the server (default: ' . $defaultName . ')',
@@ -76,9 +75,6 @@ class InitCommand extends InventorioCommand
                 RequestOptions::JSON => $payload
             ]);
         } catch (ClientException $exception) {
-
-            var_dump((string)$exception->getResponse()->getBody());
-
             $result = json_decode((string)$exception->getResponse()->getBody(), true);
             $output->writeln('<error>Unable to initialize: ' . $result['message'] . '</error>');
             return Command::FAILURE;
@@ -92,7 +88,9 @@ class InitCommand extends InventorioCommand
         @mkdir(dirname($configFile), 0777, true);
         file_put_contents($configFile, json_encode($config), JSON_PRETTY_PRINT);
 
-        $output->writeln('<info>System initialized. You can now run the collect command.</info>');
+        $output->writeln('<info>Server registered. Please run the following command to set up  the cron job:</info>');
+        $output->writeln('');
+        $output->writeln('<comment>(crontab -l 2>/dev/null; echo "' . rand(0, 59) . ' * * * * /usr/local/bin/inventorio collect >> /var/log/inventorio.log 2>&1") | crontab -</comment>');
 
         return Command::SUCCESS;
     }

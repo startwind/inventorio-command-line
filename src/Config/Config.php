@@ -17,4 +17,9 @@ class Config
     {
         return $this->configArray['inventorio']['server'];
     }
+
+    public function getConfigFile(): string
+    {
+        return getenv("HOME") . DIRECTORY_SEPARATOR . $this->configArray['inventorio']['configFile'];
+    }
 }

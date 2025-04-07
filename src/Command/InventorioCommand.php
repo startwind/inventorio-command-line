@@ -23,8 +23,7 @@ abstract class InventorioCommand extends Command
      */
     protected function getConfigFile(): string
     {
-        $home = getenv("HOME");
-        return $home . DIRECTORY_SEPARATOR . self::USER_CONFIG_FILE;
+        return $this->config->getConfigFile();
     }
 
     protected function initConfiguration(string $configFile): void

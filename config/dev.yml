@@ -1,2 +1,3 @@
 inventorio:
   server: http://localhost:8080
+  configFile: .inventorio/config_dev.yml
