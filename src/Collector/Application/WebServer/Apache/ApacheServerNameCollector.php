@@ -39,21 +39,28 @@ class ApacheServerNameCollector implements Collector
 
     private function extractServerName(string $vhostFile): array
     {
-        $content = file_get_contents($vhostFile);
+        $lines = file($vhostFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
         $serverNames = [];
 
-        if (preg_match('/ServerName\s+([^\s]+)/', $content, $match)) {
-            $serverNames[] = $match[1];
-        }
+        foreach ($lines as $line) {
+            $line = trim($line);
 
-        if (preg_match_all('/ServerAlias\s+([^\n]+)/', $content, $matches)) {
-            foreach ($matches[1] as $aliasLine) {
-                $aliases = preg_split('/\s+/', trim($aliasLine));
+            if (preg_match('/^\s*(#|\/\/)/', $line)) {
+                continue;
+            }
+
+            if (preg_match('/^ServerName\s+([^\s]+)/i', $line, $match)) {
+                $serverNames[] = $match[1];
+            }
+
+            if (preg_match('/^ServerAlias\s+(.+)/i', $line, $match)) {
+                $aliases = preg_split('/\s+/', trim($match[1]));
                 $serverNames = array_merge($serverNames, $aliases);
             }
         }
 
-        return array_unique($serverNames);
+        return $serverNames;
     }
 
     private function getAllConfigurations(string $vhostDir): array
