@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'app:init')]
+#[AsCommand(name: 'init')]
 class InitCommand extends InventorioCommand
 {
     private const ENDPOINT_INIT = '/inventory/server/{serverId}';

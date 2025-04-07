@@ -4,7 +4,6 @@ namespace Startwind\Inventorio\Command;
 
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
-use Startwind\Inventorio\Collector\Inventorio\RandomCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Collector\Package\Dpkg\DpkgPackageCollector;
@@ -14,7 +13,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:collect')]
+#[AsCommand(name: 'collect')]
 class CollectCommand extends InventorioCommand
 {
     private const NOT_APPLICABLE = 'not applicable';
@@ -32,7 +31,7 @@ class CollectCommand extends InventorioCommand
         $this->initConfiguration($input->getOption('configFile'));
 
         if (!$this->isInitialized()) {
-            $output->writeln('<error>System was not initialized. Please run app:init.</error>');
+            $output->writeln('<error>System was not initialized. Please run inventorio init.</error>');
             return Command::FAILURE;
         }
 
@@ -49,7 +48,7 @@ class CollectCommand extends InventorioCommand
             }
         }
 
-        $reporter = new InventorioReporter($output, $this->config->getInventorioServer(),  $this->getServerId(), $this->getUserId());
+        $reporter = new InventorioReporter($output, $this->config->getInventorioServer(), $this->getServerId(), $this->getUserId());
 
         try {
             $reporter->report($inventory);
