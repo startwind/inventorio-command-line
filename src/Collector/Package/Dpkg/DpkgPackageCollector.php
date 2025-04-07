@@ -49,7 +49,6 @@ class DpkgPackageCollector implements Collector
                 $installedPackages[$packageName] = [$packageVersion];
             }
         }
-        var_dump($installedPackages);
 
         return [
             'packages' => $installedPackages

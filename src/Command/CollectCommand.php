@@ -4,6 +4,7 @@ namespace Startwind\Inventorio\Command;
 
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
+use Startwind\Inventorio\Collector\Inventorio\RandomCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Collector\Package\Dpkg\DpkgPackageCollector;
@@ -73,6 +74,7 @@ class CollectCommand extends InventorioCommand
     {
         // Inventorio
         $this->collectors[] = new InventorioCollector();
+        // $this->collectors[] = new RandomCollector();
 
         // General
         $this->collectors[] = new OperatingSystemCollector();

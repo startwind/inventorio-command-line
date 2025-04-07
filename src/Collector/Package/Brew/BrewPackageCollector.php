@@ -43,10 +43,7 @@ class BrewPackageCollector implements Collector
                 $versions[] = $item['version'];
             }
 
-            $packages[] = [
-                'name' => $package['name'],
-                'versions' => $versions
-            ];
+            $packages[$package['name']] = $versions;
         }
 
         return [
