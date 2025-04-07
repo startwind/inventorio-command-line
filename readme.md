@@ -6,8 +6,8 @@ Download the latest version of our PHAR archive and give it afterwards rights to
 PHP installed.
 
 ```shell
-wget https://github.com/startwind/inventorio/releases/latest/download/inventorio.phar
-chmod +x forrest.phar
+wget https://github.com/startwind/inventorio-command-line/releases/latest/download/inventorio.phar
+chmod +x inventorio.phar
 ```
 
 Most likely, you want to put the inventorio.phar into a directory on your PATH, so you can simply call inventorio from

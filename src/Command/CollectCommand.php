@@ -8,14 +8,15 @@ use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Collector\Package\Dpkg\DpkgPackageCollector;
 use Startwind\Inventorio\Reporter\InventorioReporter;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'collect')]
 class CollectCommand extends InventorioCommand
 {
+    protected static $defaultName = 'collect';
+    protected static $defaultDescription = 'Collect metrics for Inventorio';
+
     private const NOT_APPLICABLE = 'not applicable';
 
     /**

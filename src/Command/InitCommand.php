@@ -5,7 +5,6 @@ namespace Startwind\Inventorio\Command;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RequestOptions;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,9 +12,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'init')]
 class InitCommand extends InventorioCommand
 {
+    protected static $defaultName = 'init';
+    protected static $defaultDescription = 'Initialize Inventorio';
+
+
     private const ENDPOINT_INIT = '/inventory/server/{serverId}';
 
     private const SERVER_ID_PREFIX = 'inv-srv-';
