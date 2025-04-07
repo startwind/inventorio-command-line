@@ -38,24 +38,7 @@ class InitCommand extends InventorioCommand
             return Command::SUCCESS;
         }
 
-        if (!$input->getOption('serverName')) {
-            $io = new SymfonyStyle($input, $output);
-
-            $defaultName = gethostname();
-
-            $serverName = $io->ask(
-                'Please provide the name of the server (default: ' . $defaultName . ')',
-                $defaultName,
-                function (?string $value) {
-                    if (strlen($value ?? '') < 3) {
-                        throw new \RuntimeException('The server name has to be at least three characters long.');
-                    }
-                    return $value;
-                }
-            );
-        } else {
-            $serverName = $input->getOption('serverName');
-        }
+        $serverName = $this->getServerName();
 
         $configFile = $this->getConfigFile();
         $serverId = $this->createServerId();
@@ -96,6 +79,33 @@ class InitCommand extends InventorioCommand
         $output->writeln('<comment>(crontab -l 2>/dev/null; echo "' . rand(0, 59) . ' * * * * /usr/local/bin/inventorio collect >> /var/log/inventorio.log 2>&1") | crontab -</comment>');
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * Ask the user for the server name if not set a parameter.
+     */
+    private function getServerName(InputInterface $input, OutputInterface $output): string
+    {
+        if (!$input->getOption('serverName')) {
+            $io = new SymfonyStyle($input, $output);
+
+            $defaultName = gethostname();
+
+            $serverName = $io->ask(
+                'Please provide the name of the server (default: ' . $defaultName . ')',
+                $defaultName,
+                function (?string $value) {
+                    if (strlen($value ?? '') < 3) {
+                        throw new \RuntimeException('The server name has to be at least three characters long.');
+                    }
+                    return $value;
+                }
+            );
+        } else {
+            $serverName = $input->getOption('serverName');
+        }
+
+        return $serverName;
     }
 
     /**
