@@ -8,9 +8,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 abstract class InventorioCommand extends Command
 {
-    public const string INVENTORIO_SERVER = 'http://localhost:8080';
-    private const string USER_CONFIG_DIR = '.inventorio';
-    private const string USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
+    private const USER_CONFIG_DIR = '.inventorio';
+    private const USER_CONFIG_FILE = self::USER_CONFIG_DIR . '/config.yml';
 
     protected Config $config;
 

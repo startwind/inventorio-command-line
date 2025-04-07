@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:collect')]
 class CollectCommand extends InventorioCommand
 {
-    private const string NOT_APPLICABLE = 'not applicable';
+    private const NOT_APPLICABLE = 'not applicable';
 
     /**
      * @var \Startwind\Inventorio\Collector\Collector[]

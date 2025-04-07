@@ -13,13 +13,13 @@ use Startwind\Inventorio\Collector\Collector;
  */
 class OperatingSystemCollector implements Collector
 {
-    public const string OS_FAMILY_MAC = 'macos';
-    public const string OS_FAMILY_LINUX = 'linux';
-    public const string OS_FAMILY_WINDOWS = 'windows';
-    public const string OS_FAMILY_UNKNOWN = 'unknown';
-    public const string OS_VERSION_UNKNOWN = 'unknown';
+    public const OS_FAMILY_MAC = 'macos';
+    public const OS_FAMILY_LINUX = 'linux';
+    public const OS_FAMILY_WINDOWS = 'windows';
+    public const OS_FAMILY_UNKNOWN = 'unknown';
+    public const OS_VERSION_UNKNOWN = 'unknown';
 
-    protected const string COLLECTION_IDENTIFIER = 'OperatingSystem';
+    protected const COLLECTION_IDENTIFIER = 'OperatingSystem';
 
     /**
      * @inheritDoc

@@ -9,7 +9,7 @@ use Startwind\Inventorio\Collector\Collector;
  */
 class RandomCollector implements Collector
 {
-    protected const string COLLECTION_IDENTIFIER = '_InventorioRandom';
+    protected const COLLECTION_IDENTIFIER = '_InventorioRandom';
 
     /**
      * @inheritDoc

@@ -16,9 +16,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'app:init')]
 class InitCommand extends InventorioCommand
 {
-    private const string ENDPOINT_INIT = '/inventory/server/{serverId}';
+    private const ENDPOINT_INIT = '/inventory/server/{serverId}';
 
-    private const string SERVER_ID_PREFIX = 'inv-srv-';
+    private const SERVER_ID_PREFIX = 'inv-srv-';
 
     protected function configure(): void
     {

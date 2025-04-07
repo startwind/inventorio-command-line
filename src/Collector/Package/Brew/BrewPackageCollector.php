@@ -9,7 +9,7 @@ use Startwind\Inventorio\Collector\Collector;
  */
 class BrewPackageCollector implements Collector
 {
-    protected const string COLLECTION_IDENTIFIER = 'HomeBrewPackages';
+    protected const COLLECTION_IDENTIFIER = 'HomeBrewPackages';
 
     /**
      * @inheritDoc

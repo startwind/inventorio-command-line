@@ -9,7 +9,7 @@ use Startwind\Inventorio\Collector\Collector;
  */
 class InventorioCollector implements Collector
 {
-    protected const string COLLECTION_IDENTIFIER = '_Inventorio';
+    protected const COLLECTION_IDENTIFIER = '_Inventorio';
 
     /**
      * @inheritDoc

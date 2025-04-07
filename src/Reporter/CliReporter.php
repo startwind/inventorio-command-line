@@ -19,7 +19,7 @@ class CliReporter implements Reporter
     /**
      * @inheritDoc
      */
-    public function report(array $collectionData, string $serverId): void
+    public function report(array $collectionData): void
     {
         $this->output->writeln(json_encode($collectionData, JSON_PRETTY_PRINT));
     }

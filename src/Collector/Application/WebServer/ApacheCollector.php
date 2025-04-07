@@ -6,7 +6,7 @@ use Startwind\Inventorio\Collector\Collector;
 
 class ApacheCollector implements Collector
 {
-    protected const string COLLECTION_IDENTIFIER = 'Apache';
+    protected const COLLECTION_IDENTIFIER = 'Apache';
 
     public function getIdentifier(): string
     {

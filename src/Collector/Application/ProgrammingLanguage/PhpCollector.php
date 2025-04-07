@@ -6,7 +6,7 @@ use Startwind\Inventorio\Collector\Collector;
 
 class PhpCollector implements Collector
 {
-    protected const string COLLECTION_IDENTIFIER = 'PHP';
+    protected const COLLECTION_IDENTIFIER = 'PHP';
 
     /**
      * @inheritDoc

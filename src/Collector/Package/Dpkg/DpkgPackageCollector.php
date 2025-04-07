@@ -10,7 +10,7 @@ use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
  */
 class DpkgPackageCollector implements Collector
 {
-    protected const string COLLECTION_IDENTIFIER = 'DpkgPackages';
+    protected const COLLECTION_IDENTIFIER = 'DpkgPackages';
 
     /**
      * @inheritDoc

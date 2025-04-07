@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class InventorioReporter implements Reporter
 {
-    private const string ENDPOINT_COLLECT = '/inventory/collect/{serverId}';
+    private const ENDPOINT_COLLECT = '/inventory/collect/{serverId}';
 
     private OutputInterface $output;
     private string $userId;
@@ -47,9 +47,6 @@ class InventorioReporter implements Reporter
             ]);
         } catch (ConnectException $e) {
             throw new \RuntimeException('Unable to connect to ' . $endpoint . '. Message: ' . $e->getMessage());
-        } catch (\Exception $exception) {
-            var_dump((string)$exception->getResponse()->getBody());
-            die;
         }
 
         $result = json_decode((string)$response->getBody(), true);
