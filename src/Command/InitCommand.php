@@ -21,6 +21,9 @@ class InitCommand extends InventorioCommand
 
     private const SERVER_ID_PREFIX = 'inv-srv-';
 
+    /**
+     * @inheritDoc
+     */
     protected function configure(): void
     {
         parent::configure();
@@ -29,6 +32,9 @@ class InitCommand extends InventorioCommand
         $this->addOption('serverName', 's', InputOption::VALUE_OPTIONAL, 'The server name');
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->initConfiguration($input->getOption('configFile'));
@@ -116,6 +122,9 @@ class InitCommand extends InventorioCommand
         return str_replace('{serverId}', $serverId, $this->config->getInventorioServer() . self::ENDPOINT_INIT);
     }
 
+    /**
+     * Create an unique ID for the current server
+     */
     private function createServerId(): string
     {
         $data = random_bytes(16);

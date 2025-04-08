@@ -4,6 +4,7 @@ namespace Startwind\Inventorio\Reporter;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\RequestOptions;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -46,6 +47,8 @@ class InventorioReporter implements Reporter
                 RequestOptions::JSON => $payload
             ]);
         } catch (ConnectException $e) {
+            throw new \RuntimeException('Unable to connect to ' . $endpoint . '. Message: ' . $e->getMessage());
+        } catch (ServerException $e) {
             throw new \RuntimeException('Unable to connect to ' . $endpoint . '. Message: ' . $e->getMessage());
         }
 
