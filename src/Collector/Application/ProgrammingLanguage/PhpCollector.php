@@ -21,11 +21,16 @@ class PhpCollector implements Collector
      */
     public function collect(): array
     {
+        exec('pgrep -a php-fpm', $output);
+
+        $fpm = !empty($output);
+
         return [
             'versions' => [
                 PHP_VERSION
             ],
-            'modules' => get_loaded_extensions()
+            'modules' => get_loaded_extensions(),
+            'fpm' => $fpm
         ];
     }
 }
