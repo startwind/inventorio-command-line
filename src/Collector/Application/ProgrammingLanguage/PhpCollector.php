@@ -21,6 +21,10 @@ class PhpCollector implements Collector
      */
     public function collect(): array
     {
-        return [];
+        return [
+            'versions' => [
+                PHP_VERSION
+            ]
+        ];
     }
 }
