@@ -24,7 +24,8 @@ class PhpCollector implements Collector
         return [
             'versions' => [
                 PHP_VERSION
-            ]
+            ],
+            'modules' => get_loaded_extensions()
         ];
     }
 }
