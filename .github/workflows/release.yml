@@ -83,5 +83,5 @@ jobs:
           BASE_URL: 'https://api.inventorio.cloud/inventorio/version/update/42369df1-ed56-4100-a48f-2e0c9ad13871'
         run: |
           VERSION=${{ github.event.release.tag_name }}
-          FULL_URL="$BASE_URL/version=$VERSION"
+          FULL_URL="$BASE_URL/$VERSION"
           curl -G "$FULL_URL"
