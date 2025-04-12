@@ -76,7 +76,7 @@ class OpenPortsCollector implements Collector
     {
         $csv = [];
         if (($handle = fopen(__DIR__ . '/ports.csv', "r")) !== false) {
-            while (($data = fgetcsv($handle, null, ',', '"', '\\')) !== false) {
+            while (($data = fgetcsv($handle, 1000, ',', '"', '\\')) !== false) {
                 $csv[$data[1]] = $data[2];
             }
             fclose($handle);
