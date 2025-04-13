@@ -6,7 +6,7 @@ use Startwind\Inventorio\Collector\Collector;
 
 class ConfigurationCollector implements Collector
 {
-    protected const COLLECTION_IDENTIFIER = 'SystemConfigurationCollector';
+    protected const COLLECTION_IDENTIFIER = 'SystemConfiguration';
 
     /**
      * @inheritDoc
@@ -21,9 +21,11 @@ class ConfigurationCollector implements Collector
      */
     public function collect(): array
     {
+        var_dump('hier');
+
         return [
             'cpu' => $this->getCpuCount(),
-            'memory' => $this->getMemorySize(),
+            'memory' => (int)($this->getMemorySize() / 1000),
             'disk' => $this->getDiskSize()
         ];
     }
@@ -45,14 +47,14 @@ class ConfigurationCollector implements Collector
         if ($os === 'Windows') {
             $output = shell_exec("wmic computersystem get TotalPhysicalMemory");
             preg_match("/\d+/", $output, $matches);
-            return isset($matches[0]) ? round($matches[0] / 1024 / 1024, 2) . " MB" : "Nicht verfügbar";
+            return isset($matches[0]) ? round($matches[0] / 1024 / 1024, 2) : "Nicht verfügbar";
         } elseif ($os === 'Darwin') {
             $memBytes = trim(shell_exec("sysctl -n hw.memsize"));
-            return round($memBytes / 1024 / 1024, 2) . " MB";
+            return round($memBytes / 1024 / 1024, 2);
         } elseif ($os === 'Linux') {
             $meminfo = file_get_contents("/proc/meminfo");
             preg_match("/MemTotal:\s+(\d+)\skB/", $meminfo, $matches);
-            return isset($matches[1]) ? round($matches[1] / 1024, 2) . " MB" : "Nicht verfügbar";
+            return isset($matches[1]) ? round($matches[1] / 1024, 2) : "Nicht verfügbar";
         }
         return 0;
     }
@@ -60,7 +62,7 @@ class ConfigurationCollector implements Collector
     function getDiskSize(): string
     {
         $bytes = disk_total_space("/");
-        return round($bytes / (1024 ** 3), 2) . " GB";
+        return round($bytes / (1024 ** 3), 2);
     }
 
 }
