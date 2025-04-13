@@ -34,6 +34,8 @@ class OperatingSystemCollector implements Collector
      */
     public function collect(): array
     {
+        // return ['family' => 'linux', 'distribution' => "Ubuntu", 'version' => '18.4'];
+
         $osFamily = self::getOsFamily();
 
         $data = [
