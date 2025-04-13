@@ -38,14 +38,12 @@ class CronCollector implements Collector
 
         $cronJobsResult = [];
 
-        foreach ($cronJobs as $key => $cronJob) {
-            $cronJobs[$key] = trim($cronJob);
-            if ($cronJob == "") {
-                unset($cronJobs[$key]);
+        foreach ($cronJobs as $cronJob) {
+            if ($cronJob == "" || str_starts_with($cronJob, '#')) {
                 continue;
             }
 
-            $parts = preg_split('/\s+/', $cronJobs[$key], 6);
+            $parts = preg_split('/\s+/', $cronJob, 6);
 
             $cronJobsResult[] = [
                 'minute' => $parts[0],
