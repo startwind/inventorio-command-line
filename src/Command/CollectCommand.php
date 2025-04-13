@@ -8,6 +8,7 @@ use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Collector\Package\Dpkg\DpkgPackageCollector;
+use Startwind\Inventorio\Collector\System\Cron\CronCollector;
 use Startwind\Inventorio\Collector\System\General\ConfigurationCollector;
 use Startwind\Inventorio\Collector\System\General\IpCollector;
 use Startwind\Inventorio\Collector\System\General\UptimeCollector;
@@ -89,6 +90,7 @@ class CollectCommand extends InventorioCommand
         $this->collectors[] = new UptimeCollector();
         $this->collectors[] = new OpenPortsCollector();
         $this->collectors[] = new ConfigurationCollector();
+        $this->collectors[] = new CronCollector();
 
         // Package Managers
         $this->collectors[] = new BrewPackageCollector();

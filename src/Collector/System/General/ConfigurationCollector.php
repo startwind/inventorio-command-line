@@ -21,8 +21,6 @@ class ConfigurationCollector implements Collector
      */
     public function collect(): array
     {
-        var_dump('hier');
-
         return [
             'cpu' => $this->getCpuCount(),
             'memory' => (int)($this->getMemorySize() / 1000),
