@@ -39,7 +39,7 @@ class CronCollector implements Collector
         $cronJobsResult = [];
 
         foreach ($cronJobs as $cronJob) {
-            if ($cronJob == "" || str_starts_with($cronJob, '#')) {
+            if ($cronJob == "" || str_starts_with($cronJob, '#') || $cronJob == 'SHELL=/bin/bash') {
                 continue;
             }
 
