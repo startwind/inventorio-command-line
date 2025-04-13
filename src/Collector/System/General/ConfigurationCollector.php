@@ -39,25 +39,25 @@ class ConfigurationCollector implements Collector
         return 0;
     }
 
-    private function getMemorySize(): string
+    private function getMemorySize(): float
     {
         $os = PHP_OS_FAMILY;
         if ($os === 'Windows') {
             $output = shell_exec("wmic computersystem get TotalPhysicalMemory");
             preg_match("/\d+/", $output, $matches);
-            return isset($matches[0]) ? round($matches[0] / 1024 / 1024, 2) : "Nicht verfügbar";
+            return isset($matches[0]) ? round((float)$matches[0] / 1024 / 1024, 2) : 0;
         } elseif ($os === 'Darwin') {
             $memBytes = trim(shell_exec("sysctl -n hw.memsize"));
-            return round($memBytes / 1024 / 1024, 2);
+            return round((float)$memBytes / 1024 / 1024, 2);
         } elseif ($os === 'Linux') {
-            $meminfo = file_get_contents("/proc/meminfo");
-            preg_match("/MemTotal:\s+(\d+)\skB/", $meminfo, $matches);
-            return isset($matches[1]) ? round($matches[1] / 1024, 2) : "Nicht verfügbar";
+            $memInfo = file_get_contents("/proc/meminfo");
+            preg_match("/MemTotal:\s+(\d+)\skB/", $memInfo, $matches);
+            return isset($matches[1]) ? round((float)$matches[1] / 1024, 2) :0;
         }
         return 0;
     }
 
-    function getDiskSize(): string
+    function getDiskSize(): float
     {
         $bytes = disk_total_space("/");
         return round($bytes / (1024 ** 3), 2);
