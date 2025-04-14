@@ -29,6 +29,36 @@ class DpkgPackageCollector implements Collector
             return [];
         }
 
+        return [
+            'packages' => $this->collectPackages(),
+            'updatable' => $this->collectUpdatablePackages()
+        ];
+    }
+
+    private function collectUpdatablePackages(): array
+    {
+        $output = shell_exec('apt list --upgradable 2>/dev/null');
+        $lines = explode("\n", $output);
+        array_shift($lines);
+
+        $packages = [];
+
+        foreach ($lines as $line) {
+            if (trim($line) === '') continue;
+
+            if (preg_match('/^([^\s\/]+)\/[^\s]+\s+([^\s]+).*upgradable from: ([^\]]+)/', $line, $matches)) {
+                $packages[$matches[1]] = [
+                    'currentVersion' => $matches[3],
+                    'newVersion' => $matches[2]
+                ];
+            }
+        }
+
+        return $packages;
+    }
+
+    private function collectPackages(): array
+    {
         $installed = shell_exec('command -v dpkg-query');
 
         if (!$installed) {
@@ -50,8 +80,6 @@ class DpkgPackageCollector implements Collector
             }
         }
 
-        return [
-            'packages' => $installedPackages
-        ];
+        return $installedPackages;
     }
 }
