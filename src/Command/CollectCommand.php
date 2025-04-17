@@ -2,6 +2,7 @@
 
 namespace Startwind\Inventorio\Command;
 
+use Startwind\Inventorio\Collector\Application\Monitoring\WebProsMonitoringCollector;
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\Hosting\HostingCompany\ASNCollector;
@@ -104,6 +105,7 @@ class CollectCommand extends InventorioCommand
 
         // Application / Programming Language
         $this->collectors[] = new PhpCollector();
+        $this->collectors[] = new WebProsMonitoringCollector();
 
         // Application / WebServer
         $this->collectors[] = new ApacheServerNameCollector();
