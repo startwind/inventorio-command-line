@@ -20,17 +20,17 @@ class ASNCollector implements Collector
         $asnArray = explode(' ', $data['as']);
 
         $asn = substr($asnArray[0], 2);
-        $isp = $data['isp'];
+        $as = $data['as'];
 
-        $short = $isp;
+        $short = $as;
 
         if (str_contains(strtolower($short), 'hetzner')) {
             $short = 'hetzner';
         }
 
         return [
+            'as' => $as,
             'asn' => $asn,
-            'isp' => $isp,
             'short' => $short
         ];
     }
