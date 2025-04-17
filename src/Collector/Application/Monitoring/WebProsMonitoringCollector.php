@@ -30,7 +30,7 @@ class WebProsMonitoringCollector implements Collector
         $configArray = [];
 
         foreach ($config as $line) {
-            if (str_starts_with('[', $line)) continue;
+            if (str_starts_with($line, '[')) continue;
             $element = explode('=', $line);
             $configArray[$element[0]] = $element[1];
         }
