@@ -26,6 +26,8 @@ class ASNCollector implements Collector
 
         if (str_contains(strtolower($short), 'hetzner')) {
             $short = 'hetzner';
+        } else if (str_contains(strtolower($short), 'velia')) {
+            $short = 'velia';
         }
 
         return [
