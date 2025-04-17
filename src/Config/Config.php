@@ -18,6 +18,15 @@ class Config
         return $this->configArray['inventorio']['server'];
     }
 
+    public function getCommands(): array
+    {
+        if (array_key_exists('commands', $this->configArray)) {
+            return $this->configArray['commands'];
+        } else {
+            return [];
+        }
+    }
+
     public function getConfigFile(): string
     {
         return getenv("HOME") . DIRECTORY_SEPARATOR . $this->configArray['inventorio']['configFile'];

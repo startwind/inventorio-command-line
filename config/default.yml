@@ -1,3 +1,14 @@
 inventorio:
   server: https://api.inventorio.cloud
   configFile: .inventorio/config.yml
+
+commands:
+  reboot:
+    name: Reboot the server
+    command: reboot
+  ifconfig:
+    name: Show network configuration
+    command: ifconfig
+  updateInventorio:
+    name: Update the Inventorio client
+    command: inventorio update

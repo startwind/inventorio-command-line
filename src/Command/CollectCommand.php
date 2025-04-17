@@ -4,6 +4,8 @@ namespace Startwind\Inventorio\Command;
 
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
+use Startwind\Inventorio\Collector\Hosting\HostingCompany\ASNCollector;
+use Startwind\Inventorio\Collector\Inventorio\CommandCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
@@ -80,10 +82,14 @@ class CollectCommand extends InventorioCommand
     {
         // Inventorio
         $this->collectors[] = new InventorioCollector();
+        $this->collectors[] = new CommandCollector($this->config);
         // $this->collectors[] = new RandomCollector();
 
         // General
         $this->collectors[] = new OperatingSystemCollector();
+
+        // Hosting
+        $this->collectors[] = new ASNCollector();
 
         // System / General
         $this->collectors[] = new IpCollector();

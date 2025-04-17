@@ -1,3 +1,11 @@
 inventorio:
   server: http://localhost:8080
   configFile: .inventorio/config_dev.yml
+
+commands:
+  reboot:
+    name: Reboot the server
+    command: reboot
+  ifconfig:
+    name: Show network configuration
+    command: ifconfig
