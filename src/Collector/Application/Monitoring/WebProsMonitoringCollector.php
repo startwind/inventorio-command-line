@@ -32,7 +32,7 @@ class WebProsMonitoringCollector implements Collector
         foreach ($config as $line) {
             if (str_starts_with($line, '[')) continue;
             $element = explode('=', $line);
-            $configArray[$element[0]] = $element[1];
+            $configArray[$element[0]] = trim($element[1]);
         }
 
         return [
