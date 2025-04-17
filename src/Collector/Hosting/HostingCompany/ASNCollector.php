@@ -17,14 +17,21 @@ class ASNCollector implements Collector
         $ip = file_get_contents('https://api.ipify.org');
         $data = json_decode(file_get_contents("http://ip-api.com/json/" . $ip), true);
 
-        $asnArray = explode(' ' , $data['as']);
+        $asnArray = explode(' ', $data['as']);
 
         $asn = substr($asnArray[0], 2);
         $isp = $data['isp'];
 
+        $short = $isp;
+
+        if (str_contains(strtolower($short), 'hetzner')) {
+            $short = 'hetzner';
+        }
+
         return [
             'asn' => $asn,
-            'isp' => $isp
+            'isp' => $isp,
+            'short' => $short
         ];
     }
 }
