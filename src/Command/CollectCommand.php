@@ -16,6 +16,7 @@ use Startwind\Inventorio\Collector\System\General\ConfigurationCollector;
 use Startwind\Inventorio\Collector\System\General\IpCollector;
 use Startwind\Inventorio\Collector\System\General\UptimeCollector;
 use Startwind\Inventorio\Collector\System\Ports\OpenPortsCollector;
+use Startwind\Inventorio\Collector\System\UserCollector;
 use Startwind\Inventorio\Reporter\InventorioReporter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -98,6 +99,7 @@ class CollectCommand extends InventorioCommand
         $this->collectors[] = new OpenPortsCollector();
         $this->collectors[] = new ConfigurationCollector();
         $this->collectors[] = new CronCollector();
+        $this->collectors[] = new UserCollector();
 
         // Package Managers
         $this->collectors[] = new BrewPackageCollector();
