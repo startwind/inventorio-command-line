@@ -8,16 +8,20 @@ use Startwind\Inventorio\Collector\InventoryAwareCollector;
 
 class WordPressCollector extends BasicCollector implements InventoryAwareCollector
 {
+    protected string $identifier = "WordPress";
+
     private array $inventory;
 
-    public function setInventory(array $inventory)
+    public function setInventory(array $inventory): void
     {
         $this->inventory = $inventory;
     }
 
     public function collect(): array
     {
-        if (!array_key_exists(ApacheServerNameCollector::COLLECTION_IDENTIFIER, $this->inventory)) return [];
+        if (!array_key_exists(ApacheServerNameCollector::COLLECTION_IDENTIFIER, $this->inventory)
+            || !is_array($this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER])
+        ) return [];
 
         $configs = $this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER];
 
@@ -29,7 +33,9 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
 
             if (file_exists($documentRoot . '/wp-config.php')) {
 
-                $wpVersionFile = $documentRoot . '/wp-includes/version.php';
+                if (!str_ends_with($documentRoot, '/')) $documentRoot = $documentRoot . '/';
+
+                $wpVersionFile = $documentRoot . 'wp-includes/version.php';
 
                 $version = 'unknown';
 
