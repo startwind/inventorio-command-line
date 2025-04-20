@@ -5,6 +5,7 @@ namespace Startwind\Inventorio\Command;
 use Startwind\Inventorio\Collector\Application\Monitoring\WebProsMonitoringCollector;
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
+use Startwind\Inventorio\Collector\InventoryAwareCollector;
 use Startwind\Inventorio\Collector\Hosting\HostingCompany\ASNCollector;
 use Startwind\Inventorio\Collector\Inventorio\CommandCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
@@ -51,6 +52,9 @@ class CollectCommand extends InventorioCommand
         $inventory = [];
 
         foreach ($this->collectors as $collector) {
+            if($collector instanceof  InventoryAwareCollector) {
+                $collector->setInventory($inventory);
+            }
             $collected = $collector->collect();
             if ($collected) {
                 $inventory[$collector->getIdentifier()] = $collected;
@@ -111,5 +115,8 @@ class CollectCommand extends InventorioCommand
 
         // Application / WebServer
         $this->collectors[] = new ApacheServerNameCollector();
+
+        // INVENTORY AWARE
+
     }
 }

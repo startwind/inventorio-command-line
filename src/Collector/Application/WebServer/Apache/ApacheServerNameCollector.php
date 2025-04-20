@@ -8,7 +8,10 @@ class ApacheServerNameCollector implements Collector
 {
     private const CONFIG_DIRECTORY = '/etc/apache2/sites-enabled';
 
-    protected const COLLECTION_IDENTIFIER = 'ApacheServerName';
+    public const COLLECTION_IDENTIFIER = 'ApacheServerName';
+
+    public const FIELD_DOCUMENT_ROOT = 'documentRoot';
+    public const FIELD_SERVER_NAME = 'serverName';
 
     public function getIdentifier(): string
     {
@@ -22,29 +25,27 @@ class ApacheServerNameCollector implements Collector
         }
 
         $configurations = $this->getAllConfigurations(self::CONFIG_DIRECTORY);
-        $serverNames = [];
+        $result = [];
 
-        foreach ($configurations as $configuration) {
-            $serverNames = array_merge($serverNames, $this->extractServerName($configuration));
-        }
-
-        if (count($serverNames) == 0) {
+        if (count($configurations) == 0) {
             return [];
         }
 
-        $uniqueServerNames = array_values(array_unique($serverNames));
-        sort($uniqueServerNames);
+        foreach ($configurations as $configuration) {
+            $config = $this->extractServerData($configuration);
+            $result[$config['serverName']] = $config;
+        }
 
-        return [
-            'serverNames' => $uniqueServerNames
-        ];
+        return array_values($result);
     }
 
-    private function extractServerName(string $vhostFile): array
+    private function extractServerData(string $vhostFile): array
     {
         $lines = file($vhostFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-        $serverNames = [];
+        $serverName = '';
+        $aliases = [];
+        $documentRoot = '';
 
         foreach ($lines as $line) {
             $line = trim($line);
@@ -54,16 +55,23 @@ class ApacheServerNameCollector implements Collector
             }
 
             if (preg_match('/^ServerName\s+([^\s]+)/i', $line, $match)) {
-                $serverNames[] = $match[1];
+                $serverName = $match[1];
             }
 
             if (preg_match('/^ServerAlias\s+(.+)/i', $line, $match)) {
-                $aliases = preg_split('/\s+/', trim($match[1]));
-                $serverNames = array_merge($serverNames, $aliases);
+                $aliases[] = preg_split('/\s+/', trim($match[1]));
+            }
+
+            if (preg_match('/DocumentRoot\s+(.+)/', $line, $matches)) {
+                $documentRoot = trim($matches[1]);
             }
         }
 
-        return $serverNames;
+        return [
+            self::FIELD_SERVER_NAME => $serverName,
+            self::FIELD_DOCUMENT_ROOT => $documentRoot,
+            'aliases' => $aliases
+        ];
     }
 
     private function getAllConfigurations(string $vhostDir): array
