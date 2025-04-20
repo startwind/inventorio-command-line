@@ -33,7 +33,9 @@ class ApacheServerNameCollector implements Collector
 
         foreach ($configurations as $configuration) {
             $config = $this->extractServerData($configuration);
-            $result[$config['serverName']] = $config;
+            if ($config['serverName']) {
+                $result[$config['serverName']] = $config;
+            }
         }
 
         return array_values($result);
