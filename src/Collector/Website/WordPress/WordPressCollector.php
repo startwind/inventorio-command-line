@@ -35,20 +35,10 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
 
                 if (!str_ends_with($documentRoot, '/')) $documentRoot = $documentRoot . '/';
 
-                $wpVersionFile = $documentRoot . 'wp-includes/version.php';
-
-                $version = 'unknown';
-
-                if (file_exists($wpVersionFile)) {
-                    $content = file_get_contents($wpVersionFile);
-                    if (preg_match("/\\\$wp_version\s*=\s*'([^']+)'/", $content, $matches)) {
-                        $version = $matches[1];
-                    }
-                }
-
                 $wordPressInstallations[$domain] = [
                     'domain' => $domain,
-                    'version' => $version
+                    'version' => $this->extractVersion($documentRoot),
+                    'plugins' => $this->extractPlugins($documentRoot)
                 ];
             }
         }
@@ -56,4 +46,78 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
         return $wordPressInstallations;
     }
 
+    private function extractPlugins(string $documentRoot): array
+    {
+        $pluginDir = $documentRoot . '/wp-content/plugins';
+        $plugins = array_diff(scandir($pluginDir), ['.', '..']);
+
+        $pluginArray = [];
+
+        foreach ($plugins as $pluginFolder) {
+            $path = $pluginDir . '/' . $pluginFolder;
+
+            if (is_dir($path)) {
+                $phpFiles = glob("$path/*.php");
+                foreach ($phpFiles as $phpFile) {
+                    $info = $this->parsePluginHeader($phpFile);
+                    if (!empty($info['Name'])) {
+                        $pluginArray[] = [
+                            'name' => $info['Name'],
+                            'version' => $info['Version']
+                        ];
+                        break;
+                    }
+                }
+            } elseif (is_file($path) && substr($pluginFolder, -4) === '.php') {
+                $info = $this->parsePluginHeader($path);
+                if (!empty($info['Name'])) {
+                    $pluginArray[] = [
+                        'name' => $info['Name'],
+                        'version' => $info['Version']
+                    ];
+                }
+            }
+        }
+
+        return $pluginArray;
+    }
+
+    private function parsePluginHeader($file): array
+    {
+        $headers = [
+            'Name' => 'Plugin Name',
+            'Version' => 'Version',
+        ];
+
+        $fp = fopen($file, 'r');
+        if (!$fp) return [];
+
+        $data = fread($fp, 8192);
+        fclose($fp);
+
+        $info = [];
+        foreach ($headers as $key => $header) {
+            if (preg_match('/' . preg_quote($header, '/') . ':\s*(.+)/i', $data, $matches)) {
+                $info[$key] = trim($matches[1]);
+            }
+        }
+
+        return $info;
+    }
+
+    private function extractVersion(string $documentRoot): string
+    {
+        $wpVersionFile = $documentRoot . 'wp-includes/version.php';
+
+        $version = 'unknown';
+
+        if (file_exists($wpVersionFile)) {
+            $content = file_get_contents($wpVersionFile);
+            if (preg_match("/\\\$wp_version\s*=\s*'([^']+)'/", $content, $matches)) {
+                $version = $matches[1];
+            }
+        }
+
+        return $version;
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace Startwind\Inventorio\Collector;
 
-interface InventoryAwareCollector
+interface InventoryAwareCollector extends Collector
 {
     public function setInventory(array $inventory): void;
 }
