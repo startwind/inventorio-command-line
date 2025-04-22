@@ -38,7 +38,8 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
                 $wordPressInstallations[$domain] = [
                     'domain' => $domain,
                     'version' => $this->extractVersion($documentRoot),
-                    'plugins' => $this->extractPlugins($documentRoot)
+                    'plugins' => $this->extractPlugins($documentRoot),
+                    'path' => $documentRoot
                 ];
             }
         }
