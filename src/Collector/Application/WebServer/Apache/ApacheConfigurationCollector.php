@@ -6,7 +6,7 @@ use Startwind\Inventorio\Collector\BasicCollector;
 
 class ApacheConfigurationCollector extends BasicCollector
 {
-    public const COLLECTION_IDENTIFIER = 'ApacheModules';
+    protected string $identifier = 'ApacheModules';
 
     public function collect(): array
     {
