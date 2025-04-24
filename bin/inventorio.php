@@ -6,7 +6,6 @@ use SelfUpdate\SelfUpdateCommand;
 use Startwind\Inventorio\Command\CollectCommand;
 use Startwind\Inventorio\Command\DaemonCommand;
 use Startwind\Inventorio\Command\InitCommand;
-use Startwind\Inventorio\Command\RemoteCommand;
 use Symfony\Component\Console\Application;
 
 const INVENTORIO_VERSION = '##INVENTORIO_VERSION##';

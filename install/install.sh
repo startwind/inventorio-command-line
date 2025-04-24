@@ -22,7 +22,7 @@ fi
 
 ID="$1"
 PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/latest/download/inventorio.phar"
-PHAR_PATH="/usr/local/bin/inventorio.phar"
+PHAR_PATH="/usr/local/bin/inventorio"
 
 if ! command -v php >/dev/null 2>&1; then
   echo "PHP is not installed. Please install PHP 7.4 or higher."
