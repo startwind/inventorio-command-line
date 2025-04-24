@@ -26,6 +26,8 @@ class DaemonCommand extends InventorioCommand
             $this->config->getCommands()
         );
 
+        $remoteEnabled = $this->isRemoteEnabled();
+
         while (true) {
             if ($lastRun < time() - 3600) {
                 $command = $this->getApplication()->find('collect');
@@ -33,7 +35,9 @@ class DaemonCommand extends InventorioCommand
                 $lastRun = time();
             }
 
-            $remoteConnect->run();
+            if ($remoteEnabled) {
+                $remoteConnect->run();
+            }
 
             sleep(10);
         }

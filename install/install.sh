@@ -43,13 +43,13 @@ fi
 
 # Download die PHAR-Datei
 echo "Downloading PHAR..."
-curl -L "$PHAR_URL" -o "$PHAR_PATH"
+curl -s -L "$PHAR_URL" -o "$PHAR_PATH"
 
 # Mach sie ausführbar
 chmod +x "$PHAR_PATH"
 
 # Führe init mit der ID aus
-echo "Initializing with ID: $ID"
+echo "Initializing for user ID: $ID"
 "$PHAR_PATH" init "$ID"
 
 # Prüfe ob systemd vorhanden ist

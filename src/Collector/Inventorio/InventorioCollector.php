@@ -10,6 +10,12 @@ use Startwind\Inventorio\Collector\Collector;
 class InventorioCollector implements Collector
 {
     protected const COLLECTION_IDENTIFIER = '_Inventorio';
+    private bool $isRemoteEnabled;
+
+    public function __construct(bool $isRemoteEnabled = false)
+    {
+        $this->isRemoteEnabled = $isRemoteEnabled;
+    }
 
     /**
      * @inheritDoc
@@ -26,7 +32,8 @@ class InventorioCollector implements Collector
     {
         return [
             'client' => [
-                'version' => INVENTORIO_VERSION
+                'version' => INVENTORIO_VERSION,
+                'isRemoteEnabled' => $this->isRemoteEnabled,
             ]
         ];
     }

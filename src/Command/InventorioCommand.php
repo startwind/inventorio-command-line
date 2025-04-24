@@ -52,6 +52,24 @@ abstract class InventorioCommand extends Command
     }
 
     /**
+     * Return true if remote is enabled
+     */
+    protected function isRemoteEnabled(): bool
+    {
+        if (!$this->isInitialized()) {
+            throw new \RuntimeException('System was not initialized yet.');
+        }
+
+        $config = json_decode(file_get_contents($this->getConfigFile()), true);
+
+        if (!array_key_exists('remote', $config)) {
+            return false;
+        }
+
+        return $config['remote'];
+    }
+
+    /**
      * Return the user identifier.
      */
     protected function getUserId(): string

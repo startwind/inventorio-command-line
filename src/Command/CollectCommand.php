@@ -6,10 +6,10 @@ use Startwind\Inventorio\Collector\Application\Monitoring\WebProsMonitoringColle
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheConfigurationCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
-use Startwind\Inventorio\Collector\InventoryAwareCollector;
 use Startwind\Inventorio\Collector\Hosting\HostingCompany\ASNCollector;
 use Startwind\Inventorio\Collector\Inventorio\CommandCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
+use Startwind\Inventorio\Collector\InventoryAwareCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Collector\Package\Dpkg\DpkgPackageCollector;
@@ -54,7 +54,7 @@ class CollectCommand extends InventorioCommand
         $inventory = [];
 
         foreach ($this->collectors as $collector) {
-            if($collector instanceof  InventoryAwareCollector) {
+            if ($collector instanceof InventoryAwareCollector) {
                 $collector->setInventory($inventory);
             }
             $collected = $collector->collect();
@@ -89,7 +89,7 @@ class CollectCommand extends InventorioCommand
     private function initCollectors(): void
     {
         // Inventorio
-        $this->collectors[] = new InventorioCollector();
+        $this->collectors[] = new InventorioCollector($this->isRemoteEnabled());
         $this->collectors[] = new CommandCollector($this->config);
         // $this->collectors[] = new RandomCollector();
 

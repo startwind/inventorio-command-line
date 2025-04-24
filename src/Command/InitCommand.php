@@ -71,7 +71,8 @@ class InitCommand extends InventorioCommand
 
         $config = [
             'serverId' => $serverId,
-            'userId' => $userId
+            'userId' => $userId,
+            'remote' => false
         ];
 
         if (!file_exists(dirname($configFile))) {
@@ -80,10 +81,12 @@ class InitCommand extends InventorioCommand
 
         file_put_contents($configFile, json_encode($config), JSON_PRETTY_PRINT);
 
+        $output->writeln('<info>Server registered.</info>');
+        /*
         $output->writeln('<info>Server registered. Please run the following command to set up  the cron job:</info>');
         $output->writeln('');
         $output->writeln('<comment>(crontab -l 2>/dev/null; echo "' . rand(0, 59) . ' * * * * /usr/local/bin/inventorio collect >> /var/log/inventorio.log 2>&1") | crontab -</comment>');
-
+        */
         return Command::SUCCESS;
     }
 

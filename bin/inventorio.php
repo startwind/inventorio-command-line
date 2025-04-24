@@ -19,7 +19,6 @@ $application->setName(INVENTORIO_NAME);
 
 $application->add(new CollectCommand());
 $application->add(new InitCommand());
-$application->add(new RemoteCommand());
 $application->add(new DaemonCommand());
 
 if (!str_contains(INVENTORIO_VERSION, '##INVENTORIO_VERSION')) {
