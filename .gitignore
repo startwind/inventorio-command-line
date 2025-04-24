@@ -1,3 +1,5 @@
 .idea
 vendor
 _tmp
+phpstan.neon
+.php-cs-fixer.cache
