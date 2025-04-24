@@ -43,7 +43,7 @@ fi
 
 # Download die PHAR-Datei
 echo "Downloading PHAR..."
-curl -s -L "$PHAR_URL" -o "$PHAR_PATH"
+wget "$PHAR_URL" -O "$PHAR_PATH"
 
 # Mach sie ausführbar
 chmod +x "$PHAR_PATH"
