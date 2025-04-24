@@ -78,6 +78,14 @@ jobs:
           asset_name: ${{ matrix.asset_name }}
           tag: ${{ github.ref }}
 
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.REPO_TOKEN }}
+          file: install/install.sh
+          asset_name: ${{ matrix.asset_name }}
+          tag: ${{ github.ref }}          
+
       - name: Send release version as GET request
         env:
           BASE_URL: 'https://api.inventorio.cloud/inventorio/version/update/42369df1-ed56-4100-a48f-2e0c9ad13871'
