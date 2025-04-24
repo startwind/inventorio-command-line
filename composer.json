@@ -10,7 +10,9 @@
     "symfony/yaml": "^5.4",
     "symfony/console": "^5.4",
     "consolidation/self-update": "^2.2",
-    "elephantio/elephant.io": "^4.13"
+    "elephantio/elephant.io": "^4.13",
+    "monolog/monolog": "^2.10",
+    "symfony/process": "^5.4"
   },
   "config": {
     "platform": {

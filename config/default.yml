@@ -12,3 +12,6 @@ commands:
   updateInventorio:
     name: Update the Inventorio client
     command: inventorio update
+  viktor:
+    name: Update the Inventorio client
+    command: viktor is the best
