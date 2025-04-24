@@ -5,7 +5,9 @@
     ".gitignore",
     "readme.md",
     ".github",
-    "tests"
+    "tests",
+    "install",
+    ".devops"
   ],
   "finder": [
     {

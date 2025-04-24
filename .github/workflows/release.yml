@@ -29,6 +29,14 @@ jobs:
           find: "##INVENTORIO_VERSION##"
           replace: ${{ steps.get_version.outputs.VERSION }}
 
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.REPO_TOKEN }}
+          file: install/install.sh
+          asset_name: ${{ matrix.asset_name }}
+          tag: ${{ github.ref }}
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -49,6 +57,10 @@ jobs:
       - name: Remove rector
         run: |
           rm -rf vendor/rector
+
+      - name: Remove rector
+        run: |
+          rm -rf install/install.sh
 
       - name: Remove phpstan
         run: |
@@ -75,14 +87,6 @@ jobs:
         with:
           repo_token: ${{ secrets.REPO_TOKEN }}
           file: /tmp/inventorio.phar
-          asset_name: ${{ matrix.asset_name }}
-          tag: ${{ github.ref }}
-
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.REPO_TOKEN }}
-          file: install/install.sh
           asset_name: ${{ matrix.asset_name }}
           tag: ${{ github.ref }}
 
