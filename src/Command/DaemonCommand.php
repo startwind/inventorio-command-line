@@ -2,6 +2,7 @@
 
 namespace Startwind\Inventorio\Command;
 
+use _PHPStan_0464ac1a3\Symfony\Component\Console\Command\Command;
 use Startwind\Inventorio\Remote\RemoteConnect;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,18 +29,20 @@ class DaemonCommand extends InventorioCommand
 
         $remoteEnabled = $this->isRemoteEnabled();
 
-        while (true) {
-            if ($lastRun < time() - 3600) {
-                $command = $this->getApplication()->find('collect');
-                $command->run($input, $output);
-                $lastRun = time();
-            }
-
-            if ($remoteEnabled) {
-                $remoteConnect->run();
-            }
-
-            sleep(10);
+        // while (true) {
+        if ($lastRun < time() - 3600) {
+            $command = $this->getApplication()->find('collect');
+            $command->run($input, $output);
+            $lastRun = time();
         }
+
+        if ($remoteEnabled) {
+            $remoteConnect->run();
+        }
+
+        sleep(10);
+        // }
+
+        return Command::SUCCESS;
     }
 }
