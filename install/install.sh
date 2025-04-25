@@ -22,6 +22,15 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+# Cronjob mit 'inventorio collect' entfernen, falls vorhanden
+EXISTING_CRON=$(crontab -l 2>/dev/null || true)
+FILTERED_CRON=$(echo "$EXISTING_CRON" | grep -v "/usr/local/bin/inventorio collect >> /var/log/inventorio.log 2>&1")
+
+if [ "$EXISTING_CRON" != "$FILTERED_CRON" ]; then
+  echo "Removing existing 'inventorio collect' cronjob..."
+  echo "$FILTERED_CRON" | crontab -
+fi
+
 ID="$1"
 PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/latest/download/inventorio.phar"
 PHAR_PATH="/usr/local/bin/inventorio"
