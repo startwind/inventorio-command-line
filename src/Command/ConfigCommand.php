@@ -39,7 +39,9 @@ class ConfigCommand extends InventorioCommand
             } else {
                 $value = false;
             }
-            $output->writeln('<info>Remote command mode: </info>' . ($value ? 'on' : 'off'));
+
+            $output->writeln("");
+            $output->writeln('Remote command mode: <info>' . ($value ? 'on' : 'off') . '</info>');
 
             $this->setRemoteEnabled($value);
 
@@ -49,7 +51,10 @@ class ConfigCommand extends InventorioCommand
         if (!$set) {
             $output->writeln('<error>Configuration was not changed. Please provide at least one flag.</error>');
         } else {
+            $output->writeln("");
             $this->getApplication()->find('collect')->run(new ArrayInput([]), $output);
+            $output->writeln("");
+            $output->writeln('If you are running inventorio via SystemD please call: <info>systemctl restart inventorio.service</info>');
         }
 
         return Command::SUCCESS;
