@@ -24,10 +24,10 @@ echo "Found existing inventorio at: $INVENTORIO_PATH"
 echo "Replacing with the new version..."
 
 # Optional backup
-cp "$INVENTORIO_PATH" "${INVENTORIO_PATH}.bak"
+cp -f "$INVENTORIO_PATH" "${INVENTORIO_PATH}.bak"
 
 # Overwrite and set executable
-cp "$TMP_PHAR" "$INVENTORIO_PATH"
+cp -f "$TMP_PHAR" "$INVENTORIO_PATH"
 chmod +x "$INVENTORIO_PATH"
 
 # Check for systemd

@@ -2,13 +2,15 @@
 
 set -e
 
-# Fehler-Log-Datei
+# Versuche zuerst /var/log, bei Fehler weiche ins aktuelle Verzeichnis aus
 LOGFILE="/var/log/inventorio-install.log"
-#exec 2>>"$LOGFILE"
+if ! touch "$LOGFILE" &>/dev/null; then
+  LOGFILE="./inventorio-install.log"
+  echo "Warning: Could not write to /var/log. Using $LOGFILE instead."
+fi
 
-# Optional: Alles loggen (stdout + stderr)
-exec >>"$LOGFILE" 2>&1
-
+# Umleitung von STDERR ins Logfile
+exec 2>>"$LOGFILE"
 # Root-Check
 if [ "$EUID" -ne 0 ]; then
   echo "This script must be run as root. Please use sudo or switch to the root user."
