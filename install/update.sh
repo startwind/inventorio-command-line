@@ -2,47 +2,53 @@
 
 set -e
 
-# URL zum Download
+# Download URL
 PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/latest/download/inventorio.phar"
 
-# Temporäre Datei für den Download
+# Temporary file for download
 TMP_PHAR="/tmp/inventorio.phar"
 
-echo "Lade neue inventorio.phar herunter..."
+echo "Downloading latest inventorio.phar..."
 curl -L "$PHAR_URL" -o "$TMP_PHAR"
 
-# Stelle sicher, dass das Script existiert
-echo "Suche nach dem aktuellen installierten inventorio..."
+# Find current installed path
+echo "Searching for current 'inventorio' executable..."
 INVENTORIO_PATH=$(which inventorio || true)
 
 if [ -z "$INVENTORIO_PATH" ]; then
-    echo "Fehler: 'inventorio' wurde nicht gefunden im Pfad."
+    echo "Error: 'inventorio' not found in PATH."
     exit 1
 fi
 
-echo "Aktuelles inventorio gefunden unter: $INVENTORIO_PATH"
-echo "Überschreibe mit neuer Version..."
+echo "Found existing inventorio at: $INVENTORIO_PATH"
+echo "Replacing with the new version..."
 
-# Backup optional
+# Optional backup
 cp "$INVENTORIO_PATH" "${INVENTORIO_PATH}.bak"
 
-# Neue Datei kopieren
+# Overwrite and set executable
 cp "$TMP_PHAR" "$INVENTORIO_PATH"
 chmod +x "$INVENTORIO_PATH"
 
-echo "Neustart des inventorio.service falls systemd verwendet wird..."
-
-# Prüfe ob systemd vorhanden ist
+# Check for systemd
+echo "Checking for systemd..."
 if pidof systemd &> /dev/null && [ -d /run/systemd/system ]; then
+    echo "Systemd detected – trying to restart inventorio.service..."
+
     if systemctl list-units --type=service | grep -q "inventorio.service"; then
-        echo "Starte inventorio.service neu..."
+        echo "Restarting inventorio.service..."
         sudo systemctl restart inventorio.service
-        echo "inventorio.service wurde neu gestartet."
+        echo "inventorio.service restarted successfully."
     else
-        echo "Hinweis: inventorio.service ist nicht aktiv oder nicht vorhanden."
+        echo "Note: inventorio.service is not active or not found."
     fi
 else
-    echo "Systemd ist nicht verfügbar – überspringe Dienstneustart."
+    echo "Systemd not detected – running 'inventorio collect' manually..."
+    inventorio collect
 fi
 
-echo "Update abgeschlossen."
+# Cleanup
+echo "Cleaning up downloaded file..."
+rm -f "$TMP_PHAR"
+
+echo "Update process completed."
