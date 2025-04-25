@@ -4,6 +4,7 @@ namespace Startwind\Inventorio\Remote;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Process\Process;
 
 class RemoteConnect
@@ -37,10 +38,13 @@ class RemoteConnect
             $commandResponse = $client->get($this->inventorioServer . $popUrl);
             $commandResult = json_decode($commandResponse->getBody(), true);
 
-            $command = $commandResult['data']['command']['command'];
+            $commandId = $commandResult['data']['command']['command'];
+
+            $cloudCommand = $commandResult['data']['command']['storedCommand']['command'];
+
             $identifier = $commandResult['data']['command']['id'];
 
-            $commandOutput = $this->runCommand($command);
+            $commandOutput = $this->runCommand($commandId, $cloudCommand);
 
             $sendUrl = str_replace('{commandId}', $identifier, self::URL_SEND_OUTPUT);
 
@@ -54,7 +58,7 @@ class RemoteConnect
         return "";
     }
 
-    private function runCommand($command): array
+    private function runCommand(string $command, string $cloudCommand): array
     {
         if (!array_key_exists($command, $this->commands)) {
             return [
@@ -64,16 +68,24 @@ class RemoteConnect
 
         $actualCommand = $this->commands[$command];
 
-        $process = Process::fromShellCommandline($actualCommand['command']);
+        if ($cloudCommand === $actualCommand['command']) {
+            $process = Process::fromShellCommandline($actualCommand['command']);
+            $process->run();
 
-        $process->run();
-
-        return [
-            'output' => $process->getOutput(),
-            'error' => $process->getErrorOutput(),
-            'actualCommand' => $actualCommand['command'],
-            'exitCode' => $process->getExitCode()
-        ];
+            return [
+                'output' => $process->getOutput(),
+                'error' => $process->getErrorOutput(),
+                'actualCommand' => $actualCommand['command'],
+                'exitCode' => $process->getExitCode()
+            ];
+        } else {
+            return [
+                'output' => '',
+                'error' => 'The command that should be run is not the same as the one that was triggered. Looks like somebody tried to hack your system.',
+                'actualCommand' => $actualCommand['command'],
+                'exitCode' => Command::FAILURE
+            ];
+        }
     }
 
 }
