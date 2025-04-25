@@ -30,16 +30,18 @@ class DaemonCommand extends InventorioCommand
 
         while (true) {
             if ($lastRun < time() - 3600) {
-                $command = $this->getApplication()->find('collect');
-                $command->run($input, $output);
+                $this->getApplication()->find('collect')->run($input, $output);
                 $lastRun = time();
             }
 
             if ($remoteEnabled) {
                 $remoteConnect->run();
+                sleep(10);
+            } else {
+                // if remote is disabled it is enough to wake up every 30 mins
+                sleep(1800);
             }
 
-            sleep(10);
         }
     }
 }
