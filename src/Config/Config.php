@@ -7,10 +7,12 @@ use Symfony\Component\Yaml\Yaml;
 class Config
 {
     private array $configArray = [];
+    private mixed $settingsArray;
 
     public function __construct(string $configFile)
     {
         $this->configArray = Yaml::parse(file_get_contents($configFile));
+        $this->settingsArray = json_decode(file_get_contents($this->getConfigFile()), true);
     }
 
     public function getInventorioServer(): string
@@ -20,11 +22,37 @@ class Config
 
     public function getCommands(): array
     {
-        if (array_key_exists('commands', $this->configArray)) {
-            return $this->configArray['commands'];
+        if (array_key_exists('commands', $this->settingsArray)) {
+            return $this->settingsArray['commands'];
         } else {
             return [];
         }
+    }
+
+    public function addCommand(string $identifier, string $command, string $name): void
+    {
+        $commands = $this->getCommands();
+        $commands[$identifier] = ['name' => $name, 'command' => $command];
+
+        $this->settingsArray['commands'] = $commands;
+
+        $this->storeSettings();
+    }
+
+    public function removeCommand(string $identifier): void
+    {
+        $commands = $this->getCommands();
+
+        unset($commands[$identifier]);
+
+        $this->settingsArray['commands'] = $commands;
+
+        $this->storeSettings();
+    }
+
+    private function storeSettings(): void
+    {
+        file_put_contents($this->getConfigFile(), json_encode($this->settingsArray));
     }
 
     public function getConfigFile(): string
