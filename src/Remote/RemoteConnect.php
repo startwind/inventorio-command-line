@@ -62,7 +62,10 @@ class RemoteConnect
     {
         if (!array_key_exists($command, $this->commands)) {
             return [
-                "output" => "No command with identifier '" . $command . "' found."
+                "output" => '',
+                "error" => "No command with identifier '" . $command . "' found.",
+                'actualCommand' => '<unknown>',
+                'exitCode' => Command::FAILURE
             ];
         }
 
