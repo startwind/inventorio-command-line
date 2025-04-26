@@ -70,7 +70,6 @@ class RemoteConnect
 
         if ($cloudCommand === $actualCommand['command']) {
             $shellCommandLine = "timeout --kill-after=5s 1m " . $actualCommand['command'];
-
             $process = Process::fromShellCommandline($shellCommandLine);
             $process->run();
 

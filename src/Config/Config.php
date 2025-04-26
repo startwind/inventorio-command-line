@@ -7,12 +7,15 @@ use Symfony\Component\Yaml\Yaml;
 class Config
 {
     private array $configArray = [];
-    private mixed $settingsArray;
+    private array $settingsArray = [];
 
     public function __construct(string $configFile)
     {
         $this->configArray = Yaml::parse(file_get_contents($configFile));
-        $this->settingsArray = json_decode(file_get_contents($this->getConfigFile()), true);
+
+        if (file_exists($this->getConfigFile())) {
+            $this->settingsArray = json_decode(file_get_contents($this->getConfigFile()), true);
+        }
     }
 
     public function getInventorioServer(): string
