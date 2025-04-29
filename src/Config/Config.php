@@ -66,12 +66,12 @@ class Config
     {
         $logfiles = $this->getLogfiles();
 
-        foreach ($logfiles as $logfile) {
-            if ($logfile['name'] == $name) {
+        foreach ($logfiles as $existingLogfile) {
+            if ($existingLogfile['name'] == $name) {
                 throw new \RuntimeException('Name is already used');
             }
 
-            if ($logfile['file'] == $logfile) {
+            if ($existingLogfile['file'] == $logfile) {
                 throw new \RuntimeException('Logfile is already used');
             }
         }
