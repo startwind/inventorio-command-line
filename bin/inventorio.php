@@ -9,6 +9,9 @@ use Startwind\Inventorio\Command\CommandRemoveCommand;
 use Startwind\Inventorio\Command\ConfigCommand;
 use Startwind\Inventorio\Command\DaemonCommand;
 use Startwind\Inventorio\Command\InitCommand;
+use Startwind\Inventorio\Command\LogfileAddCommand;
+use Startwind\Inventorio\Command\LogfileListCommand;
+use Startwind\Inventorio\Command\LogfileRemoveCommand;
 use Symfony\Component\Console\Application;
 
 const INVENTORIO_VERSION = '##INVENTORIO_VERSION##';
@@ -23,6 +26,13 @@ $application->add(new CollectCommand());
 $application->add(new InitCommand());
 $application->add(new DaemonCommand());
 $application->add(new ConfigCommand());
+
+// Logfile management
+$application->add(new LogfileAddCommand());
+$application->add(new LogfileRemoveCommand());
+$application->add(new LogfileListCommand());
+
+// Command management
 $application->add(new CommandAddCommand());
 $application->add(new CommandRemoveCommand());
 $application->add(new CommandListCommand());
