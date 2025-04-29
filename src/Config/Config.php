@@ -65,7 +65,19 @@ class Config
     public function addLogfile(string $logfile, string $name): void
     {
         $logfiles = $this->getLogfiles();
+
+        foreach ($logfiles as $logfile) {
+            if ($logfile['name'] == $name) {
+                throw new \RuntimeException('Name is already used');
+            }
+
+            if ($logfile['file'] == $logfile) {
+                throw new \RuntimeException('Logfile is already used');
+            }
+        }
+
         $logfiles[] = ['file' => $logfile, 'name' => $name];
+
 
         $this->settingsArray['logfiles'] = $logfiles;
 
@@ -76,9 +88,9 @@ class Config
     {
         $logfiles = $this->getLogfiles();
 
-        foreach($logfiles as $key => $logfileObject) {
-            if($logfile === $logfileObject['file']) {
-             unset($logfiles[$key]);
+        foreach ($logfiles as $key => $logfileObject) {
+            if ($logfile === $logfileObject['file']) {
+                unset($logfiles[$key]);
             }
         }
 

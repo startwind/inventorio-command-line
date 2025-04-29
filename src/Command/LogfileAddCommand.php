@@ -37,7 +37,12 @@ class LogfileAddCommand extends InventorioCommand
             return Command::FAILURE;
         }
 
-        $this->config->addLogfile($file, $input->getArgument('name'));
+        try {
+            $this->config->addLogfile($file, $input->getArgument('name'));
+        } catch (\Exception $exception) {
+            $output->writeln('<error> ' . $exception->getMessage() . ' </error>');
+            return Command::FAILURE;
+        }
 
         $output->writeln('- Logfile successfully added');
         $output->writeln('- Running the collect command to sync with inventorio.cloud');
