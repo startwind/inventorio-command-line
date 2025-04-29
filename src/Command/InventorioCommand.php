@@ -69,6 +69,21 @@ abstract class InventorioCommand extends Command
         return $config['remote'];
     }
 
+    protected function areLogfilesEnabled(): bool
+    {
+        if (!$this->isInitialized()) {
+            throw new \RuntimeException('System was not initialized yet.');
+        }
+
+        $config = json_decode(file_get_contents($this->getConfigFile()), true);
+
+        if (!array_key_exists('logfile', $config)) {
+            return false;
+        }
+
+        return $config['logfile'];
+    }
+
     protected function setRemoteEnabled(bool $isEnabled): void
     {
         if (!$this->isInitialized()) {

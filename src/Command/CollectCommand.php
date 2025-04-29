@@ -89,7 +89,7 @@ class CollectCommand extends InventorioCommand
     private function initCollectors(): void
     {
         // Inventorio
-        $this->collectors[] = new InventorioCollector($this->isRemoteEnabled(), $this->config);
+        $this->collectors[] = new InventorioCollector($this->isRemoteEnabled(), $this->areLogfilesEnabled(), $this->config);
         $this->collectors[] = new CommandCollector($this->config);
         // $this->collectors[] = new RandomCollector();
 

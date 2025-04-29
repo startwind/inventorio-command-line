@@ -12,12 +12,14 @@ class InventorioCollector implements Collector
 {
     protected const COLLECTION_IDENTIFIER = '_Inventorio';
     private bool $isRemoteEnabled;
+    private bool $areLogfileEnabled;
 
     private Config $config;
 
-    public function __construct(bool $isRemoteEnabled, Config $config)
+    public function __construct(bool $isRemoteEnabled, bool $areLogfileEnabled, Config $config)
     {
         $this->isRemoteEnabled = $isRemoteEnabled;
+        $this->areLogfileEnabled = $areLogfileEnabled;
         $this->config = $config;
     }
 
@@ -38,6 +40,7 @@ class InventorioCollector implements Collector
             'client' => [
                 'version' => INVENTORIO_VERSION,
                 'isRemoteEnabled' => $this->isRemoteEnabled,
+                'areLogfilesEnabled' => $this->areLogfileEnabled
             ],
             'logfiles' => $this->config->getLogfiles()
         ];
