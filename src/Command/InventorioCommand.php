@@ -82,6 +82,19 @@ abstract class InventorioCommand extends Command
         file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);;
     }
 
+    protected function setLogfileEnabled(bool $isEnabled): void
+    {
+        if (!$this->isInitialized()) {
+            throw new \RuntimeException('System was not initialized yet.');
+        }
+
+        $config = json_decode(file_get_contents($this->getConfigFile()), true);
+
+        $config['logfile'] = $isEnabled;
+
+        file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);;
+    }
+
     /**
      * Return the user identifier.
      */
