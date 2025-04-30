@@ -18,6 +18,7 @@ use Startwind\Inventorio\Collector\System\General\ConfigurationCollector;
 use Startwind\Inventorio\Collector\System\General\IpCollector;
 use Startwind\Inventorio\Collector\System\General\UptimeCollector;
 use Startwind\Inventorio\Collector\System\Ports\OpenPortsCollector;
+use Startwind\Inventorio\Collector\System\Security\GeneralSecurityCollector;
 use Startwind\Inventorio\Collector\System\UserCollector;
 use Startwind\Inventorio\Collector\Website\WordPress\WordPressCollector;
 use Startwind\Inventorio\Reporter\InventorioReporter;
@@ -106,6 +107,9 @@ class CollectCommand extends InventorioCommand
         $this->collectors[] = new ConfigurationCollector();
         $this->collectors[] = new CronCollector();
         $this->collectors[] = new UserCollector();
+
+        // System / Security
+        $this->collectors[] = new GeneralSecurityCollector();
 
         // Package Managers
         $this->collectors[] = new BrewPackageCollector();
