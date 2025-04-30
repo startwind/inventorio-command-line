@@ -107,15 +107,16 @@ class CommandAddCommand extends InventorioCommand
         $commandParts = explode(' ', $command);
         $mainCommand = $commandParts[0];
 
-        if ($mainCommand && !$finder->find($mainCommand)) {
+        $pseudoCommands = ['cd'];
+
+        if (!in_array($mainCommand, $pseudoCommands) && $mainCommand && !$finder->find($mainCommand)) {
             $output->writeln("<error>The command '$mainCommand' does not exist. Please try again.</error>");
             return Command::FAILURE;
         }
 
-        return true; // Validierung erfolgreich
+        return true;
     }
 
-    // Validierung für description
     private function validateDescription(string $description, OutputInterface $output)
     {
         if ($this->containsHtmlOrJs($description)) {
