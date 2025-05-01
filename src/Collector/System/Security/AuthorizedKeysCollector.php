@@ -4,11 +4,11 @@ namespace Startwind\Inventorio\Collector\System\Security;
 
 use Startwind\Inventorio\Collector\Collector;
 
-class KnownHostsCollector implements Collector
+class AuthorizedKeysCollector implements Collector
 {
     public function getIdentifier(): string
     {
-        return 'known-hosts-all-users';
+        return 'SecurityAuthorizedKeys';
     }
 
     public function collect(): array
@@ -32,14 +32,14 @@ class KnownHostsCollector implements Collector
                 continue;
             }
 
-            $knownHostsPath = $homeDirectory . '/.ssh/known_hosts';
+            $authorizedKeysPath = $homeDirectory . '/.ssh/authorized_keys';
 
-            // If known_hosts exists, parse it
-            if (!file_exists($knownHostsPath)) {
+            // If authorized_keys exists, parse it
+            if (!file_exists($authorizedKeysPath)) {
                 continue;
             }
 
-            $entries = $this->parseKnownHostsFile($knownHostsPath, $username);
+            $entries = $this->parseAuthorizedKeysFile($authorizedKeysPath, $username);
 
             // Merge entries into the final result list
             $results = array_merge($results, $entries);
@@ -49,29 +49,33 @@ class KnownHostsCollector implements Collector
     }
 
     /**
-     * Parse a known_hosts file and return structured entries including username.
+     * Parse an authorized_keys file and return structured entries including username.
      *
-     * @param string $filePath Path to the known_hosts file
+     * @param string $filePath Path to the authorized_keys file
      * @param string $username The user who owns the file
-     * @return array List of structured known host entries
+     * @return array List of structured authorized key entries
      */
-    private function parseKnownHostsFile(string $filePath, string $username): array
+    private function parseAuthorizedKeysFile(string $filePath, string $username): array
     {
         $entries = [];
 
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
         foreach ($lines as $line) {
-            $parts = preg_split('/\s+/', $line);
+            $line = trim($line);
 
-            // Process only lines with at least host, key type, and key
-            if (count($parts) >= 3) {
+            // Skip comments and empty lines
+            if ($line === '' || str_starts_with($line, '#')) {
+                continue;
+            }
+
+            // Some lines may include options before the key, like: command="..." ssh-rsa AAAA...
+            if (preg_match('/^(ssh-(rsa|ed25519|dss)|ecdsa-[^\s]+)\s+([A-Za-z0-9+\/=]+)(\s+(.*))?$/', $line, $matches)) {
                 $entries[] = [
                     'user' => $username,
-                    'host' => $parts[0],
-                    'key_type' => $parts[1],
-                    'key' => $parts[2],
-                    'comment' => $parts[3] ?? null
+                    'key_type' => $matches[1],
+                    'key' => $matches[3],
+                    'comment' => $matches[5] ?? null
                 ];
             }
         }

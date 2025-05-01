@@ -18,6 +18,7 @@ use Startwind\Inventorio\Collector\System\General\ConfigurationCollector;
 use Startwind\Inventorio\Collector\System\General\IpCollector;
 use Startwind\Inventorio\Collector\System\General\UptimeCollector;
 use Startwind\Inventorio\Collector\System\Ports\OpenPortsCollector;
+use Startwind\Inventorio\Collector\System\Security\AuthorizedKeysCollector;
 use Startwind\Inventorio\Collector\System\Security\GeneralSecurityCollector;
 use Startwind\Inventorio\Collector\System\Security\KnownHostsCollector;
 use Startwind\Inventorio\Collector\System\UserCollector;
@@ -111,7 +112,7 @@ class CollectCommand extends InventorioCommand
 
         // System / Security
         $this->collectors[] = new GeneralSecurityCollector();
-        $this->collectors[] = new KnownHostsCollector();
+        $this->collectors[] = new AuthorizedKeysCollector();
 
         // Package Managers
         $this->collectors[] = new BrewPackageCollector();
