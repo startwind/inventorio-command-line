@@ -8,7 +8,7 @@ class AuthorizedKeysCollector implements Collector
 {
     public function getIdentifier(): string
     {
-        return 'SecurityAuthorizedKeys';
+        return 'SystemSecurityAuthorizedKeys';
     }
 
     public function collect(): array
