@@ -28,7 +28,7 @@ class AuthorizedKeysCollector implements Collector
             [$username, , $uid, , , $homeDirectory] = array_slice($parts, 0, 6);
 
             // Only consider regular users (UID >= 1000) with a valid home directory
-            if ((int)$uid < 1000 || !is_dir($homeDirectory)) {
+            if (!is_dir($homeDirectory)) {
                 continue;
             }
 
