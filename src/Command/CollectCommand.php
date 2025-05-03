@@ -128,6 +128,6 @@ class CollectCommand extends InventorioCommand
 
         // INVENTORY AWARE
         $this->collectors[] = new WordPressCollector();
-        $this->collectors[] = new UptimeCollector();
+        $this->collectors[] = new \Startwind\Inventorio\Collector\Website\UptimeCollector();
     }
 }
