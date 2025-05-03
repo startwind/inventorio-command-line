@@ -52,7 +52,7 @@ class InventorioReporter implements Reporter
             throw new \RuntimeException('Unable to connect to ' . $endpoint . ' (ServerException). Message: ' . $e->getMessage());
         }
 
-         var_dump((string)$response->getBody());die;
+        // var_dump((string)$response->getBody());die;
 
         $result = json_decode((string)$response->getBody(), true);
 
