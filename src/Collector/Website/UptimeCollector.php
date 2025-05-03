@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\Website;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\BasicCollector;
@@ -35,6 +36,9 @@ class UptimeCollector extends BasicCollector implements InventoryAwareCollector
             $domain = $config[ApacheServerNameCollector::FIELD_SERVER_NAME];
             try {
                 $result = $client->get('https://' . $domain);
+            } catch (ClientException $e) {
+                $uptimeStatus[$domain] = ['code' => $e->getResponse()->getStatusCode()];
+                continue;
             } catch (ServerException $e) {
                 $uptimeStatus[$domain] = ['code' => $e->getResponse()->getStatusCode()];
                 continue;
