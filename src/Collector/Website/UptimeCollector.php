@@ -10,7 +10,7 @@ use Startwind\Inventorio\Collector\InventoryAwareCollector;
 
 class UptimeCollector extends BasicCollector implements InventoryAwareCollector
 {
-    protected string $identifier = "WordPress";
+    protected string $identifier = "WebsiteUptime";
 
     private array $inventory;
 
