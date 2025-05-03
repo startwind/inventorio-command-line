@@ -38,7 +38,7 @@ class UptimeCollector extends BasicCollector implements InventoryAwareCollector
             } catch (ServerException $e) {
                 $uptimeStatus[$domain] = ['code' => $e->getResponse()->getStatusCode()];
                 continue;
-            } catch (\Exception) {
+            } catch (\Exception $e) {
                 $uptimeStatus[$domain] = ['code' => 599, 'message' => $e->getMessage()];
                 continue;
             }
