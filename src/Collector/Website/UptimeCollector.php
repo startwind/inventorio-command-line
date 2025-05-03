@@ -36,14 +36,14 @@ class UptimeCollector extends BasicCollector implements InventoryAwareCollector
             try {
                 $result = $client->get('https://' . $domain);
             } catch (ServerException $e) {
-                $uptimeStatus[$domain] = $e->getResponse()->getStatusCode();
+                $uptimeStatus[$domain] = ['code' => $e->getResponse()->getStatusCode()];
                 continue;
             } catch (\Exception) {
-                $uptimeStatus[$domain] = 599;
+                $uptimeStatus[$domain] = ['code' => 599, 'message' => $e->getMessage()];
                 continue;
             }
 
-            $uptimeStatus[$domain] = $result->getStatusCode();
+            $uptimeStatus[$domain] = ['code' => $result->getStatusCode()];
         }
 
         return $uptimeStatus;
