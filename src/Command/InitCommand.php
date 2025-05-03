@@ -60,7 +60,7 @@ class InitCommand extends InventorioCommand
         ];
 
         try {
-            $client->post($this->getPreparedEndpoint($serverId), [
+            $response = $client->post($this->getPreparedEndpoint($serverId), [
                 RequestOptions::JSON => $payload
             ]);
         } catch (ClientException $exception) {
@@ -69,11 +69,14 @@ class InitCommand extends InventorioCommand
             return Command::FAILURE;
         }
 
+        $result = json_decode((string)$response->getBody(), true);
+
         $config = [
             'serverId' => $serverId,
             'userId' => $userId,
             'remote' => false,
-            'commands' => $this->config->getCommands()
+            'commands' => $this->config->getCommands(false),
+            'secret' => $result['data']['secret']
         ];
 
         if (!file_exists(dirname($configFile))) {

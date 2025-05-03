@@ -6,3 +6,6 @@ commands:
   reboot:
     name: Reboot the server
     command: reboot
+  inventorio-collect:
+    name: Collect server status via inventorio agent
+    command: inventorio collect

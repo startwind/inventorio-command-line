@@ -23,12 +23,25 @@ class Config
         return $this->configArray['inventorio']['server'];
     }
 
-    public function getCommands(): array
+    public function getCommands($fromUserConfig = true): array
     {
-        if (array_key_exists('commands', $this->settingsArray)) {
-            return $this->settingsArray['commands'];
+        if ($fromUserConfig) {
+            if (array_key_exists('commands', $this->settingsArray)) {
+                return $this->settingsArray['commands'];
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            return $this->configArray['commands'];
+        }
+    }
+
+    public function getSecret(): string
+    {
+        if (array_key_exists('secret', $this->settingsArray)) {
+            return $this->settingsArray['secret'];
+        } else {
+            return '';
         }
     }
 

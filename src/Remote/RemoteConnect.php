@@ -16,12 +16,14 @@ class RemoteConnect
     private string $inventorioServer;
     private string $serverId;
     private array $commands;
+    private string $secret;
 
-    public function __construct(string $inventorioServer, string $serverId, array $commands)
+    public function __construct(string $inventorioServer, string $serverId, array $commands, string $secret)
     {
         $this->inventorioServer = $inventorioServer;
         $this->serverId = $serverId;
         $this->commands = $commands;
+        $this->secret = $secret;
     }
 
     public function run(): string
@@ -40,11 +42,21 @@ class RemoteConnect
 
             $commandId = $commandResult['data']['command']['command'];
 
-            $cloudCommand = $commandResult['data']['command']['storedCommand']['command'];
+            $expectedProof = md5($commandId . $this->secret);
+            $cloudProof = $commandResult['data']['command']['proof'];
 
-            $identifier = $commandResult['data']['command']['id'];
-
-            $commandOutput = $this->runCommand($commandId, $cloudCommand);
+            if ($expectedProof !== $cloudProof) {
+                $cloudCommand = $commandResult['data']['command']['storedCommand']['command'];
+                $identifier = $commandResult['data']['command']['id'];
+                $commandOutput = $this->runCommand($commandId, $cloudCommand);
+            } else {
+                $commandOutput = [
+                    "output" => '',
+                    'error' => 'The authenticity of the job could not be verified.',
+                    'actualCommand' => '<unknown>',
+                    'exitCode' => Command::FAILURE
+                ];
+            }
 
             $sendUrl = str_replace('{commandId}', $identifier, self::URL_SEND_OUTPUT);
 

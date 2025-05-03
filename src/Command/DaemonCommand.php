@@ -23,7 +23,8 @@ class DaemonCommand extends InventorioCommand
         $remoteConnect = new RemoteConnect(
             $this->config->getInventorioServer(),
             $this->getServerId(),
-            $this->config->getCommands()
+            $this->config->getCommands(),
+            $this->config->getSecret()
         );
 
         $remoteEnabled = $this->isRemoteEnabled();
