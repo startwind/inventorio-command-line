@@ -24,8 +24,8 @@ class LogrotateCollector implements Collector
 
         // Step 1: Find all .log files under /var/log
         $allLogs = [];
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($searchPath, FilesystemIterator::SKIP_DOTS)
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($searchPath, \FilesystemIterator::SKIP_DOTS)
         );
 
         foreach ($iterator as $file) {
