@@ -18,15 +18,14 @@ class LogrotateCollector implements Collector
         ];
     }
 
-    private function getLogFileStatus(): array
-    {
+    private function getLogFileStatus(): array {
         $searchPath = '/var/log';
         $logrotateConfs = ['/etc/logrotate.conf', ...glob('/etc/logrotate.d/*')];
 
         // Step 1: Find all .log files under /var/log
         $allLogs = [];
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($searchPath, \FilesystemIterator::SKIP_DOTS)
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($searchPath, FilesystemIterator::SKIP_DOTS)
         );
 
         foreach ($iterator as $file) {
@@ -42,7 +41,7 @@ class LogrotateCollector implements Collector
         }
 
         // Step 2: Extract managed log paths from logrotate config files
-        $managedLogs = [];
+        $explicitManaged = [];
         foreach ($logrotateConfs as $confFile) {
             if (!is_readable($confFile)) continue;
             $lines = file($confFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -50,15 +49,27 @@ class LogrotateCollector implements Collector
                 if (preg_match('#^\s*/[^\s{}]+\.log#', $line, $matches)) {
                     $path = realpath(trim($matches[0]));
                     if ($path !== false) {
-                        $managedLogs[] = $path;
+                        $explicitManaged[] = $path;
                     }
                 }
             }
         }
 
-        $managedLogs = array_unique($managedLogs);
+        $explicitManaged = array_unique($explicitManaged);
 
-        // Step 3: Build result arrays
+        // Step 3: Check for rotated versions (*.log.1, *.log.2.gz, etc.)
+        $rotatedManaged = [];
+        foreach (array_keys($allLogs) as $logFile) {
+            $rotatedGlob = glob($logFile . '.*'); // e.g., /var/log/example.log.*
+            if ($rotatedGlob) {
+                $rotatedManaged[] = $logFile;
+            }
+        }
+
+        // Combine explicit config-based and detected rotated logs
+        $allManaged = array_unique(array_merge($explicitManaged, $rotatedManaged));
+
+        // Step 4: Build result
         $result = [
             'managed' => [],
             'unmanaged' => []
@@ -71,7 +82,7 @@ class LogrotateCollector implements Collector
                 'last_modified' => date('c', $info['last_modified']) // ISO 8601 format
             ];
 
-            if (in_array($path, $managedLogs)) {
+            if (in_array($path, $allManaged)) {
                 $result['managed'][] = $entry;
             } else {
                 $result['unmanaged'][] = $entry;
