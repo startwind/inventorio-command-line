@@ -17,6 +17,7 @@ use Startwind\Inventorio\Collector\System\Cron\CronCollector;
 use Startwind\Inventorio\Collector\System\General\ConfigurationCollector;
 use Startwind\Inventorio\Collector\System\General\IpCollector;
 use Startwind\Inventorio\Collector\System\General\UptimeCollector;
+use Startwind\Inventorio\Collector\System\Logs\LogrotateCollector;
 use Startwind\Inventorio\Collector\System\Ports\OpenPortsCollector;
 use Startwind\Inventorio\Collector\System\Security\AuthorizedKeysCollector;
 use Startwind\Inventorio\Collector\System\Security\GeneralSecurityCollector;
@@ -109,6 +110,7 @@ class CollectCommand extends InventorioCommand
         $this->collectors[] = new ConfigurationCollector();
         $this->collectors[] = new CronCollector();
         $this->collectors[] = new UserCollector();
+        $this->collectors[] = new LogrotateCollector();
 
         // System / Security
         $this->collectors[] = new GeneralSecurityCollector();

@@ -3,3 +3,5 @@ vendor
 _tmp
 phpstan.neon
 .php-cs-fixer.cache
+inventorio-install.log
+install.sh
