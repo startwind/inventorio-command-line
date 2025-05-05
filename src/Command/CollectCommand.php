@@ -106,7 +106,7 @@ class CollectCommand extends InventorioCommand
         // System / General
         $this->collectors[] = new IpCollector();
         $this->collectors[] = new UptimeCollector();
-        $this->collectors[] = new OpenPortsCollector();
+        // $this->collectors[] = new OpenPortsCollector();
         $this->collectors[] = new PortsCollector();
         $this->collectors[] = new ConfigurationCollector();
         $this->collectors[] = new CronCollector();
