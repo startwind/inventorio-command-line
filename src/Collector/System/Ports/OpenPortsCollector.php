@@ -27,7 +27,7 @@ class OpenPortsCollector implements Collector
         $enrichedPorts = [];
 
         foreach ($ports as $port) {
-            $enrichedPorts[] = [
+            $enrichedPorts[$port] = [
                 'port' => $port,
                 'tool' => $this->getTool($port)
             ];

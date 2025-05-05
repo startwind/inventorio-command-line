@@ -83,9 +83,9 @@ class LogrotateCollector implements Collector
             ];
 
             if (in_array($path, $allManaged)) {
-                $result['managed'][] = $entry;
+                $result['managed'][$path] = $entry;
             } else {
-                $result['unmanaged'][] = $entry;
+                $result['unmanaged'][$path] = $entry;
             }
         }
 
