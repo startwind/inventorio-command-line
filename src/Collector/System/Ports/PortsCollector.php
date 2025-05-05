@@ -22,7 +22,7 @@ class PortsCollector extends BasicCollector
         $enrichedPorts = [];
 
         foreach ($ports as $port) {
-            $enrichedPorts[] = [
+            $enrichedPorts[$port['port']] = [
                 'port' => $port['port'],
                 'tool' => $this->getTool($port['port']),
                 'external' => $port['external'],
