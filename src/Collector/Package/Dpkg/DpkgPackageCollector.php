@@ -65,21 +65,16 @@ class DpkgPackageCollector implements Collector
             return [];
         }
 
-        $packages = shell_exec('dpkg-query -l');
+        $packages = shell_exec('dpkg-query -W -f=\'{"package":"${Package}", "version":"${Version}"}\n\' | jq -s .');
 
-        $packageLines = explode("\n", trim($packages));
+        $packageList = json_decode($packages, true);
 
-        $installedPackages = [];
+        $result = [];
 
-        foreach ($packageLines as $line) {
-            if (str_starts_with($line, 'ii')) {
-                $packageDetails = preg_split('/\s+/', $line);
-                $packageName = $packageDetails[1];
-                $packageVersion = $packageDetails[2];
-                $installedPackages[$packageName] = [$packageVersion];
-            }
+        foreach ($packageList as $package) {
+            $result[$package['package']] = [$package['version']];
         }
 
-        return $installedPackages;
+        return $result;
     }
 }

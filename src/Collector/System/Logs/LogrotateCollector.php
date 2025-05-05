@@ -82,10 +82,12 @@ class LogrotateCollector implements Collector
                 'last_modified' => date('c', $info['last_modified']) // ISO 8601 format
             ];
 
+            $index = str_replace('/', '-', $path);
+
             if (in_array($path, $allManaged)) {
-                $result['managed'][$path] = $entry;
+                $result['managed'][$index] = $entry;
             } else {
-                $result['unmanaged'][$path] = $entry;
+                $result['unmanaged'][$index] = $entry;
             }
         }
 
