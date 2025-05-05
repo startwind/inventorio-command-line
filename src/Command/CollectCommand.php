@@ -19,9 +19,9 @@ use Startwind\Inventorio\Collector\System\General\IpCollector;
 use Startwind\Inventorio\Collector\System\General\UptimeCollector;
 use Startwind\Inventorio\Collector\System\Logs\LogrotateCollector;
 use Startwind\Inventorio\Collector\System\Ports\OpenPortsCollector;
+use Startwind\Inventorio\Collector\System\Ports\PortsCollector;
 use Startwind\Inventorio\Collector\System\Security\AuthorizedKeysCollector;
 use Startwind\Inventorio\Collector\System\Security\GeneralSecurityCollector;
-use Startwind\Inventorio\Collector\System\Security\KnownHostsCollector;
 use Startwind\Inventorio\Collector\System\UserCollector;
 use Startwind\Inventorio\Collector\Website\WordPress\WordPressCollector;
 use Startwind\Inventorio\Reporter\InventorioReporter;
@@ -107,6 +107,7 @@ class CollectCommand extends InventorioCommand
         $this->collectors[] = new IpCollector();
         $this->collectors[] = new UptimeCollector();
         $this->collectors[] = new OpenPortsCollector();
+        $this->collectors[] = new PortsCollector();
         $this->collectors[] = new ConfigurationCollector();
         $this->collectors[] = new CronCollector();
         $this->collectors[] = new UserCollector();
