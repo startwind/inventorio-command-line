@@ -65,7 +65,7 @@ class DpkgPackageCollector implements Collector
             return [];
         }
 
-        $packages = shell_exec('dpkg-query -W -f=\'{"package":"${Package}", "version":"${Version}"}\n\' | jq -s .');
+        $packages = shell_exec('echo "["; dpkg-query -W -f=\'{"package":"${Package}", "version":"${Version}"},\n\' | sed \'$s/},/}/\'; echo "]"');
 
         $packageList = json_decode($packages, true);
 
