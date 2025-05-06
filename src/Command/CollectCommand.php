@@ -15,6 +15,7 @@ use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Collector\Package\Dpkg\DpkgPackageCollector;
 use Startwind\Inventorio\Collector\System\Cron\CronCollector;
 use Startwind\Inventorio\Collector\System\General\ConfigurationCollector;
+use Startwind\Inventorio\Collector\System\General\DiskCollector;
 use Startwind\Inventorio\Collector\System\General\IpCollector;
 use Startwind\Inventorio\Collector\System\General\UptimeCollector;
 use Startwind\Inventorio\Collector\System\Logs\LogrotateCollector;
@@ -112,6 +113,7 @@ class CollectCommand extends InventorioCommand
         $this->collectors[] = new CronCollector();
         $this->collectors[] = new UserCollector();
         $this->collectors[] = new LogrotateCollector();
+        $this->collectors[] = new DiskCollector();
 
         // System / Security
         $this->collectors[] = new GeneralSecurityCollector();
