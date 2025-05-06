@@ -39,15 +39,15 @@ class DiskCollector extends BasicCollector
         $percentFreeRounded = floor($percentFree); // immer abrunden
 
         if ($percentFreeRounded < 20) {
-            $score = 0;
+            $score = 100;
         } elseif ($percentFreeRounded < 40) {
-            $score = 25;
+            $score = 75;
         } elseif ($percentFreeRounded < 60) {
             $score = 50;
         } elseif ($percentFreeRounded < 80) {
-            $score = 75;
+            $score = 25;
         } else {
-            $score = 100;
+            $score = 0;
         }
 
         return [
