@@ -62,7 +62,7 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
                 foreach ($phpFiles as $phpFile) {
                     $info = $this->parsePluginHeader($phpFile);
                     if (!empty($info['Name'])) {
-                        $pluginArray[] = [
+                        $pluginArray[$info['Name']] = [
                             'name' => $info['Name'],
                             'version' => $info['Version']
                         ];
@@ -72,7 +72,7 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
             } elseif (is_file($path) && substr($pluginFolder, -4) === '.php') {
                 $info = $this->parsePluginHeader($path);
                 if (!empty($info['Name'])) {
-                    $pluginArray[] = [
+                    $pluginArray[$info['Name']] = [
                         'name' => $info['Name'],
                         'version' => $info['Version']
                     ];
