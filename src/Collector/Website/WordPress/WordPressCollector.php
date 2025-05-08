@@ -32,8 +32,9 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
             $documentRoot = $config[ApacheServerNameCollector::FIELD_DOCUMENT_ROOT];
 
             if (file_exists($documentRoot . '/wp-config.php')) {
-
-                if (!str_ends_with($documentRoot, '/')) $documentRoot = $documentRoot . '/';
+                if (!str_ends_with($documentRoot, '/')) {
+                    $documentRoot .= '/';
+                }
 
                 $wordPressInstallations[$domain] = [
                     'domain' => $domain,
@@ -49,33 +50,31 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
 
     private function extractPlugins(string $documentRoot): array
     {
-        $pluginDir = $documentRoot . '/wp-content/plugins';
-        $plugins = array_diff(scandir($pluginDir), ['.', '..']);
+        $pluginDir = $documentRoot . 'wp-content/plugins';
+        if (!is_dir($pluginDir)) return [];
 
+        $plugins = array_diff(scandir($pluginDir), ['.', '..']);
         $pluginArray = [];
 
         foreach ($plugins as $pluginFolder) {
             $path = $pluginDir . '/' . $pluginFolder;
 
-            if (is_dir($path)) {
-                $phpFiles = glob("$path/*.php");
-                foreach ($phpFiles as $phpFile) {
-                    $info = $this->parsePluginHeader($phpFile);
-                    if (!empty($info['Name'])) {
-                        $pluginArray[$info['Name']] = [
-                            'name' => $info['Name'],
-                            'version' => $info['Version']
-                        ];
-                        break;
-                    }
-                }
-            } elseif (is_file($path) && substr($pluginFolder, -4) === '.php') {
-                $info = $this->parsePluginHeader($path);
-                if (!empty($info['Name'])) {
+            if (!is_dir($path)) continue;
+
+            $phpFiles = glob("$path/*.php");
+            foreach ($phpFiles as $phpFile) {
+                $info = $this->parsePluginHeader($phpFile);
+                if (!empty($info['Name']) && !empty($info['Version'])) {
+                    $slug = $this->deriveSlugFromHeader($info, $pluginFolder);
+                    $update = $this->checkWordPressPluginUpdate($slug, $info['Version']);
                     $pluginArray[$info['Name']] = [
                         'name' => $info['Name'],
-                        'version' => $info['Version']
+                        'slug' => $slug,
+                        'version' => $info['Version'],
+                        'update_available' => $update['update_available'] ?? false,
+                        'latest_version' => $update['latest_version'] ?? null,
                     ];
+                    break;
                 }
             }
         }
@@ -83,11 +82,12 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
         return $pluginArray;
     }
 
-    private function parsePluginHeader($file): array
+    private function parsePluginHeader(string $file): array
     {
         $headers = [
             'Name' => 'Plugin Name',
             'Version' => 'Version',
+            'PluginURI' => 'Plugin URI',
         ];
 
         $fp = fopen($file, 'r');
@@ -104,6 +104,39 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
         }
 
         return $info;
+    }
+
+    private function deriveSlugFromHeader(array $info, string $fallback): string
+    {
+        // Try to extract slug from Plugin URI (e.g., https://wordpress.org/plugins/contact-form-7/)
+        if (!empty($info['PluginURI'])) {
+            $urlParts = parse_url($info['PluginURI']);
+            if (isset($urlParts['path'])) {
+                $segments = explode('/', trim($urlParts['path'], '/'));
+                $lastSegment = end($segments);
+                if ($lastSegment) return $lastSegment;
+            }
+        }
+
+        // Fallback to directory name
+        return strtolower($fallback);
+    }
+
+    private function checkWordPressPluginUpdate(string $slug, string $currentVersion): ?array
+    {
+        $url = "https://api.wordpress.org/plugins/info/1.2/?action=plugin_information&request[slug]=" . urlencode($slug);
+        $response = @file_get_contents($url);
+        if (!$response) return null;
+
+        $pluginData = json_decode($response, true);
+        if (!isset($pluginData['version'])) return null;
+
+        $latestVersion = $pluginData['version'];
+
+        return [
+            'update_available' => version_compare($latestVersion, $currentVersion, '>'),
+            'latest_version' => $latestVersion,
+        ];
     }
 
     private function extractVersion(string $documentRoot): string
