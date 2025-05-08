@@ -2,13 +2,21 @@
 
 set -e
 
-# Download URL
-PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/latest/download/inventorio.phar"
+# Version as first argument (optional)
+VERSION="$1"
+
+if [ -n "$VERSION" ]; then
+    echo "Downloading inventorio.phar version $VERSION..."
+    PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/download/$VERSION/inventorio.phar"
+else
+    echo "Downloading latest inventorio.phar..."
+    PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/latest/download/inventorio.phar"
+fi
 
 # Temporary file for download
 TMP_PHAR="/tmp/inventorio.phar"
 
-echo "Downloading latest inventorio.phar..."
+# Download PHAR
 curl -L "$PHAR_URL" -o "$TMP_PHAR"
 
 # Find current installed path
@@ -50,5 +58,8 @@ fi
 # Cleanup
 echo "Cleaning up downloaded file..."
 rm -f "$TMP_PHAR"
+
+echo "Deleting update script..."
+rm -- "$0"
 
 echo "Update process completed."
