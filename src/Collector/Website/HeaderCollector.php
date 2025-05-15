@@ -12,7 +12,7 @@ use Startwind\Inventorio\Util\WebsiteUtil;
 
 class HeaderCollector extends BasicCollector implements InventoryAwareCollector, ClientAwareCollector
 {
-    protected string $identifier = "WebsiteBadHeader";
+    protected string $identifier = "WebsiteHeader";
 
     private array $inventory;
     private Client $client;
