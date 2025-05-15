@@ -60,9 +60,7 @@ class BadHeaderCollector extends BasicCollector implements InventoryAwareCollect
                 }
             }
         }
-
-        var_dump($badHeaders);
-
+        
         return $badHeaders;
     }
 }
