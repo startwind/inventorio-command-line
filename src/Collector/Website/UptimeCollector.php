@@ -2,18 +2,25 @@
 
 namespace Startwind\Inventorio\Collector\Website;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
-use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\BasicCollector;
+use Startwind\Inventorio\Collector\ClientAwareCollector;
 use Startwind\Inventorio\Collector\InventoryAwareCollector;
+use Startwind\Inventorio\Util\Client;
+use Startwind\Inventorio\Util\WebsiteUtil;
 
-class UptimeCollector extends BasicCollector implements InventoryAwareCollector
+class UptimeCollector extends BasicCollector implements InventoryAwareCollector, ClientAwareCollector
 {
     protected string $identifier = "WebsiteUptime";
 
     private array $inventory;
+    private Client $client;
+
+    public function setClient(Client $client): void
+    {
+        $this->client = $client;
+    }
 
     public function setInventory(array $inventory): void
     {
@@ -22,20 +29,13 @@ class UptimeCollector extends BasicCollector implements InventoryAwareCollector
 
     public function collect(): array
     {
-        if (!array_key_exists(ApacheServerNameCollector::COLLECTION_IDENTIFIER, $this->inventory)
-            || !is_array($this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER])
-        ) return [];
-
-        $configs = $this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER];
+        $domains = WebsiteUtil::extractDomains($this->inventory);
 
         $uptimeStatus = [];
 
-        $client = new Client();
-
-        foreach ($configs as $config) {
-            $domain = $config[ApacheServerNameCollector::FIELD_SERVER_NAME];
+        foreach ($domains as $domain) {
             try {
-                $result = $client->get('https://' . $domain);
+                $result = $this->client->get('https://' . $domain);
             } catch (ClientException $e) {
                 $uptimeStatus[$domain] = ['code' => $e->getResponse()->getStatusCode()];
                 continue;

@@ -2,10 +2,12 @@
 
 namespace Startwind\Inventorio\Command;
 
+use GuzzleHttp\Client;
 use Startwind\Inventorio\Collector\Application\Monitoring\WebProsMonitoringCollector;
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheConfigurationCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
+use Startwind\Inventorio\Collector\ClientAwareCollector;
 use Startwind\Inventorio\Collector\Hosting\HostingCompany\ASNCollector;
 use Startwind\Inventorio\Collector\Inventorio\CommandCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
@@ -24,6 +26,7 @@ use Startwind\Inventorio\Collector\System\Ports\PortsCollector;
 use Startwind\Inventorio\Collector\System\Security\AuthorizedKeysCollector;
 use Startwind\Inventorio\Collector\System\Security\GeneralSecurityCollector;
 use Startwind\Inventorio\Collector\System\UserCollector;
+use Startwind\Inventorio\Collector\Website\BadHeaderCollector;
 use Startwind\Inventorio\Collector\Website\WordPress\WordPressCollector;
 use Startwind\Inventorio\Reporter\InventorioReporter;
 use Symfony\Component\Console\Command\Command;
@@ -58,9 +61,14 @@ class CollectCommand extends InventorioCommand
 
         $inventory = [];
 
+        $client = new \Startwind\Inventorio\Util\Client(new Client());
+
         foreach ($this->collectors as $collector) {
             if ($collector instanceof InventoryAwareCollector) {
                 $collector->setInventory($inventory);
+            }
+            if ($collector instanceof ClientAwareCollector) {
+                $collector->setClient($client);
             }
             $collected = $collector->collect();
             if ($collected) {
@@ -130,6 +138,7 @@ class CollectCommand extends InventorioCommand
         // Application / WebServer
         $this->collectors[] = new ApacheServerNameCollector();
         $this->collectors[] = new ApacheConfigurationCollector();
+        $this->collectors[] = new BadHeaderCollector();
 
         // INVENTORY AWARE
         $this->collectors[] = new WordPressCollector();
