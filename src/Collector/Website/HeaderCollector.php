@@ -10,7 +10,7 @@ use Startwind\Inventorio\Collector\InventoryAwareCollector;
 use Startwind\Inventorio\Util\Client;
 use Startwind\Inventorio\Util\WebsiteUtil;
 
-class BadHeaderCollector extends BasicCollector implements InventoryAwareCollector, ClientAwareCollector
+class HeaderCollector extends BasicCollector implements InventoryAwareCollector, ClientAwareCollector
 {
     protected string $identifier = "WebsiteBadHeader";
 
@@ -31,7 +31,7 @@ class BadHeaderCollector extends BasicCollector implements InventoryAwareCollect
     {
         $domains = WebsiteUtil::extractDomains($this->inventory);
 
-        $badHeaders = [];
+        $headers = [];
 
         foreach ($domains as $domain) {
             try {
@@ -42,25 +42,13 @@ class BadHeaderCollector extends BasicCollector implements InventoryAwareCollect
                 $response = $e->getResponse();
             } catch (ServerException $e) {
                 $response = $e->getResponse();
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 continue;
             }
 
-            $headers = $response->getHeaders();
-
-            if (array_key_exists('Server', $headers)) {
-                if (str_contains($headers['Server'][0], 'Apache/')) {
-                    $badHeaders[$domain]['apache_version'] = $headers['Server'][0];
-                }
-            }
-
-            if (array_key_exists('X-Powered-By', $headers)) {
-                if (str_contains($headers['X-Powered-By'][0], 'PHP/')) {
-                    $badHeaders[$domain]['php_version'] = $headers['X-Powered-By'][0];
-                }
-            }
+            $headers[$domain] = $response->getHeaders();
         }
-        
-        return $badHeaders;
+
+        return $headers;
     }
 }

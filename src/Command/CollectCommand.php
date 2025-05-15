@@ -26,7 +26,7 @@ use Startwind\Inventorio\Collector\System\Ports\PortsCollector;
 use Startwind\Inventorio\Collector\System\Security\AuthorizedKeysCollector;
 use Startwind\Inventorio\Collector\System\Security\GeneralSecurityCollector;
 use Startwind\Inventorio\Collector\System\UserCollector;
-use Startwind\Inventorio\Collector\Website\BadHeaderCollector;
+use Startwind\Inventorio\Collector\Website\HeaderCollector;
 use Startwind\Inventorio\Collector\Website\WordPress\WordPressCollector;
 use Startwind\Inventorio\Reporter\InventorioReporter;
 use Symfony\Component\Console\Command\Command;
@@ -138,7 +138,7 @@ class CollectCommand extends InventorioCommand
         // Application / WebServer
         $this->collectors[] = new ApacheServerNameCollector();
         $this->collectors[] = new ApacheConfigurationCollector();
-        $this->collectors[] = new BadHeaderCollector();
+        $this->collectors[] = new HeaderCollector();
 
         // INVENTORY AWARE
         $this->collectors[] = new WordPressCollector();
