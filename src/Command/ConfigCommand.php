@@ -17,6 +17,7 @@ class ConfigCommand extends InventorioCommand
     {
         $this->addOption('remote', null, InputOption::VALUE_REQUIRED, 'Start remote command mode');
         $this->addOption('logfile', null, InputOption::VALUE_REQUIRED, 'Start logfile mode');
+        $this->addOption('collect', null, InputOption::VALUE_REQUIRED, 'Start collect mode');
         // $this->addOption('show', null, InputOption::VALUE_REQUIRED, 'Show config');
 
         parent::configure();
@@ -62,6 +63,23 @@ class ConfigCommand extends InventorioCommand
             $output->writeln('Logfile mode: <info>' . ($value ? 'on' : 'off') . '</info>');
 
             $this->setLogfileEnabled($value);
+
+            $set = true;
+        }
+
+        if ($input->getOption('collect')) {
+            $value = $input->getOption('collect');
+
+            if ($value == 'on' || $value == 'true' || $value === true) {
+                $value = true;
+            } else {
+                $value = false;
+            }
+
+            $output->writeln("");
+            $output->writeln('Collect mode: <info>' . ($value ? 'on' : 'off') . '</info>');
+
+            $this->setCollectEnabled($value);
 
             $set = true;
         }

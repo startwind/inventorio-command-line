@@ -69,6 +69,22 @@ abstract class InventorioCommand extends Command
         return $config['remote'];
     }
 
+    protected function isCollectEnabled(): bool
+    {
+        if (!$this->isInitialized()) {
+            throw new \RuntimeException('System was not initialized yet.');
+        }
+
+        $config = json_decode(file_get_contents($this->getConfigFile()), true);
+
+        if (!array_key_exists('collect', $config)) {
+            return false;
+        }
+
+        return $config['collect'];
+    }
+
+
     protected function areLogfilesEnabled(): bool
     {
         if (!$this->isInitialized()) {
@@ -106,6 +122,19 @@ abstract class InventorioCommand extends Command
         $config = json_decode(file_get_contents($this->getConfigFile()), true);
 
         $config['logfile'] = $isEnabled;
+
+        file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);;
+    }
+
+    protected function setCollectEnabled(bool $isEnabled): void
+    {
+        if (!$this->isInitialized()) {
+            throw new \RuntimeException('System was not initialized yet.');
+        }
+
+        $config = json_decode(file_get_contents($this->getConfigFile()), true);
+
+        $config['collect'] = $isEnabled;
 
         file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);;
     }
