@@ -49,8 +49,6 @@ class DaemonCommand extends InventorioCommand
             $collectCollector = new Collector();
         }
 
-        var_dump($collectEnabled);
-
         while (true) {
             if ($lastRun['default'] < time() - $this->intervals['default']) {
                 $this->getApplication()->find('collect')->run($input, $output);

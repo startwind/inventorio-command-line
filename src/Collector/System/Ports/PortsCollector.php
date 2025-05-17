@@ -49,8 +49,14 @@ class PortsCollector extends BasicCollector
 
     private function parseListeningPorts(): array
     {
+        $ssPath = shell_exec("command -v ss");
+        if (!is_string($ssPath) || !trim($ssPath)) {
+            return [];
+        }
+
         $output = [];
-        exec("ss -tuln", $output);  // TCP und UDP, listening, numerisch
+
+        exec("ss -tuln", $output);
 
         $ports = [];
 
