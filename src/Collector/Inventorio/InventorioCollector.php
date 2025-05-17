@@ -15,11 +15,13 @@ class InventorioCollector implements Collector
     private bool $areLogfileEnabled;
 
     private Config $config;
+    private bool $areMetricsEnabled;
 
-    public function __construct(bool $isRemoteEnabled, bool $areLogfileEnabled, Config $config)
+    public function __construct(bool $isRemoteEnabled, bool $areLogfileEnabled, bool $areMetricsEnabled, Config $config)
     {
         $this->isRemoteEnabled = $isRemoteEnabled;
         $this->areLogfileEnabled = $areLogfileEnabled;
+        $this->areMetricsEnabled = $areMetricsEnabled;
         $this->config = $config;
     }
 
@@ -40,6 +42,7 @@ class InventorioCollector implements Collector
             'client' => [
                 'version' => INVENTORIO_VERSION,
                 'isRemoteEnabled' => $this->isRemoteEnabled,
+                'areMetricsEnabled' => $this->areMetricsEnabled,
                 'areLogfilesEnabled' => $this->areLogfileEnabled
             ],
             'logfiles' => $this->config->getLogfiles()
