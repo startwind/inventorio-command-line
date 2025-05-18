@@ -26,7 +26,9 @@ class InventorioCloudReporter
 
         try {
             $this->client->post(self::COLLECT_URL, [
-                RequestOptions::JSON => $payload
+                RequestOptions::JSON => $payload,
+                RequestOptions::TIMEOUT => 5,
+                RequestOptions::CONNECT_TIMEOUT => 2
             ]);
         } catch (ClientException $exception) {
             var_dump('ce: ' . (string)$exception->getResponse()->getBody());

@@ -9,7 +9,7 @@ class Collector
         $totalMem = (int) shell_exec("grep MemTotal /proc/meminfo | awk '{print $2}'");
         $freeMem = (int) shell_exec("grep MemAvailable /proc/meminfo | awk '{print $2}'");
         $usedMem = $totalMem - $freeMem;
-        
+
         $loadAvg = (float) sys_getloadavg()[1];
         $cpuCores = (int) shell_exec("nproc");
 
