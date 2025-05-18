@@ -44,7 +44,9 @@ class InventorioReporter implements Reporter
 
         try {
             $response = $client->put($endpoint, [
-                RequestOptions::JSON => $payload
+                RequestOptions::JSON => $payload,
+                RequestOptions::TIMEOUT => 5,
+                RequestOptions::CONNECT_TIMEOUT => 2
             ]);
         } catch (ConnectException $e) {
             throw new \RuntimeException('Unable to connect to ' . $endpoint . '. Message: ' . $e->getMessage());
