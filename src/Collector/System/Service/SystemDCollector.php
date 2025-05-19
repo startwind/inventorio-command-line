@@ -8,6 +8,8 @@ use Symfony\Component\Console\Command\Command;
 
 class SystemDCollector extends BasicCollector
 {
+    protected string $identifier = 'ServerServiceSystemD';
+
     public function collect(): array
     {
         $services = $this->getServices();
@@ -16,23 +18,25 @@ class SystemDCollector extends BasicCollector
 
     private function getServices(): array
     {
-        $process = Runner::run("systemctl list-units --type=service --all --no-legend | awk '{print $1}'");
+        $services = [];
 
-        if ($process->getExitCode() !== Command::SUCCESS) {
-            return [];
-        }
-
-        $output = $process->getOutput();
+        $output = Runner::run("systemctl list-units --type=service --all --no-legend | awk '{sub(/^● /, \"\"); print \$1}'")->getOutput();
 
         if (!$output) {
             return [];
         }
 
-        $services = [];
         $units = explode("\n", trim($output));
 
         foreach ($units as $unit) {
-            if (empty($unit)) continue;
+            if (empty($unit)) {
+                continue;
+            }
+
+            $loadState = trim(Runner::run("systemctl show $unit --property=LoadState --value")->getOutput());
+            if ($loadState !== 'loaded') {
+                continue;
+            }
 
             $id = trim(Runner::run("systemctl show $unit --property=Id --value")->getOutput());
             $description = trim(Runner::run("systemctl show $unit --property=Description --value")->getOutput());
