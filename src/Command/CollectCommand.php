@@ -25,6 +25,7 @@ use Startwind\Inventorio\Collector\System\Ports\OpenPortsCollector;
 use Startwind\Inventorio\Collector\System\Ports\PortsCollector;
 use Startwind\Inventorio\Collector\System\Security\AuthorizedKeysCollector;
 use Startwind\Inventorio\Collector\System\Security\GeneralSecurityCollector;
+use Startwind\Inventorio\Collector\System\Service\SystemDCollector;
 use Startwind\Inventorio\Collector\System\UserCollector;
 use Startwind\Inventorio\Collector\Website\HeaderCollector;
 use Startwind\Inventorio\Collector\Website\WordPress\WordPressCollector;
@@ -128,6 +129,9 @@ class CollectCommand extends InventorioCommand
         $this->collectors[] = new UserCollector();
         $this->collectors[] = new LogrotateCollector();
         $this->collectors[] = new DiskCollector();
+
+        // System / Services
+        $this->collectors[] = new SystemDCollector();
 
         // System / Security
         $this->collectors[] = new GeneralSecurityCollector();
