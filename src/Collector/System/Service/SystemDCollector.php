@@ -10,6 +10,36 @@ class SystemDCollector extends BasicCollector
 {
     protected string $identifier = 'ServerServiceSystemD';
 
+    private array $systemServices = [
+        'accounts-daemon',
+        'console-setup',
+        'cron',
+        'dbus',
+        'keyboard-setup',
+        'systemd-journal-flush',
+        'systemd-journald',
+        'systemd-logind',
+        'systemd-modules-load',
+        'systemd-networkd-wait-online',
+        'systemd-networkd',
+        'systemd-quotacheck',
+        'systemd-random-seed',
+        'systemd-remount-fs',
+        'systemd-resolved',
+        'systemd-sysctl',
+        'systemd-sysusers',
+        'systemd-timesyncd',
+        'systemd-tmpfiles-setup-dev',
+        'systemd-tmpfiles-setup',
+        'systemd-udev-trigger',
+        'systemd-udevd',
+        'systemd-update-utmp',
+        'systemd-user-sessions',
+        'ubuntu-fan',
+        'user-runtime-dir@0',
+        'user@0',
+    ];
+
     public function collect(): array
     {
         $services = $this->getServices();
@@ -43,11 +73,14 @@ class SystemDCollector extends BasicCollector
             $activeState = trim(Runner::run("systemctl show $unit --property=ActiveState --value")->getOutput());
             $subState = trim(Runner::run("systemctl show $unit --property=SubState --value")->getOutput());
 
+            $service = str_replace('.service', '', $id);
+
             $services[] = [
                 'Id' => $id,
                 'Description' => $description,
                 'ActiveState' => $activeState,
                 'SubState' => $subState,
+                'SystemService' => in_array($service, $this->systemServices)
             ];
         }
 
