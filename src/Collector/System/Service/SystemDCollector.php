@@ -103,7 +103,7 @@ class SystemDCollector extends BasicCollector
 
             $service = str_replace('.service', '', $id);
 
-            $services[] = [
+            $services[$id] = [
                 'Id' => $id,
                 'Description' => $description,
                 'ActiveState' => $activeState,
