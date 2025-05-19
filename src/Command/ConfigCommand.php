@@ -23,7 +23,6 @@ class ConfigCommand extends InventorioCommand
         parent::configure();
     }
 
-
     /**
      * @inheritDoc
      */
@@ -84,9 +83,7 @@ class ConfigCommand extends InventorioCommand
             $set = true;
         }
 
-        if (!$set) {
-            $output->writeln('<error>Configuration was not changed. Please provide at least one flag.</error>');
-        } else {
+        if ($set) {
             $output->writeln("");
             $this->getApplication()->find('collect')->run(new ArrayInput([]), $output);
             $output->writeln("");

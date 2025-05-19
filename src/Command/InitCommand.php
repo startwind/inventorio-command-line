@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RequestOptions;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -28,7 +29,12 @@ class InitCommand extends InventorioCommand
     {
         parent::configure();
 
+        $this->addOption('remote', null, InputOption::VALUE_REQUIRED, 'Start remote command mode');
+        $this->addOption('logfile', null, InputOption::VALUE_REQUIRED, 'Start logfile mode');
+        $this->addOption('metrics', null, InputOption::VALUE_REQUIRED, 'Start metrics collection mode');
+
         $this->addArgument('userId', InputArgument::REQUIRED, 'The inventorio user id.');
+
         $this->addOption('serverName', 's', InputOption::VALUE_OPTIONAL, 'The server name');
     }
 
@@ -86,6 +92,21 @@ class InitCommand extends InventorioCommand
         file_put_contents($configFile, json_encode($config), JSON_PRETTY_PRINT);
 
         $output->writeln('<info>Server registered.</info>');
+
+        $array = [
+            'command' => 'config'
+        ];
+
+        if ($input->getOption('remote')) {
+            $array['--remote'] = $input->getOption('remote');
+        }
+        if ($input->getOption('metrics')) {
+            $array['--metrics'] = $input->getOption('metrics');
+        }
+
+        $newInput = new ArrayInput($array);
+
+        $this->getApplication()->find('config')->run($newInput, $output);
 
         return Command::SUCCESS;
     }

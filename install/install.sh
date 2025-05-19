@@ -11,6 +11,7 @@ fi
 
 # Umleitung von STDERR ins Logfile
 exec 2>>"$LOGFILE"
+
 # Root-Check
 if [ "$EUID" -ne 0 ]; then
   echo "This script must be run as root. Please use sudo or switch to the root user."
@@ -18,9 +19,32 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 if [ -z "$1" ]; then
-  echo "Usage: $0 <ID>"
+  echo "Usage: $0 <ID> [metrics=on] [remote=on]"
   exit 1
 fi
+
+ID="$1"
+shift
+
+# Default Parameter leer
+METRICS_PARAM=""
+REMOTE_PARAM=""
+
+# Parameter auslesen
+for param in "$@"; do
+  case "$param" in
+    metrics=on)
+      METRICS_PARAM="--metrics=on"
+      ;;
+    remote=on)
+      REMOTE_PARAM="--remote=on"
+      ;;
+    *)
+      echo "Unknown parameter: $param"
+      exit 1
+      ;;
+  esac
+done
 
 # Cronjob mit 'inventorio collect' entfernen, falls vorhanden
 EXISTING_CRON=$(crontab -l 2>/dev/null || true)
@@ -31,7 +55,6 @@ if [ "$EXISTING_CRON" != "$FILTERED_CRON" ]; then
   echo "$FILTERED_CRON" | crontab -
 fi
 
-ID="$1"
 PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/latest/download/inventorio.phar"
 PHAR_PATH="/usr/local/bin/inventorio"
 
@@ -59,9 +82,9 @@ wget "$PHAR_URL" -O "$PHAR_PATH"
 # Mach sie ausführbar
 chmod +x "$PHAR_PATH"
 
-# Führe init mit der ID aus
-echo "Initializing for user ID: $ID"
-"$PHAR_PATH" init "$ID"
+# Führe init mit der ID und optionalen Parametern aus
+echo "Initializing for user ID: $ID with parameters: $METRICS_PARAM $REMOTE_PARAM"
+"$PHAR_PATH" init "$ID" $METRICS_PARAM $REMOTE_PARAM
 
 # Prüfe ob systemd vorhanden ist
 if pidof systemd &>/dev/null; then
