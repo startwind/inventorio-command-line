@@ -58,7 +58,14 @@ class SystemDCollector extends BasicCollector
         'apport',
         'kmod-static-nodes',
         'multipathd',
-        '',
+        'plymouth-quit-wait',
+        'plymouth-quit',
+        'plymouth-read-write',
+        'serial-getty@ttyS0',
+        'setvtrgb',
+        'sysstat',
+        'blk-availability',
+        'getty@tty1',
     ];
 
     public function collect(): array
