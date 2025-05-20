@@ -2,10 +2,12 @@
 
 namespace Startwind\Inventorio\Reporter;
 
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\RequestOptions;
+use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -49,9 +51,12 @@ class InventorioReporter implements Reporter
                 RequestOptions::CONNECT_TIMEOUT => 2
             ]);
         } catch (ConnectException $e) {
-            throw new \RuntimeException('Unable to connect to ' . $endpoint . '. Message: ' . $e->getMessage());
+            throw new RuntimeException('Unable to connect to ' . $endpoint . '. Message: ' . $e->getMessage());
         } catch (ServerException $e) {
-            throw new \RuntimeException('Unable to connect to ' . $endpoint . ' (ServerException). Message: ' . $e->getMessage());
+            throw new RuntimeException('Unable to connect to ' . $endpoint . ' (ServerException). Message: ' . $e->getMessage());
+        } catch (Exception $e) {
+            // var_dump($e->getMessage());
+            throw $e;
         }
 
         // var_dump((string)$response->getBody());die;
@@ -59,11 +64,11 @@ class InventorioReporter implements Reporter
         $result = json_decode((string)$response->getBody(), true);
 
         if (!is_array($result) || !array_key_exists('status', $result)) {
-            throw new \RuntimeException('Unknown error.');
+            throw new RuntimeException('Unknown error.');
         }
 
         if ($result['status'] !== 'SUCCESS') {
-            throw new \RuntimeException($result['message']);
+            throw new RuntimeException($result['message']);
         }
 
         $this->output->writeln('<info>Data successfully sent to Inventorio Cloud.</info>');

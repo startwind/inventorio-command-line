@@ -1,6 +1,6 @@
 <?php
 
-namespace Startwind\Inventorio\Data\Reporter;
+namespace Startwind\Inventorio\Metrics\Reporter;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;

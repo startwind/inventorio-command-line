@@ -50,10 +50,7 @@ class PortsCollector extends BasicCollector
 
     private function parseListeningPorts(): array
     {
-        $ssPath = Runner::getInstance()->run("command -v ss")->getOutput();
-        if (!is_string($ssPath) || !trim($ssPath)) {
-            return [];
-        }
+        if(!Runner::getInstance()->commandExists("ss")) return [];
 
         $output = Runner::outputToArray(Runner::getInstance()->run("ss -tuln")->getOutput());
 
@@ -65,7 +62,6 @@ class PortsCollector extends BasicCollector
                 $ip = $matches[2];
                 $port = $matches[3];
 
-                // Normalize IP (e.g., [::] becomes ::)
                 $ip = trim($ip, '[]');
 
                 $isExternal = !in_array($ip, ['127.0.0.1', '::1', 'localhost']) || $ip === '*';

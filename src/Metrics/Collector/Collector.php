@@ -1,6 +1,6 @@
 <?php
 
-namespace Startwind\Inventorio\Data\Collector;
+namespace Startwind\Inventorio\Metrics\Collector;
 
 use Startwind\Inventorio\Exec\Runner;
 

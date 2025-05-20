@@ -2,8 +2,9 @@
 
 namespace Startwind\Inventorio\Command;
 
-use Startwind\Inventorio\Data\Collector\Collector;
-use Startwind\Inventorio\Data\Reporter\InventorioCloudReporter;
+use Startwind\Inventorio\Metrics\Collector\Collector;
+use Startwind\Inventorio\Metrics\Memory\Memory;
+use Startwind\Inventorio\Metrics\Reporter\InventorioCloudReporter;
 use Startwind\Inventorio\Remote\RemoteConnect;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,9 +15,9 @@ class DaemonCommand extends InventorioCommand
     protected static $defaultDescription = 'Start long running daemon';
 
     private array $intervals = [
-        'default' => 60 * 60,
-        'remote' => 10,
-        'collect' => 5 * 60
+        'default' => 60 * 60, // 1 hour
+        'remote' => 10, // 10 seconds
+        'collect' => 5 * 60 // 5 minutes
     ];
 
     /**
@@ -33,6 +34,7 @@ class DaemonCommand extends InventorioCommand
         ];
 
         $serverId = $this->getServerId();
+        $memory = Memory::getInstance();
 
         $remoteConnect = new RemoteConnect(
             $this->config->getInventorioServer(),
@@ -64,8 +66,11 @@ class DaemonCommand extends InventorioCommand
 
             if ($collectEnabled) {
                 if ($lastRun['collect'] < time() - $this->intervals['collect']) {
-                    $collectReporter->report($serverId, $collectCollector->collect());
+                    $dataset = $collectCollector->collect();
+                    $memory->addDataSet($dataset);
+                    $collectReporter->report($serverId, $dataset);
                     $lastRun['collect'] = time();
+                    var_dump($memory->getData());
                 }
             }
 

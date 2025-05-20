@@ -2,16 +2,19 @@
 
 namespace Startwind\Inventorio\Command;
 
+use Exception;
 use GuzzleHttp\Client;
 use Startwind\Inventorio\Collector\Application\Monitoring\WebProsMonitoringCollector;
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheConfigurationCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\ClientAwareCollector;
+use Startwind\Inventorio\Collector\Collector;
 use Startwind\Inventorio\Collector\Hosting\HostingCompany\ASNCollector;
 use Startwind\Inventorio\Collector\Inventorio\CommandCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
 use Startwind\Inventorio\Collector\InventoryAwareCollector;
+use Startwind\Inventorio\Collector\Metrics\MetricThresholdCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Collector\Package\Dpkg\DpkgPackageCollector;
@@ -41,7 +44,7 @@ class CollectCommand extends InventorioCommand
     private const NOT_APPLICABLE = 'not applicable';
 
     /**
-     * @var \Startwind\Inventorio\Collector\Collector[]
+     * @var Collector[]
      */
     private array $collectors = [];
 
@@ -82,7 +85,7 @@ class CollectCommand extends InventorioCommand
 
         try {
             $reporter->report($inventory);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $output->writeln('<error>                           ');
             $output->writeln('  Unable to run reporter.  ');
             $output->writeln('                           </error>');
@@ -118,10 +121,12 @@ class CollectCommand extends InventorioCommand
         // Hosting
         $this->collectors[] = new ASNCollector();
 
+        // Metrics
+        $this->collectors[] = new MetricThresholdCollector();
+
         // System / General
         $this->collectors[] = new IpCollector();
         $this->collectors[] = new UptimeCollector();
-        // $this->collectors[] = new OpenPortsCollector();
         $this->collectors[] = new PortsCollector();
         $this->collectors[] = new ConfigurationCollector();
         $this->collectors[] = new CronCollector();
