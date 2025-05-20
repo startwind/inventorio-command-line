@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\System\Ports;
 
 use Startwind\Inventorio\Collector\BasicCollector;
+use Startwind\Inventorio\Exec\Runner;
 
 class PortsCollector extends BasicCollector
 {
@@ -49,7 +50,7 @@ class PortsCollector extends BasicCollector
 
     private function parseListeningPorts(): array
     {
-        $ssPath = shell_exec("command -v ss");
+        $ssPath = Runner::getInstance()->run("command -v ss")->getOutput();
         if (!is_string($ssPath) || !trim($ssPath)) {
             return [];
         }

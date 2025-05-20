@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\System\General;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\Runner;
 
 class ConfigurationCollector implements Collector
 {
@@ -34,7 +35,7 @@ class ConfigurationCollector implements Collector
         if ($os === 'Windows') {
             return (int)getenv("NUMBER_OF_PROCESSORS");
         } elseif ($os === 'Darwin' || $os === 'Linux') {
-            return (int)shell_exec("getconf _NPROCESSORS_ONLN");
+            return (int)Runner::getInstance()->run("getconf _NPROCESSORS_ONLN")->getOutput();
         }
         return 0;
     }
@@ -43,7 +44,7 @@ class ConfigurationCollector implements Collector
     {
         $os = PHP_OS_FAMILY;
         if ($os === 'Windows') {
-            $output = shell_exec("wmic computersystem get TotalPhysicalMemory");
+            $output = Runner::getInstance()->run("wmic computersystem get TotalPhysicalMemory")->getOutput();
             preg_match("/\d+/", $output, $matches);
             return isset($matches[0]) ? round((float)$matches[0] / 1024 / 1024, 2) : 0;
         } elseif ($os === 'Darwin') {

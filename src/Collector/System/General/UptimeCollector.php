@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\System\General;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\Runner;
 
 /**
  * This collector returns details about the operating system.
@@ -41,13 +42,13 @@ class UptimeCollector implements Collector
                 $date = date(\DateTime::ATOM, (int)$bootTimestamp);
             }
         } elseif ($os === 'Darwin') { // macOS
-            $output = shell_exec("sysctl -n kern.boottime");
+            $output = Runner::getInstance()->run("sysctl -n kern.boottime")->getOutput();
             if (preg_match('/sec = (\d+)/', $output, $matches)) {
                 $bootTimestamp = (int)$matches[1];
                 $date = date(\DateTime::ATOM, $bootTimestamp);
             }
         } elseif ($os === 'Windows') {
-            $output = shell_exec("net stats srv");
+            $output = Runner::getInstance()->run("net stats srv")->getOutput();
             if ($output && preg_match('/Statistik seit (.*)/i', $output, $matches)) {
                 $bootTimeStr = trim($matches[1]);
                 $bootTimestamp = strtotime($bootTimeStr);

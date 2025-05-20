@@ -4,6 +4,7 @@ namespace Startwind\Inventorio\Collector\Package\Dpkg;
 
 use Startwind\Inventorio\Collector\Collector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
+use Startwind\Inventorio\Exec\Runner;
 
 /**
  * This collector returns details about all installed HomeBrew packages.
@@ -37,7 +38,7 @@ class DpkgPackageCollector implements Collector
 
     private function collectUpdatablePackages(): array
     {
-        $output = shell_exec('apt list --upgradable 2>/dev/null');
+        $output = Runner::getInstance()->run('apt list --upgradable 2>/dev/null')->getOutput();
         $lines = explode("\n", $output);
         array_shift($lines);
 
@@ -59,13 +60,13 @@ class DpkgPackageCollector implements Collector
 
     private function collectPackages(): array
     {
-        $installed = shell_exec('command -v dpkg-query');
+        $installed = Runner::getInstance()->run('command -v dpkg-query')->getOutput();
 
         if (!$installed) {
             return [];
         }
 
-        $packages = shell_exec('echo "["; dpkg-query -W -f=\'{"package":"${Package}", "version":"${Version}"},\n\' | sed \'$s/},/}/\'; echo "]"');
+        $packages = Runner::getInstance()->run('echo "["; dpkg-query -W -f=\'{"package":"${Package}", "version":"${Version}"},\n\' | sed \'$s/},/}/\'; echo "]"')->getOutput();
 
         $packageList = json_decode($packages, true);
 

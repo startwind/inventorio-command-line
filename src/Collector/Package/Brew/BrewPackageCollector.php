@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\Package\Brew;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\Runner;
 
 /**
  * This collector returns details about all installed HomeBrew packages.
@@ -24,13 +25,13 @@ class BrewPackageCollector implements Collector
      */
     public function collect(): array
     {
-        $installed = shell_exec('command -v brew');
+        $installed = Runner::getInstance()->run('command -v brew')->getOutput();
 
         if (!$installed) {
             return [];
         }
 
-        $output = shell_exec('brew info --installed --json=v2');
+        $output = Runner::getInstance()->run('brew info --installed --json=v2')->getOutput();
 
         $rawData = json_decode($output, true);
 

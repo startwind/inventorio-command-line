@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\System\Cron;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\Runner;
 
 /**
  * This collector returns details about the operating system.
@@ -28,7 +29,7 @@ class CronCollector implements Collector
      */
     public function collect(): array
     {
-        $cronJobs = shell_exec('crontab -l 2>&1');
+        $cronJobs = Runner::getInstance()->run('crontab -l 2>&1')->getOutput();
 
         if (strpos($cronJobs, 'no crontab for') !== false) {
             return [];

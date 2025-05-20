@@ -21,7 +21,6 @@ use Startwind\Inventorio\Collector\System\General\DiskCollector;
 use Startwind\Inventorio\Collector\System\General\IpCollector;
 use Startwind\Inventorio\Collector\System\General\UptimeCollector;
 use Startwind\Inventorio\Collector\System\Logs\LogrotateCollector;
-use Startwind\Inventorio\Collector\System\Ports\OpenPortsCollector;
 use Startwind\Inventorio\Collector\System\Ports\PortsCollector;
 use Startwind\Inventorio\Collector\System\Security\AuthorizedKeysCollector;
 use Startwind\Inventorio\Collector\System\Security\GeneralSecurityCollector;
