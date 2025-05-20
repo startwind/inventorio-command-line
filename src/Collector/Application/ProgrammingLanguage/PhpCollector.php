@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\Application\ProgrammingLanguage;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\Runner;
 
 class PhpCollector implements Collector
 {
@@ -21,7 +22,8 @@ class PhpCollector implements Collector
      */
     public function collect(): array
     {
-        exec('pgrep -a php-fpm', $output);
+        // exec('pgrep -a php-fpm', $output);
+        Runner::outputToArray(Runner::getInstance()->run('pgrep -a php-fpm')->getOutput());
 
         $fpm = !empty($output);
 

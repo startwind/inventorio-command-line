@@ -42,13 +42,15 @@ class ConfigurationCollector implements Collector
 
     private function getMemorySize(): float
     {
+        $result = Runner::getInstance();
+
         $os = PHP_OS_FAMILY;
         if ($os === 'Windows') {
             $output = Runner::getInstance()->run("wmic computersystem get TotalPhysicalMemory")->getOutput();
             preg_match("/\d+/", $output, $matches);
             return isset($matches[0]) ? round((float)$matches[0] / 1024 / 1024, 2) : 0;
         } elseif ($os === 'Darwin') {
-            $memBytes = trim(shell_exec("sysctl -n hw.memsize"));
+            $memBytes = trim(Runner::getInstance()->run("sysctl -n hw.memsize")->getOutput());
             return round((float)$memBytes / 1024 / 1024, 2);
         } elseif ($os === 'Linux') {
             $memInfo = file_get_contents("/proc/meminfo");

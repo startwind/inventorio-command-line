@@ -44,4 +44,19 @@ class Runner
 
         return $process;
     }
+
+    public function commandExists(string $command): bool
+    {
+        $which = $this->run('which ' . $command)->getOutput();
+        if (empty($which)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function outputToArray(string $output): array
+    {
+        return explode("\n", trim($output));
+    }
 }

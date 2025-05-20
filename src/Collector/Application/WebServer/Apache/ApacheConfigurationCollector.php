@@ -3,6 +3,8 @@
 namespace Startwind\Inventorio\Collector\Application\WebServer\Apache;
 
 use Startwind\Inventorio\Collector\BasicCollector;
+use Startwind\Inventorio\Exec\Runner;
+use Symfony\Component\Console\Command\Command;
 
 class ApacheConfigurationCollector extends BasicCollector
 {
@@ -20,14 +22,14 @@ class ApacheConfigurationCollector extends BasicCollector
 
     private function getActiveApacheModules(): array
     {
-        $output = [];
-        $returnVar = 0;
+        $runner = Runner::getInstance();
+        $result = $runner->run('apache2ctl -M 2>&1');
 
-        exec('apache2ctl -M 2>&1', $output, $returnVar);
-
-        if ($returnVar !== 0) {
+        if ($result->getExitCode() !== Command::SUCCESS) {
             return [];
         }
+
+        $output = Runner::outputToArray($result->getOutput());
 
         $modules = [];
 
@@ -42,10 +44,8 @@ class ApacheConfigurationCollector extends BasicCollector
 
     public function isApacheInstalled(): bool
     {
-        $output = null;
-        $returnVar = null;
-        exec('which apache2ctl || which httpd', $output, $returnVar);
-        return !empty($output);
+        $runner = Runner::getInstance();
+        return $runner->commandExists('apache2ctl') || $runner->commandExists('httpd');
     }
 
     private function getRealConfigFilesWithServerNames(): array

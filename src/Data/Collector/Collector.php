@@ -2,16 +2,20 @@
 
 namespace Startwind\Inventorio\Data\Collector;
 
+use Startwind\Inventorio\Exec\Runner;
+
 class Collector
 {
     public function collect(): array
     {
-        $totalMem = (int) shell_exec("grep MemTotal /proc/meminfo | awk '{print $2}'");
-        $freeMem = (int) shell_exec("grep MemAvailable /proc/meminfo | awk '{print $2}'");
+        $runner = Runner::getInstance();
+
+        $totalMem = (int)$runner->run("grep MemTotal /proc/meminfo | awk '{print $2}'")->getOutput();
+        $freeMem = (int)$runner->run("grep MemAvailable /proc/meminfo | awk '{print $2}'")->getOutput();
         $usedMem = $totalMem - $freeMem;
 
-        $loadAvg = (float) sys_getloadavg()[1];
-        $cpuCores = (int) shell_exec("nproc");
+        $loadAvg = (float)sys_getloadavg()[1];
+        $cpuCores = (int)$runner->run("nproc")->getOutput();
 
         $cpuUsagePercent = ($cpuCores > 0)
             ? round(($loadAvg / $cpuCores) * 100, 1)

@@ -55,10 +55,7 @@ class PortsCollector extends BasicCollector
             return [];
         }
 
-        $output = [];
-        exec("ss -tuln", $output);
-
-        $output = explode("\n", Runner::getInstance()->run("ss -tuln $ssPath")->getOutput());
+        $output = Runner::outputToArray(Runner::getInstance()->run("ss -tuln")->getOutput());
 
         $ports = [];
 

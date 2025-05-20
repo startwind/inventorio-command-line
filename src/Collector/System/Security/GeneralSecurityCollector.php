@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\System\Security;
 
 use Startwind\Inventorio\Collector\BasicCollector;
+use Startwind\Inventorio\Exec\Runner;
 
 class GeneralSecurityCollector extends BasicCollector
 {
@@ -51,12 +52,11 @@ class GeneralSecurityCollector extends BasicCollector
             return false;
         }
 
-        $whichApt = trim(shell_exec('which apt'));
-        if (empty($whichApt)) {
-            return false;
-        }
+        $runner = Runner::getInstance();
 
-        return !empty(shell_exec('apt-cache show unattended-upgrades 2>/dev/null'));
+        if (!$runner->commandExists('apt')) return false;
+
+        return !empty($runner->run('apt-cache show unattended-upgrades 2>/dev/null')->getOutput());
     }
 
     function checkSshKeyOnlyLogin(): array

@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\OperatingSystem;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\Runner;
 
 /**
  * This collector returns details about the operating system.
@@ -57,7 +58,7 @@ class OperatingSystemCollector implements Collector
     {
         switch ($family) {
             case self::OS_FAMILY_MAC:
-                return trim(shell_exec('sw_vers -productVersion'));
+                return trim(Runner::getInstance()->run('sw_vers -productVersion')->getOutput());
             case self::OS_FAMILY_LINUX:
                 $osInfo = $this->getLinuxOsInfo();
                 return $osInfo['VERSION_ID'];
