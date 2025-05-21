@@ -18,6 +18,7 @@ class ConfigCommand extends InventorioCommand
         $this->addOption('remote', null, InputOption::VALUE_REQUIRED, 'Start remote command mode');
         $this->addOption('logfile', null, InputOption::VALUE_REQUIRED, 'Start logfile mode');
         $this->addOption('metrics', null, InputOption::VALUE_REQUIRED, 'Start metrics collection mode');
+        $this->addOption('serverApi', null, InputOption::VALUE_REQUIRED, 'Start metrics collection mode');
         // $this->addOption('show', null, InputOption::VALUE_REQUIRED, 'Show config');
 
         parent::configure();
@@ -79,6 +80,17 @@ class ConfigCommand extends InventorioCommand
             $output->writeln('Metrics collection mode: <info>' . ($value ? 'on' : 'off') . '</info>');
 
             $this->setCollectEnabled($value);
+
+            $set = true;
+        }
+
+        if ($input->getOption('serverApi')) {
+            $value = $input->getOption('serverApi');
+
+            $output->writeln("");
+            $output->writeln('Setting server API to : <info>' . $value . '</info>');
+
+            $this->setServerApi($value);
 
             $set = true;
         }

@@ -2,6 +2,7 @@
 
 namespace Startwind\Inventorio\Command;
 
+use RuntimeException;
 use Startwind\Inventorio\Config\Config;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -43,7 +44,7 @@ abstract class InventorioCommand extends Command
     protected function getServerId(): string
     {
         if (!$this->isInitialized()) {
-            throw new \RuntimeException('System was not initialized yet.');
+            throw new RuntimeException('System was not initialized yet.');
         }
 
         $config = json_decode(file_get_contents($this->getConfigFile()), true);
@@ -57,7 +58,7 @@ abstract class InventorioCommand extends Command
     protected function isRemoteEnabled(): bool
     {
         if (!$this->isInitialized()) {
-            throw new \RuntimeException('System was not initialized yet.');
+            throw new RuntimeException('System was not initialized yet.');
         }
 
         $config = json_decode(file_get_contents($this->getConfigFile()), true);
@@ -72,7 +73,7 @@ abstract class InventorioCommand extends Command
     protected function isCollectEnabled(): bool
     {
         if (!$this->isInitialized()) {
-            throw new \RuntimeException('System was not initialized yet.');
+            throw new RuntimeException('System was not initialized yet.');
         }
 
         $config = json_decode(file_get_contents($this->getConfigFile()), true);
@@ -88,7 +89,7 @@ abstract class InventorioCommand extends Command
     protected function areLogfilesEnabled(): bool
     {
         if (!$this->isInitialized()) {
-            throw new \RuntimeException('System was not initialized yet.');
+            throw new RuntimeException('System was not initialized yet.');
         }
 
         $config = json_decode(file_get_contents($this->getConfigFile()), true);
@@ -103,40 +104,53 @@ abstract class InventorioCommand extends Command
     protected function setRemoteEnabled(bool $isEnabled): void
     {
         if (!$this->isInitialized()) {
-            throw new \RuntimeException('System was not initialized yet.');
+            throw new RuntimeException('System was not initialized yet.');
         }
 
         $config = json_decode(file_get_contents($this->getConfigFile()), true);
 
         $config['remote'] = $isEnabled;
 
-        file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);;
+        file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);
     }
 
     protected function setLogfileEnabled(bool $isEnabled): void
     {
         if (!$this->isInitialized()) {
-            throw new \RuntimeException('System was not initialized yet.');
+            throw new RuntimeException('System was not initialized yet.');
         }
 
         $config = json_decode(file_get_contents($this->getConfigFile()), true);
 
         $config['logfile'] = $isEnabled;
 
-        file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);;
+        file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);
     }
 
     protected function setCollectEnabled(bool $isEnabled): void
     {
         if (!$this->isInitialized()) {
-            throw new \RuntimeException('System was not initialized yet.');
+            throw new RuntimeException('System was not initialized yet.');
         }
 
         $config = json_decode(file_get_contents($this->getConfigFile()), true);
 
         $config['collect'] = $isEnabled;
 
-        file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);;
+        file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);
+    }
+
+    protected function setServerApi(string $serverApi): void
+    {
+        if (!$this->isInitialized()) {
+            throw new RuntimeException('System was not initialized yet.');
+        }
+
+        $config = json_decode(file_get_contents($this->getConfigFile()), true);
+
+        $config['serverApi'] = $serverApi;
+
+        file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);
     }
 
     /**
@@ -145,7 +159,7 @@ abstract class InventorioCommand extends Command
     protected function getUserId(): string
     {
         if (!$this->isInitialized()) {
-            throw new \RuntimeException('System was not initialized yet.');
+            throw new RuntimeException('System was not initialized yet.');
         }
 
         $config = json_decode(file_get_contents($this->getConfigFile()), true);

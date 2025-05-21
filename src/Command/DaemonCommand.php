@@ -70,7 +70,6 @@ class DaemonCommand extends InventorioCommand
                     $memory->addDataSet($dataset);
                     $collectReporter->report($serverId, $dataset);
                     $lastRun['collect'] = time();
-                    var_dump($memory->getData());
                 }
             }
 

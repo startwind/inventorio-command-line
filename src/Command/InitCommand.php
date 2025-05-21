@@ -5,6 +5,7 @@ namespace Startwind\Inventorio\Command;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RequestOptions;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -32,6 +33,7 @@ class InitCommand extends InventorioCommand
         $this->addOption('remote', null, InputOption::VALUE_REQUIRED, 'Start remote command mode');
         $this->addOption('logfile', null, InputOption::VALUE_REQUIRED, 'Start logfile mode');
         $this->addOption('metrics', null, InputOption::VALUE_REQUIRED, 'Start metrics collection mode');
+        $this->addOption('serverApi', null, InputOption::VALUE_REQUIRED, 'Start metrics collection mode');
 
         $this->addArgument('userId', InputArgument::REQUIRED, 'The inventorio user id.');
 
@@ -103,6 +105,9 @@ class InitCommand extends InventorioCommand
         if ($input->getOption('metrics')) {
             $array['--metrics'] = $input->getOption('metrics');
         }
+        if ($input->getOption('serverApi')) {
+            $array['--serverApi'] = $input->getOption('serverApi');
+        }
 
         $newInput = new ArrayInput($array);
 
@@ -126,7 +131,7 @@ class InitCommand extends InventorioCommand
                 $defaultName,
                 function (?string $value) {
                     if (strlen($value ?? '') < 3) {
-                        throw new \RuntimeException('The server name has to be at least three characters long.');
+                        throw new RuntimeException('The server name has to be at least three characters long.');
                     }
                     return $value;
                 }

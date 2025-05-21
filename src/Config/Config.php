@@ -2,6 +2,7 @@
 
 namespace Startwind\Inventorio\Config;
 
+use RuntimeException;
 use Symfony\Component\Yaml\Yaml;
 
 class Config
@@ -20,6 +21,9 @@ class Config
 
     public function getInventorioServer(): string
     {
+        if (array_key_exists('serverApi', $this->settingsArray)) {
+            return $this->settingsArray['serverApi'];
+        }
         return $this->configArray['inventorio']['server'];
     }
 
@@ -81,11 +85,11 @@ class Config
 
         foreach ($logfiles as $existingLogfile) {
             if ($existingLogfile['name'] == $name) {
-                throw new \RuntimeException('Name is already used');
+                throw new RuntimeException('Name is already used');
             }
 
             if ($existingLogfile['file'] == $logfile) {
-                throw new \RuntimeException('Logfile is already used');
+                throw new RuntimeException('Logfile is already used');
             }
         }
 
