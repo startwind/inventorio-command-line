@@ -3,7 +3,6 @@
 namespace Startwind\Inventorio\Exec;
 
 use Symfony\Component\Process\Process;
-use function RectorPrefix202308\Symfony\Component\String\s;
 
 class Runner
 {

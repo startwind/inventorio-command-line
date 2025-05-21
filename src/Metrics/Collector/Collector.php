@@ -29,9 +29,9 @@ class Collector
             : 0;
 
         return [
-            'memory.usage' => $usedMem,
-            'cpu.usage' => $cpuUsagePercent,
-            'disk.usage' => $diskUsedPercent
+            'memory-usage' => $usedMem,
+            'cpu-usage' => $cpuUsagePercent,
+            'disk-usage' => $diskUsedPercent
         ];
     }
 }
