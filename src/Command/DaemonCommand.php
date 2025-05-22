@@ -15,7 +15,7 @@ class DaemonCommand extends InventorioCommand
     protected static $defaultDescription = 'Start long running daemon';
 
     private array $intervals = [
-        'default' => 60 * 60 * 24, // 24 hour
+        'default' => 60 * 60 * 1, // 1 hour
         'remote' => 10, // 10 seconds
         'collect' => 5 * 60 // 5 minutes
     ];
@@ -28,9 +28,9 @@ class DaemonCommand extends InventorioCommand
         $this->initConfiguration($input->getOption('configFile'));
 
         $lastRun = [
-            'default' => time() - 7200,
-            'remote' => time() - 7200,
-            'collect' => time() - 7200,
+            'default' => time() - (24 * 60 * 60),
+            'remote' => time() - (24 * 60 * 60),
+            'collect' => time() - (24 * 60 * 60),
         ];
 
         $serverId = $this->getServerId();
