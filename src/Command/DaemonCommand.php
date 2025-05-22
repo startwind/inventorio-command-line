@@ -15,7 +15,7 @@ class DaemonCommand extends InventorioCommand
     protected static $defaultDescription = 'Start long running daemon';
 
     private array $intervals = [
-        'default' => 60 * 60, // 1 hour
+        'default' => 60 * 60 * 24, // 24 hour
         'remote' => 10, // 10 seconds
         'collect' => 5 * 60 // 5 minutes
     ];

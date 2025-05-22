@@ -14,6 +14,7 @@ abstract class InventorioCommand extends Command
     protected function configure(): void
     {
         $this->addOption('configFile', 'c', InputOption::VALUE_OPTIONAL, 'The configuration file', __DIR__ . '/../../config/default.yml');
+        $this->addOption('debug', '', InputOption::VALUE_NONE, 'Switch on debug mode');
     }
 
     /**

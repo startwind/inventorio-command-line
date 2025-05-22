@@ -54,6 +54,7 @@ class CollectCommand extends InventorioCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->initConfiguration($input->getOption('configFile'));
+        $debugMode = $input->getOption('debug');
 
         if (!$this->isInitialized()) {
             $output->writeln('<error>System was not initialized. Please run inventorio init.</error>');
@@ -73,11 +74,16 @@ class CollectCommand extends InventorioCommand
             if ($collector instanceof ClientAwareCollector) {
                 $collector->setClient($client);
             }
+
+            if ($debugMode) $start = time();
             $collected = $collector->collect();
             if ($collected) {
                 $inventory[$collector->getIdentifier()] = $collected;
             } else {
                 $inventory[$collector->getIdentifier()] = self::NOT_APPLICABLE;
+            }
+            if ($debugMode) {
+                $output->writeln('DEBUG: running ' . $collector->getIdentifier() . ' took ' . time() - $start . ' seconds');
             }
         }
 
