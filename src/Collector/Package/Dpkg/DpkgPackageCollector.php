@@ -60,9 +60,7 @@ class DpkgPackageCollector implements Collector
 
     private function collectPackages(): array
     {
-        $installed = Runner::getInstance()->run('command -v dpkg-query')->getOutput();
-
-        if (!$installed) {
+        if (!Runner::getInstance()->commandExists('dpkg-query')) {
             return [];
         }
 
