@@ -13,6 +13,7 @@ class Collector
         $totalMem = (int)$runner->run("grep MemTotal /proc/meminfo | awk '{print $2}'")->getOutput();
         $freeMem = (int)$runner->run("grep MemAvailable /proc/meminfo | awk '{print $2}'")->getOutput();
         $usedMem = $totalMem - $freeMem;
+        $usedMemPercent = ($usedMem / $totalMem) * 100;
 
         $loadAvg = (float)sys_getloadavg()[1];
         $cpuCores = (int)$runner->run("nproc")->getOutput();
@@ -29,7 +30,7 @@ class Collector
             : 0;
 
         return [
-            'memory-usage' => $usedMem,
+            'memory-usage' => $usedMemPercent,
             'cpu-usage' => $cpuUsagePercent,
             'disk-usage' => $diskUsedPercent
         ];
