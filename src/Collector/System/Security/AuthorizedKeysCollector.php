@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\System\Security;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\Runner;
 
 class AuthorizedKeysCollector implements Collector
 {
@@ -13,6 +14,8 @@ class AuthorizedKeysCollector implements Collector
 
     public function collect(): array
     {
+        $runner = Runner::getInstance();
+
         $results = [];
 
         // Read all user accounts from /etc/passwd
@@ -35,7 +38,7 @@ class AuthorizedKeysCollector implements Collector
             $authorizedKeysPath = $homeDirectory . '/.ssh/authorized_keys';
 
             // If authorized_keys exists, parse it
-            if (!file_exists($authorizedKeysPath)) {
+            if (!$runner->fileExists($authorizedKeysPath)) {
                 continue;
             }
 

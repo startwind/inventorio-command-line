@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\System;
 
 use Startwind\Inventorio\Collector\BasicCollector;
+use Startwind\Inventorio\Exec\Runner;
 
 class UserCollector extends BasicCollector
 {
@@ -14,7 +15,9 @@ class UserCollector extends BasicCollector
     {
         $passwdFile = self::PASSWORD_FILE;
 
-        if (!file_exists($passwdFile) || !is_readable($passwdFile)) {
+        $runner = Runner::getInstance();
+
+        if (!$runner->fileExists($passwdFile) || !is_readable($passwdFile)) {
             return [];
         }
 

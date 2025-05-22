@@ -31,11 +31,14 @@ class GeneralSecurityCollector extends BasicCollector
     {
         $configFile = '/etc/apt/apt.conf.d/20auto-upgrades';
 
-        if (!file_exists($configFile)) {
+        $runner = Runner::getInstance();
+
+        if (!$runner->fileExists($configFile)) {
             return false;
         }
 
-        $content = file_get_contents($configFile);
+        $content = $runner->getFileContents($configFile);
+
         if ($content === false) {
             return false;
         }
@@ -67,14 +70,16 @@ class GeneralSecurityCollector extends BasicCollector
             return $result;
         }
 
+        $runner = Runner::getInstance();
+
         $configPath = '/etc/ssh/sshd_config';
-        if (!file_exists($configPath)) {
+        if (!$runner->fileExists($configPath)) {
             return $result;
         }
 
         $result['supported'] = true;
 
-        $config = file_get_contents($configPath);
+        $config = $runner->getFileContents($configPath);
         if ($config === false) {
             return $result;
         }

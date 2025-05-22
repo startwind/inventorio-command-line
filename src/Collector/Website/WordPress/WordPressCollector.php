@@ -5,6 +5,7 @@ namespace Startwind\Inventorio\Collector\Website\WordPress;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\BasicCollector;
 use Startwind\Inventorio\Collector\InventoryAwareCollector;
+use Startwind\Inventorio\Exec\Runner;
 
 class WordPressCollector extends BasicCollector implements InventoryAwareCollector
 {
@@ -27,11 +28,13 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
 
         $wordPressInstallations = [];
 
+        $runner = Runner::getInstance();
+
         foreach ($configs as $config) {
             $domain = $config[ApacheServerNameCollector::FIELD_SERVER_NAME];
             $documentRoot = $config[ApacheServerNameCollector::FIELD_DOCUMENT_ROOT];
 
-            if (file_exists($documentRoot . '/wp-config.php')) {
+            if ($runner->fileExists($documentRoot . '/wp-config.php')) {
                 if (!str_ends_with($documentRoot, '/')) {
                     $documentRoot .= '/';
                 }
@@ -145,8 +148,10 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
 
         $version = 'unknown';
 
-        if (file_exists($wpVersionFile)) {
-            $content = file_get_contents($wpVersionFile);
+        $runner = Runner::getInstance();
+
+        if ($runner->fileExists($wpVersionFile)) {
+            $content = $runner->getFileContents($wpVersionFile);
             if (preg_match("/\\\$wp_version\s*=\s*'([^']+)'/", $content, $matches)) {
                 $version = $matches[1];
             }

@@ -2,6 +2,7 @@
 
 namespace Startwind\Inventorio\Collector\System\General;
 
+use DateTime;
 use Startwind\Inventorio\Collector\Collector;
 use Startwind\Inventorio\Exec\Runner;
 
@@ -33,27 +34,29 @@ class UptimeCollector implements Collector
 
         $date = false;
 
+        $runner = Runner::getInstance();
+
         if ($os === 'Linux') {
-            if (file_exists("/proc/uptime")) {
-                $uptime = file_get_contents("/proc/uptime");
+            if ($runner->fileExists("/proc/uptime")) {
+                $uptime = $runner->getFileContents("/proc/uptime");
                 $uptime = explode(" ", $uptime);
                 $seconds = floor((int)$uptime[0]);
                 $bootTimestamp = time() - $seconds;
-                $date = date(\DateTime::ATOM, (int)$bootTimestamp);
+                $date = date(DateTime::ATOM, (int)$bootTimestamp);
             }
         } elseif ($os === 'Darwin') { // macOS
-            $output = Runner::getInstance()->run("sysctl -n kern.boottime")->getOutput();
+            $output = $runner->run("sysctl -n kern.boottime")->getOutput();
             if (preg_match('/sec = (\d+)/', $output, $matches)) {
                 $bootTimestamp = (int)$matches[1];
-                $date = date(\DateTime::ATOM, $bootTimestamp);
+                $date = date(DateTime::ATOM, $bootTimestamp);
             }
         } elseif ($os === 'Windows') {
-            $output = Runner::getInstance()->run("net stats srv")->getOutput();
+            $output = $runner->run("net stats srv")->getOutput();
             if ($output && preg_match('/Statistik seit (.*)/i', $output, $matches)) {
                 $bootTimeStr = trim($matches[1]);
                 $bootTimestamp = strtotime($bootTimeStr);
                 if ($bootTimestamp !== false) {
-                    $date = date(\DateTime::ATOM, $bootTimestamp);
+                    $date = date(DateTime::ATOM, $bootTimestamp);
                 }
             }
         }

@@ -78,7 +78,7 @@ class OperatingSystemCollector implements Collector
 
     public function getLinuxOsInfo(): array
     {
-        $osRelease = file_get_contents('/etc/os-release');
+        $osRelease = Runner::getInstance()->getFileContents('/etc/os-release');
         $lines = explode("\n", $osRelease);
         $osInfo = array();
         foreach ($lines as $line) {

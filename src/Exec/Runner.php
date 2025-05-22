@@ -6,7 +6,7 @@ use Symfony\Component\Process\Process;
 
 class Runner
 {
-    private bool $timeout;
+    private bool $timeout = false;
 
     private static ?Runner $instance = null;
 
@@ -21,7 +21,7 @@ class Runner
 
     public function __construct()
     {
-        $process = new Process(['timeout', '--version']);
+        $process = $this->run('timeout --version');
         if ($process->isSuccessful()) {
             $this->timeout = true;
         } else {
@@ -57,5 +57,19 @@ class Runner
     public static function outputToArray(string $output): array
     {
         return explode("\n", trim($output));
+    }
+
+    public function getFileContents(string $path, bool $asArray = false): string|false|array
+    {
+        if ($asArray) {
+            return file($path);
+        } else {
+            return file_get_contents($path);
+        }
+    }
+
+    public function fileExists(string $path): bool
+    {
+        return file_exists($path);
     }
 }

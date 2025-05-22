@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\Application\Monitoring;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\Runner;
 
 class WebProsMonitoringCollector implements Collector
 {
@@ -23,9 +24,11 @@ class WebProsMonitoringCollector implements Collector
      */
     public function collect(): array
     {
-        if (!file_exists(self::INI_FILE)) return [];
+        $runner = Runner::getInstance();
 
-        $config = file(self::INI_FILE);
+        if (!$runner->fileExists(self::INI_FILE)) return [];
+
+        $config = $runner->getFileContents(self::INI_FILE, true);
 
         $configArray = [];
 

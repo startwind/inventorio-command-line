@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\Application\WebServer\Apache;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\Runner;
 
 class ApacheServerNameCollector implements Collector
 {
@@ -20,7 +21,9 @@ class ApacheServerNameCollector implements Collector
 
     public function collect(): array
     {
-        if (!file_exists(self::CONFIG_DIRECTORY)) {
+        $runner = Runner::getInstance();
+
+        if (!$runner->fileExists(self::CONFIG_DIRECTORY)) {
             return [];
         }
 
