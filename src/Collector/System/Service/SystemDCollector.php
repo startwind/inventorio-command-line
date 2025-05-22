@@ -75,43 +75,38 @@ class SystemDCollector extends BasicCollector
 
     private function getServices(): array
     {
-        $services = [];
         $runner = Runner::getInstance();
-
-        $output = $runner->run("systemctl list-units --type=service --all --no-legend | awk '{sub(/^● /, \"\"); print \$1}'")->getOutput();
+        $output = $runner->run("systemctl show --type=service --all --no-page --property=Id,Description,LoadState,ActiveState,SubState")->getOutput();
 
         if (!$output) {
             return [];
         }
 
-        $units = explode("\n", trim($output));
+        $services = [];
         $systemServices = array_flip($this->systemServices);
+        $blocks = preg_split('/\n(?=Id=)/', trim($output)); // trennt pro Service
 
-        foreach ($units as $unit) {
-            if (empty($unit)) {
+        foreach ($blocks as $block) {
+            $lines = explode("\n", trim($block));
+            $data = [];
+
+            foreach ($lines as $line) {
+                [$key, $value] = explode('=', $line, 2);
+                $data[$key] = trim($value);
+            }
+
+            if (($data['LoadState'] ?? '') !== 'loaded') {
                 continue;
             }
 
-            $showOutput = $runner->run("systemctl show $unit --property=LoadState,Id,Description,ActiveState,SubState --value")->getOutput();
-
-            if (!$showOutput) {
-                continue;
-            }
-
-            [$loadState, $id, $description, $activeState, $subState] = explode("\n", trim($showOutput), 5);
-
-            if (trim($loadState) !== 'loaded') {
-                continue;
-            }
-
-            $id = trim($id);
+            $id = $data['Id'] ?? '';
             $service = str_replace('.service', '', $id);
 
             $services[$id] = [
                 'Id' => $id,
-                'Description' => trim($description),
-                'ActiveState' => trim($activeState),
-                'SubState' => trim($subState),
+                'Description' => $data['Description'] ?? '',
+                'ActiveState' => $data['ActiveState'] ?? '',
+                'SubState' => $data['SubState'] ?? '',
                 'SystemService' => isset($systemServices[$service])
             ];
         }
