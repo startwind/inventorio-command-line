@@ -4,7 +4,6 @@ namespace Startwind\Inventorio\Collector\System\Service;
 
 use Startwind\Inventorio\Collector\BasicCollector;
 use Startwind\Inventorio\Exec\Runner;
-use Symfony\Component\Console\Command\Command;
 
 class SystemDCollector extends BasicCollector
 {
@@ -77,38 +76,43 @@ class SystemDCollector extends BasicCollector
     private function getServices(): array
     {
         $services = [];
+        $runner = Runner::getInstance();
 
-        $output = Runner::getInstance()->run("systemctl list-units --type=service --all --no-legend | awk '{sub(/^● /, \"\"); print \$1}'")->getOutput();
+        $output = $runner->run("systemctl list-units --type=service --all --no-legend | awk '{sub(/^● /, \"\"); print \$1}'")->getOutput();
 
         if (!$output) {
             return [];
         }
 
         $units = explode("\n", trim($output));
+        $systemServices = array_flip($this->systemServices);
 
         foreach ($units as $unit) {
             if (empty($unit)) {
                 continue;
             }
 
-            $loadState = trim(Runner::getInstance()->run("systemctl show $unit --property=LoadState --value")->getOutput());
-            if ($loadState !== 'loaded') {
+            $showOutput = $runner->run("systemctl show $unit --property=LoadState,Id,Description,ActiveState,SubState --value")->getOutput();
+
+            if (!$showOutput) {
                 continue;
             }
 
-            $id = trim(Runner::getInstance()->run("systemctl show $unit --property=Id --value")->getOutput());
-            $description = trim(Runner::getInstance()->run("systemctl show $unit --property=Description --value")->getOutput());
-            $activeState = trim(Runner::getInstance()->run("systemctl show $unit --property=ActiveState --value")->getOutput());
-            $subState = trim(Runner::getInstance()->run("systemctl show $unit --property=SubState --value")->getOutput());
+            [$loadState, $id, $description, $activeState, $subState] = explode("\n", trim($showOutput), 5);
 
+            if (trim($loadState) !== 'loaded') {
+                continue;
+            }
+
+            $id = trim($id);
             $service = str_replace('.service', '', $id);
 
             $services[$id] = [
                 'Id' => $id,
-                'Description' => $description,
-                'ActiveState' => $activeState,
-                'SubState' => $subState,
-                'SystemService' => in_array($service, $this->systemServices)
+                'Description' => trim($description),
+                'ActiveState' => trim($activeState),
+                'SubState' => trim($subState),
+                'SystemService' => isset($systemServices[$service])
             ];
         }
 
