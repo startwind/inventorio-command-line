@@ -119,36 +119,32 @@ class SystemDCollector extends BasicCollector
         return $services;
     }
 
-    private function getServiceClassic(): array
+    function getServiceClassic()
     {
-        $command = "systemctl list-units --type=service --all --no-legend --no-pager | awk '{printf \"%s|%s|%s|%s\\n\", \$1, \$2, \$3, \$4}'";
+        $command = "systemctl list-units --type=service --all --no-legend --no-pager | awk '{printf \"%s|%s|%s|%s|\", \$1, \$2, \$3, \$4; for (i=5; i<=NF; i++) printf \$i \" \"; print \"\"}'";
 
-        $output = Runner::getInstance()->run($command)->getOutput();
-
-        if ($output === null) {
-            return [];
-        }
+        $output = shell_exec($command);
+        if ($output === null) return [];
 
         $lines = explode("\n", trim($output));
         $services = [];
 
         foreach ($lines as $line) {
             if (empty($line)) continue;
+            $parts = explode('|', $line);
 
-            list($unit, $load, $active, $sub) = explode(' ', $line);
-
-            $service = str_replace('.service', '', $unit);
-
-            $services[] = [
-                'Id' => $service,
-                'Description' => '',
-                'ActiveState' => $active,
-                'SubState' => $sub,
-                'SystemService' => isset($systemServices[$unit])
-            ];
+            if (count($parts) >= 5) {
+                $id = trim($parts[0]);
+                $services[$id] = [
+                    'Id' => $id,
+                    'Description' => trim($parts[4]),
+                    'ActiveState' => trim($parts[2]),
+                    'SubState' => trim($parts[3]),
+                    'SystemService' => isset($systemServices[$service])
+                ];
+            }
         }
 
         return $services;
     }
-
 }
