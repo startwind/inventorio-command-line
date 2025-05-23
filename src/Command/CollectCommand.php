@@ -87,6 +87,11 @@ class CollectCommand extends InventorioCommand
             }
         }
 
+        if ($debugMode) {
+            $output->writeln('DEBUG: collection result:');
+            $output->writeln(json_encode($inventory, JSON_PRETTY_PRINT));
+        }
+
         $reporter = new InventorioReporter($output, $this->config->getInventorioServer(), $this->getServerId(), $this->getUserId());
 
         try {
