@@ -123,9 +123,32 @@ class SystemDCollector extends BasicCollector
     {
         $command = "systemctl list-units --type=service --all --no-legend --no-pager | awk '{printf \"%-40s %-10s %-10s %-10s\\n\", \$1, \$2, \$3, \$4}'";
 
-        $output = Runner::getInstance()->run($command);
+        $output = Runner::getInstance()->run($command)->getOutput();
 
-        return [];
+        if ($output === null) {
+            return [];
+        }
+
+        $lines = explode("\n", trim($output));
+        $services = [];
+
+        foreach ($lines as $line) {
+            if (empty($line)) continue;
+
+            list($unit, $load, $active, $sub) = explode('|', $line);
+
+            $service = str_replace('.service', '', $unit);
+
+            $services[] = [
+                'Id' => $service,
+                'Description'   => '',
+                'ActiveState' => $active,
+                'SubState'    => $sub,
+                'SystemService' => isset($systemServices[$unit])
+            ];
+        }
+
+        return $services;
     }
 
 }
