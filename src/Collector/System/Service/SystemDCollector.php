@@ -135,8 +135,10 @@ class SystemDCollector extends BasicCollector
 
             if (count($parts) >= 5) {
                 $id = trim($parts[0]);
+                $service = str_replace('.service', '', $id);
+
                 $services[$id] = [
-                    'Id' => $id,
+                    'Id' => $service,
                     'Description' => trim($parts[4]),
                     'ActiveState' => trim($parts[2]),
                     'SubState' => trim($parts[3]),
