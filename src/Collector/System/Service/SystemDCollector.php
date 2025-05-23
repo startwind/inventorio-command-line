@@ -76,15 +76,20 @@ class SystemDCollector extends BasicCollector
     private function getServices(): array
     {
         $runner = Runner::getInstance();
+
+        if (!$runner->commandExists('systemctl')) {
+            return [];
+        }
+
         $output = $runner->run("systemctl show --type=service --all --no-page --property=Id,Description,LoadState,ActiveState,SubState")->getOutput();
 
         if (!$output) {
-            return [];
+            return $this->getServiceClassic();
         }
 
         $services = [];
         $systemServices = array_flip($this->systemServices);
-        $blocks = preg_split('/\n(?=Id=)/', trim($output)); // trennt pro Service
+        $blocks = preg_split('/\n(?=Id=)/', trim($output));
 
         foreach ($blocks as $block) {
             $lines = explode("\n", trim($block));
@@ -112,6 +117,15 @@ class SystemDCollector extends BasicCollector
         }
 
         return $services;
+    }
+
+    private function getServiceClassic(): array
+    {
+        $command = "systemctl list-units --type=service --all --no-legend --no-pager | awk '{printf \"%-40s %-10s %-10s %-10s\\n\", \$1, \$2, \$3, \$4}'";
+
+        $output = Runner::getInstance()->run($command);
+
+        return [];
     }
 
 }
