@@ -5,6 +5,7 @@ namespace Startwind\Inventorio\Collector\Website\WordPress;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\BasicCollector;
 use Startwind\Inventorio\Collector\InventoryAwareCollector;
+use Startwind\Inventorio\Exec\File;
 use Startwind\Inventorio\Exec\Runner;
 
 class WordPressCollector extends BasicCollector implements InventoryAwareCollector
@@ -54,7 +55,7 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
     private function extractPlugins(string $documentRoot): array
     {
         $pluginDir = $documentRoot . 'wp-content/plugins';
-        if (!is_dir($pluginDir)) return [];
+        if (!File::getInstance()->isDir($pluginDir)) return [];
 
         $plugins = array_diff(scandir($pluginDir), ['.', '..']);
         $pluginArray = [];
@@ -62,7 +63,7 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
         foreach ($plugins as $pluginFolder) {
             $path = $pluginDir . '/' . $pluginFolder;
 
-            if (!is_dir($path)) continue;
+            if (!File::getInstance()->isDir($path)) continue;
 
             $phpFiles = glob("$path/*.php");
             foreach ($phpFiles as $phpFile) {

@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\System\General;
 
 use Startwind\Inventorio\Collector\BasicCollector;
+use Startwind\Inventorio\Exec\System;
 
 /**
  * This collector returns details about the operating system.
@@ -27,8 +28,8 @@ class DiskCollector extends BasicCollector
 
     private function getDiskFreeInfo(string $path = '/'): array
     {
-        $bytesFree = disk_free_space($path);
-        $bytesTotal = disk_total_space($path);
+        $bytesFree = System::getInstance()->getDiskFreeSpace($path);
+        $bytesTotal = System::getInstance()->getDiskTotalSpace($path);
 
         if ($bytesFree === false || $bytesTotal === false || $bytesTotal == 0) {
             return [];
