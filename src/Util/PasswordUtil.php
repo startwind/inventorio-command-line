@@ -15,27 +15,27 @@ abstract class PasswordUtil
         }
 
         if (preg_match('/[a-z]/', $password)) {
-            $rules['onlyLowercase'] = true;
+            $rules['noLowercase'] = false;
         } else {
-            $rules['onlyLowercase'] = false;
+            $rules['noLowercase'] = true;
         }
 
         if (preg_match('/[A-Z]/', $password)) {
-            $rules['onlyUppercase'] = true;
+            $rules['noUppercase'] = false;
         } else {
-            $rules['onlyUppercase'] = false;
+            $rules['noUppercase'] = true;
         }
 
         if (preg_match('/[0-9]/', $password)) {
-            $rules['onlyNumbers'] = true;
+            $rules['noNumber'] = false;
         } else {
-            $rules['onlyNumbers'] = false;
+            $rules['noNumber'] = true;
         }
 
         if (preg_match('/[\W_]/', $password)) {
-            $rules['symbolNotIncluded'] = true;
+            $rules['noSymbol'] = false;
         } else {
-            $rules['symbolNotIncluded'] = false;
+            $rules['noSymbol'] = true;
         }
 
         /*
