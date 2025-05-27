@@ -29,7 +29,7 @@ class DatabaseCredentialCollector extends BasicCollector implements InventoryAwa
         $wordpressSites = $this->inventory[WordPressCollector::COLLECTOR_IDENTIFIER];
 
         foreach ($wordpressSites as $site) {
-            $configFile = File::getInstance()->getContents($site['path']);
+            $configFile = File::getInstance()->getContents($site['path'] . 'wp-config.php');
 
             $credentialArray = $this->extractCredentials($configFile);
 
@@ -44,24 +44,15 @@ class DatabaseCredentialCollector extends BasicCollector implements InventoryAwa
         return $credentials;
     }
 
-    private function extractCredentials(string $wordPressPath): ?array
+    private function extractCredentials(string $wpConfigContent): ?array
     {
-        $wp_config_path = $wordPressPath . 'wp-config.php';
-
-        var_dump($wp_config_path);
-
-        if (!File::getInstance()->fileExists($wp_config_path)) {
-            return null;
-        }
-
-        $content = File::getInstance()->getContents($wp_config_path);
         $user = $pass = null;
 
-        if (preg_match("/define\s*\(\s*['\"]DB_USER['\"]\s*,\s*['\"](.*?)['\"]\s*\)/", $content, $matches)) {
+        if (preg_match("/define\s*\(\s*['\"]DB_USER['\"]\s*,\s*['\"](.*?)['\"]\s*\)/", $wpConfigContent, $matches)) {
             $user = $matches[1];
         }
 
-        if (preg_match("/define\s*\(\s*['\"]DB_PASSWORD['\"]\s*,\s*['\"](.*?)['\"]\s*\)/", $content, $matches)) {
+        if (preg_match("/define\s*\(\s*['\"]DB_PASSWORD['\"]\s*,\s*['\"](.*?)['\"]\s*\)/", $wpConfigContent, $matches)) {
             $pass = $matches[1];
         }
 
