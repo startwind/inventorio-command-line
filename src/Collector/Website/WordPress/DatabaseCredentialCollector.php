@@ -11,6 +11,8 @@ class DatabaseCredentialCollector extends BasicCollector implements InventoryAwa
 {
     private array $inventory;
 
+    protected string $identifier = "WordPressDatabaseCredential";
+
     public function setInventory(array $inventory): void
     {
         $this->inventory = $inventory;
@@ -44,7 +46,7 @@ class DatabaseCredentialCollector extends BasicCollector implements InventoryAwa
 
     private function extractCredentials(string $wordPressPath): ?array
     {
-        $wp_config_path = $wordPressPath . '/wp-config.php';
+        $wp_config_path = $wordPressPath . 'wp-config.php';
 
         if (!file_exists($wp_config_path)) {
             return null;
