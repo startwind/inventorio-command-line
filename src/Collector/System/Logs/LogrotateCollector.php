@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\System\Logs;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\File;
 
 class LogrotateCollector implements Collector
 {
@@ -18,7 +19,8 @@ class LogrotateCollector implements Collector
         ];
     }
 
-    private function getLogFileStatus(): array {
+    private function getLogFileStatus(): array
+    {
         $searchPath = '/var/log';
         $logrotateConfs = ['/etc/logrotate.conf', ...glob('/etc/logrotate.d/*')];
 
@@ -31,9 +33,9 @@ class LogrotateCollector implements Collector
         foreach ($iterator as $file) {
             if (preg_match('/\.log$/', $file->getFilename())) {
                 $realPath = realpath($file->getPathname());
-                if ($realPath !== false && is_file($realPath)) {
+                if ($realPath !== false && File::getInstance()->isFile($realPath)) {
                     $allLogs[$realPath] = [
-                        'size' => filesize($realPath),
+                        'size' => File::getInstance()->getFilesize($realPath),
                         'last_modified' => filemtime($realPath)
                     ];
                 }
@@ -43,7 +45,7 @@ class LogrotateCollector implements Collector
         // Step 2: Extract managed log paths from logrotate config files
         $explicitManaged = [];
         foreach ($logrotateConfs as $confFile) {
-            if (!is_readable($confFile)) continue;
+            if (!File::getInstance()->isReadable($confFile)) continue;
             $lines = file($confFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             foreach ($lines as $line) {
                 if (preg_match('#^\s*/[^\s{}]+\.log#', $line, $matches)) {

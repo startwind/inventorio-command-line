@@ -4,6 +4,7 @@ namespace Startwind\Inventorio\Collector\System\General;
 
 use Startwind\Inventorio\Collector\Collector;
 use Startwind\Inventorio\Exec\Runner;
+use Startwind\Inventorio\Exec\System;
 
 class ConfigurationCollector implements Collector
 {
@@ -33,7 +34,7 @@ class ConfigurationCollector implements Collector
     {
         $os = PHP_OS_FAMILY;
         if ($os === 'Windows') {
-            return (int)getenv("NUMBER_OF_PROCESSORS");
+            return (int)System::getInstance()->getEnvironmentVariable("NUMBER_OF_PROCESSORS");
         } elseif ($os === 'Darwin' || $os === 'Linux') {
             return (int)Runner::getInstance()->run("getconf _NPROCESSORS_ONLN")->getOutput();
         }
@@ -62,7 +63,7 @@ class ConfigurationCollector implements Collector
 
     function getDiskSize(): float
     {
-        $bytes = disk_total_space("/");
+        $bytes = System::getInstance()->getDiskTotalSpace('/');
         return round($bytes / (1024 ** 3), 2);
     }
 

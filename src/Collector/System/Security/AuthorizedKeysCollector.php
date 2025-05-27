@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\System\Security;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\File;
 use Startwind\Inventorio\Exec\Runner;
 
 class AuthorizedKeysCollector implements Collector
@@ -31,7 +32,7 @@ class AuthorizedKeysCollector implements Collector
             [$username, , $uid, , , $homeDirectory] = array_slice($parts, 0, 6);
 
             // Only consider regular users (UID >= 1000) with a valid home directory
-            if (!is_dir($homeDirectory)) {
+            if (!File::getInstance()->isDir($homeDirectory)) {
                 continue;
             }
 

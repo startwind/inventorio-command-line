@@ -5,6 +5,7 @@ namespace Startwind\Inventorio\Collector\Application\WebServer\Apache;
 use Startwind\Inventorio\Collector\BasicCollector;
 use Startwind\Inventorio\Exec\Runner;
 use Symfony\Component\Console\Command\Command;
+use Startwind\Inventorio\Exec\File;
 
 class ApacheConfigurationCollector extends BasicCollector
 {
@@ -54,7 +55,7 @@ class ApacheConfigurationCollector extends BasicCollector
             return [];
         }
 
-        if (!is_dir($this->sitesEnabledPath)) {
+        if (!File::getInstance()->isDir($this->sitesEnabledPath)) {
             return [];
         }
 
@@ -64,7 +65,7 @@ class ApacheConfigurationCollector extends BasicCollector
         foreach ($configFiles as $file) {
             $filePath = $this->sitesEnabledPath . DIRECTORY_SEPARATOR . $file;
 
-            if (is_file($filePath) && !is_link($filePath)) {
+            if (File::getInstance()->isFile($filePath) && !File::getInstance()->isLink($filePath)) {
                 $serverName = $this->extractServerName($filePath);
                 $results[] = [
                     'file' => $file,
