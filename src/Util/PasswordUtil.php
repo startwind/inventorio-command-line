@@ -4,50 +4,41 @@ namespace Startwind\Inventorio\Util;
 
 abstract class PasswordUtil
 {
-   static public function evaluateStrength(string $password): int
+    static public function evaluateStrength(string $password): array
     {
-        $score = 0;
-        $maxScore = 100;
+        $rules = [];
 
-        // Gewichtungen (anpassbar)
-        $lengthWeight = 30;
-        $lowercaseWeight = 10;
-        $uppercaseWeight = 10;
-        $numberWeight = 15;
-        $symbolWeight = 15;
-        $variationWeight = 10;
-        $commonPenalty = -30;
-
-        $length = strlen($password);
-
-        // Mindestlänge
-        if ($length >= 12) {
-            $score += $lengthWeight;
-        } elseif ($length >= 8) {
-            $score += $lengthWeight / 2;
+        if (strlen($password) >= 12) {
+            $rules['passwordTooShort'] = false;
+        } else {
+            $rules['passwordTooShort'] = true;
         }
 
-        // Kleinbuchstaben
         if (preg_match('/[a-z]/', $password)) {
-            $score += $lowercaseWeight;
+            $rules['onlyLowercase'] = true;
+        } else {
+            $rules['onlyLowercase'] = false;
         }
 
-        // Großbuchstaben
         if (preg_match('/[A-Z]/', $password)) {
-            $score += $uppercaseWeight;
+            $rules['onlyUppercase'] = true;
+        } else {
+            $rules['onlyUppercase'] = false;
         }
 
-        // Zahlen
         if (preg_match('/[0-9]/', $password)) {
-            $score += $numberWeight;
+            $rules['onlyNumbers'] = true;
+        } else {
+            $rules['onlyNumbers'] = false;
         }
 
-        // Sonderzeichen
         if (preg_match('/[\W_]/', $password)) {
-            $score += $symbolWeight;
+            $rules['symbolNotIncluded'] = true;
+        } else {
+            $rules['symbolNotIncluded'] = false;
         }
 
-        // Zeichenvielfalt (mind. 3 Kategorien)
+        /*
         $types = 0;
         $types += preg_match('/[a-z]/', $password);
         $types += preg_match('/[A-Z]/', $password);
@@ -56,30 +47,21 @@ abstract class PasswordUtil
         if ($types >= 3) {
             $score += $variationWeight;
         }
+        */
 
-        // Wiederholungen
         if (preg_match('/(.)\1{3,}/', $password)) {
-            $score -= 10;
+            $rules['passwordRepeating'] = true;
+        } else {
+            $rules['passwordRepeating'] = false;
         }
 
-        // Häufige oder unsichere Passwörter
         $common = ['123456', 'password', 'qwerty', 'admin', 'letmein'];
         if (in_array(strtolower($password), $common)) {
-            $score += $commonPenalty;
-        }
-
-        // Begrenzung des Scores
-        $score = max(0, min($score, $maxScore));
-
-        // Bewertung
-        if ($score >= 80) {
-            $rating = 'strong';
-        } elseif ($score >= 50) {
-            $rating = 'medium';
+            $rules['commonPassword'] = true;
         } else {
-            $rating = 'weak';
+            $rules['commonPassword'] = false;
         }
 
-        return $score;
+        return $rules;
     }
 }
