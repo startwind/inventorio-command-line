@@ -10,7 +10,8 @@ class MetricThresholdCollector extends BasicCollector
     protected string $identifier = 'MetricsThreshold';
 
     private array $thresholds = [
-        'cpu-usage' => 80
+        'cpu-usage' => 80,
+        'memory-usage' => 80
     ];
 
     public function collect(): array

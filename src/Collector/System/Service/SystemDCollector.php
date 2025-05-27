@@ -119,15 +119,18 @@ class SystemDCollector extends BasicCollector
         return $services;
     }
 
-    function getServiceClassic()
+    function getServiceClassic(): array
     {
         $command = "systemctl list-units --type=service --all --no-legend --no-pager | awk '{printf \"%s|%s|%s|%s|\", \$1, \$2, \$3, \$4; for (i=5; i<=NF; i++) printf \$i \" \"; print \"\"}'";
 
-        $output = shell_exec($command);
+        $output = Runner::getInstance()->run($command)->getOutput();
+
         if ($output === null) return [];
 
         $lines = explode("\n", trim($output));
         $services = [];
+
+        $systemServices = array_flip($this->systemServices);
 
         foreach ($lines as $line) {
             if (empty($line)) continue;
