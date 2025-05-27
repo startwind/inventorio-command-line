@@ -10,7 +10,9 @@ use Startwind\Inventorio\Exec\Runner;
 
 class WordPressCollector extends BasicCollector implements InventoryAwareCollector
 {
-    protected string $identifier = "WordPress";
+    public const COLLECTOR_IDENTIFIER = 'WordPress';
+
+    protected string $identifier = self::COLLECTOR_IDENTIFIER;
 
     private array $inventory;
 

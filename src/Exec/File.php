@@ -44,4 +44,13 @@ class File
     {
         return file_exists($path);
     }
+
+    public function getContents(string $path, bool $asArray = false): string|false|array
+    {
+        if ($asArray) {
+            return file($path);
+        } else {
+            return file_get_contents($path);
+        }
+    }
 }
