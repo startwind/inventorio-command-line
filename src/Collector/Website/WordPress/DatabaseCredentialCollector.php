@@ -28,19 +28,24 @@ class DatabaseCredentialCollector extends BasicCollector implements InventoryAwa
 
         foreach ($wordpressSites as $site) {
             $configFile = File::getInstance()->getContents($site['path']);
+
             $credentialArray = $this->extractCredentials($configFile);
 
-            $credentials[] = [
-                'passwordStrength' => PasswordUtil::evaluateStrength($credentialArray['password']),
-                'user' => $credentialArray['user'],
-            ];
+            if ($credentialArray) {
+                $credentials[] = [
+                    'passwordStrength' => PasswordUtil::evaluateStrength($credentialArray['password']),
+                    'user' => $credentialArray['user'],
+                ];
+            }
         }
 
         return $credentials;
     }
 
-    private function extractCredentials(string $wp_config_path): ?array
+    private function extractCredentials(string $wordPressPath): ?array
     {
+        $wp_config_path = $wordPressPath . '/wp-config.php';
+
         if (!file_exists($wp_config_path)) {
             return null;
         }
