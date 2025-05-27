@@ -28,13 +28,13 @@ class DatabaseCredentialCollector extends BasicCollector implements InventoryAwa
 
         $wordpressSites = $this->inventory[WordPressCollector::COLLECTOR_IDENTIFIER];
 
-        foreach ($wordpressSites as $site) {
+        foreach ($wordpressSites as $domain => $site) {
             $configFile = File::getInstance()->getContents($site['path'] . 'wp-config.php');
 
             $credentialArray = $this->extractCredentials($configFile);
 
             if ($credentialArray) {
-                $credentials[] = [
+                $credentials[$domain] = [
                     'passwordStrength' => PasswordUtil::evaluateStrength($credentialArray['password']),
                     'user' => $credentialArray['user'],
                 ];
