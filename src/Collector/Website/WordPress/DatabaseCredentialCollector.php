@@ -48,11 +48,13 @@ class DatabaseCredentialCollector extends BasicCollector implements InventoryAwa
     {
         $wp_config_path = $wordPressPath . 'wp-config.php';
 
-        if (!file_exists($wp_config_path)) {
+        var_dump($wp_config_path);
+
+        if (!File::getInstance()->fileExists($wp_config_path)) {
             return null;
         }
 
-        $content = file_get_contents($wp_config_path);
+        $content = File::getInstance()->getContents($wp_config_path);
         $user = $pass = null;
 
         if (preg_match("/define\s*\(\s*['\"]DB_USER['\"]\s*,\s*['\"](.*?)['\"]\s*\)/", $content, $matches)) {
