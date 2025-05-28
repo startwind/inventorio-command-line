@@ -38,9 +38,9 @@ class Memory
         $this->data[$key][] = $value;
     }
 
-    public function getData(string $key): float
+    public function getData(string $key): array
     {
-        return $this->data[$key] ?? -1;
+        return $this->data[$key] ?? [];
     }
 
     public function addDataSet(array $dataset): void
