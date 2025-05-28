@@ -44,13 +44,12 @@ class NetworkTrafficCollector extends BasicCollector
         $lastTotal = end($history);
 
         if (!empty($history) && $total < $lastTotal) {
-            $memory->addData(self::MEMORY_KEY, $history);
+            $memory->addData(self::MEMORY_KEY, $total);
             return 0;
         }
 
         if (!empty($history)) {
-            $delta = $total - $lastTotal;
-            $mb = round($delta / 1024 / 1024, 2);
+            $mb = $total - $lastTotal;
         } else {
             $mb = 0;
         }
