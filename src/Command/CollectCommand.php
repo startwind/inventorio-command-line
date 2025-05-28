@@ -15,7 +15,6 @@ use Startwind\Inventorio\Collector\Inventorio\CommandCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
 use Startwind\Inventorio\Collector\InventoryAwareCollector;
 use Startwind\Inventorio\Collector\Metrics\MetricThresholdCollector;
-use Startwind\Inventorio\Collector\Network\NetworkTrafficCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
 use Startwind\Inventorio\Collector\Package\Dpkg\DpkgPackageCollector;
@@ -155,7 +154,7 @@ class CollectCommand extends InventorioCommand
         $this->collectors[] = new AuthorizedKeysCollector();
 
         // Network
-        $this->collectors[] = new NetworkTrafficCollector();
+        // $this->collectors[] = new NetworkTrafficCollector();
 
         // Package Managers
         $this->collectors[] = new BrewPackageCollector();
