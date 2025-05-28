@@ -72,7 +72,7 @@ class Collector
             $lastTotal = end($history);
         }
 
-        if ($total < $lastTotal) {
+        if ($total < $lastTotal || $lastTotal === 0) {
             $memory->addData(self::MEMORY_KEY, $total);
             return $total;
         }

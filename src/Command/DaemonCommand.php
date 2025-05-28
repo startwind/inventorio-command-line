@@ -52,20 +52,20 @@ class DaemonCommand extends InventorioCommand
         }
 
         while (true) {
-            if ($lastRun['default'] < time() - $this->intervals['default']) {
+            if ($lastRun['default'] <= time() - $this->intervals['default']) {
                 $this->getApplication()->find('collect')->run($input, $output);
                 $lastRun['default'] = time();
             }
 
             if ($remoteEnabled) {
-                if ($lastRun['remote'] < time() - $this->intervals['remote']) {
+                if ($lastRun['remote'] <= time() - $this->intervals['remote']) {
                     $remoteConnect->run();
                     $lastRun['remote'] = time();
                 }
             }
 
             if ($collectEnabled) {
-                if ($lastRun['collect'] < time() - $this->intervals['collect']) {
+                if ($lastRun['collect'] <= time() - $this->intervals['collect']) {
                     $dataset = $collectCollector->collect();
                     $memory->addDataSet($dataset);
                     $collectReporter->report($serverId, $dataset);
