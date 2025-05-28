@@ -38,6 +38,11 @@ class Memory
         $this->data[$key][] = $value;
     }
 
+    public function getData(string $key): float
+    {
+        return $this->data[$key] ?? -1;
+    }
+
     public function addDataSet(array $dataset): void
     {
         foreach ($dataset as $key => $value) {
@@ -58,7 +63,7 @@ class Memory
         return $count;
     }
 
-    public function getData(): array
+    public function getDataSet(): array
     {
         return $this->data;
     }

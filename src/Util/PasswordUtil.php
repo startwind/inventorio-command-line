@@ -8,7 +8,7 @@ abstract class PasswordUtil
     {
         $rules = [];
 
-        if (strlen($password) >= 12) {
+        if (strlen($password) >= 10) {
             $rules['passwordTooShort'] = false;
         } else {
             $rules['passwordTooShort'] = true;
