@@ -47,7 +47,11 @@ class Memory
 
     public function getLastData(string $key, $default = 0): float
     {
-        return end($this->data[$key]) ?? $default;
+        if (!array_key_exists($key, $this->data)) {
+            return $default;
+        } else {
+            return end($this->data[$key]) ?? $default;
+        }
     }
 
     public function addDataSet(array $dataset): void
