@@ -34,7 +34,7 @@ abstract class FileLinesMetric implements Metric
 
     protected function getLineCount($path): int
     {
-        $count = Runner::getInstance()->run('wc -l ' . $path);
+        $count = Runner::getInstance()->run('wc -l ' . $path)->getOutput();
         return (int)$count;
     }
 }
