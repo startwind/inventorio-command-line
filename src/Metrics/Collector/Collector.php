@@ -56,7 +56,7 @@ class Collector
         foreach ($this->metrics as $metric) {
             /** @var Metric $metric */
             if ($metric->isApplicable()) {
-                $lastValue = Memory::getInstance()->getLastData($metric->getName());
+                $lastValue = Memory::getInstance()->getLastData($metric->getName(), -1);
                 $currentValue = $metric->getValue($lastValue);
                 Memory::getInstance()->addData($metric->getName(), $currentValue);
                 $metricResults[$metric->getName()] = $currentValue;
