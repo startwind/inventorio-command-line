@@ -10,6 +10,8 @@ class Memory
 
     private static ?Memory $instance = null;
 
+    private array $collection = [];
+
     private array $data = [];
 
     static public function getInstance(): Memory
@@ -43,6 +45,11 @@ class Memory
         return $this->data[$key] ?? [];
     }
 
+    public function getLastData(string $key, $default = 0): float
+    {
+        return end($this->data[$key]) ?? $default;
+    }
+
     public function addDataSet(array $dataset): void
     {
         foreach ($dataset as $key => $value) {
@@ -66,5 +73,15 @@ class Memory
     public function getDataSet(): array
     {
         return $this->data;
+    }
+
+    public function setCollection(array $collection): void
+    {
+        $this->collection = $collection;
+    }
+
+    public function getCollection(): array
+    {
+        return $this->collection;
     }
 }

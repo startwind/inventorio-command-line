@@ -32,6 +32,7 @@ use Startwind\Inventorio\Collector\System\UserCollector;
 use Startwind\Inventorio\Collector\Website\HeaderCollector;
 use Startwind\Inventorio\Collector\Website\WordPress\DatabaseCredentialCollector;
 use Startwind\Inventorio\Collector\Website\WordPress\WordPressCollector;
+use Startwind\Inventorio\Metrics\Memory\Memory;
 use Startwind\Inventorio\Reporter\InventorioReporter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -93,6 +94,8 @@ class CollectCommand extends InventorioCommand
             $output->writeln(json_encode($inventory, JSON_PRETTY_PRINT));
         }
 
+        Memory::getInstance()->setCollection($inventory);
+
         $reporter = new InventorioReporter($output, $this->config->getInventorioServer(), $this->getServerId(), $this->getUserId());
 
         try {
@@ -112,7 +115,7 @@ class CollectCommand extends InventorioCommand
     /**
      * Initialize all collectors.
      *
-     * @todo use a config file to
+     * @todo use a config file to add collectors
      */
     private function initCollectors(): void
     {
@@ -152,9 +155,6 @@ class CollectCommand extends InventorioCommand
         // System / Security
         $this->collectors[] = new GeneralSecurityCollector();
         $this->collectors[] = new AuthorizedKeysCollector();
-
-        // Network
-        // $this->collectors[] = new NetworkTrafficCollector();
 
         // Package Managers
         $this->collectors[] = new BrewPackageCollector();
