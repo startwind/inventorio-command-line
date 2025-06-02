@@ -4,6 +4,7 @@ namespace Startwind\Inventorio\Command;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Startwind\Inventorio\Collector\Application\Monitoring\WebProsMonitoringCollector;
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheConfigurationCollector;
@@ -68,7 +69,7 @@ class CollectCommand extends InventorioCommand
 
         $inventory = [];
 
-        $client = new \Startwind\Inventorio\Util\Client(new Client());
+        $client = new \Startwind\Inventorio\Util\Client(new Client([RequestOptions::VERSION => 2.0,]));
 
         foreach ($this->collectors as $collector) {
             if ($collector instanceof InventoryAwareCollector) {
