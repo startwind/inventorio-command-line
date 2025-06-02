@@ -53,6 +53,7 @@ class MetricThresholdCollector extends BasicCollector
                         $data = $memory->getData($metric);
                         $result[$metric] = $this->countStandardDeviationOutliers($data, $threshold['factor'], $threshold['outlinerMinLimit']);
                     }
+                    break;
             }
         }
 
