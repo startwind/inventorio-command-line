@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\ServerException;
 use Startwind\Inventorio\Collector\BasicCollector;
 use Startwind\Inventorio\Collector\ClientAwareCollector;
 use Startwind\Inventorio\Collector\InventoryAwareCollector;
+use Startwind\Inventorio\Exec\Runner;
 use Startwind\Inventorio\Util\Client;
 use Startwind\Inventorio\Util\WebsiteUtil;
 
@@ -36,34 +37,42 @@ class ResponseCollector extends BasicCollector implements InventoryAwareCollecto
 
         foreach ($domains as $domain) {
             try {
-                $result = $this->client->get('https://' . $domain);
+                $url = 'https://' . $domain;
+                $result = $this->client->get($url);
             } catch (ClientException $e) {
                 $uptimeStatus[$domain] = [
                     'code' => $e->getResponse()->getStatusCode(),
-                    'protocol_version' => $e->getResponse()->getProtocolVersion(),
+                    'h2' => $this->supportsHttp2($url)
                 ];
                 continue;
             } catch (ServerException $e) {
                 $uptimeStatus[$domain] = [
                     'code' => $e->getResponse()->getStatusCode(),
-                    'protocol_version' => $e->getResponse()->getProtocolVersion()
+                    'h2' => $this->supportsHttp2($url)
                 ];
                 continue;
             } catch (Exception $e) {
                 $uptimeStatus[$domain] = [
                     'code' => 599,
                     'message' => $e->getMessage(),
-                    'protocol_version' => false
+                    'h2' => false
                 ];
                 continue;
             }
 
             $uptimeStatus[$domain] = [
                 'code' => $result->getStatusCode(),
-                'protocol_version' => $result->getProtocolVersion()
+                'protocol_version' => $result->getProtocolVersion(),
+                'h2' => $this->supportsHttp2($url)
             ];
         }
 
         return $uptimeStatus;
+    }
+
+    private function supportsHttp2(string $host): bool
+    {
+        $output = Runner::getInstance()->run("echo | openssl s_client -alpn h2 -connect {$host}:443 2>/dev/null")->getOutput();
+        return str_contains($output, 'ALPN protocol: h2');
     }
 }
