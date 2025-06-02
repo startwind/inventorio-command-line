@@ -28,7 +28,7 @@ abstract class FileLinesMetric implements Metric
         // this is the first run and last value is therefore -1
         if ($lastValue < 0) {
             Memory::getInstance()->addData($this->getName(), $lineCount);
-            return 0;
+            return -1;
         }
 
         // we assume that there was a log rotation done here

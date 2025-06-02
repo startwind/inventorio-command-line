@@ -58,8 +58,8 @@ class Collector
             if ($metric->isApplicable()) {
                 $lastValue = Memory::getInstance()->getLastData($metric->getName(), -1);
                 $currentValue = $metric->getValue($lastValue);
-                Memory::getInstance()->addData($metric->getName(), $currentValue);
-                $metricResults[$metric->getName()] = $currentValue;
+                if ($currentValue >= 0) Memory::getInstance()->addData($metric->getName(), $currentValue);
+                $metricResults[$metric->getName()] = max(0, $currentValue);
             }
         }
 
