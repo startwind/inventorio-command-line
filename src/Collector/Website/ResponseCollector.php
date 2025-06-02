@@ -42,13 +42,13 @@ class ResponseCollector extends BasicCollector implements InventoryAwareCollecto
             } catch (ClientException $e) {
                 $uptimeStatus[$domain] = [
                     'code' => $e->getResponse()->getStatusCode(),
-                    'h2' => $this->supportsHttp2($url)
+                    'h2' => $this->supportsHttp2($domain)
                 ];
                 continue;
             } catch (ServerException $e) {
                 $uptimeStatus[$domain] = [
                     'code' => $e->getResponse()->getStatusCode(),
-                    'h2' => $this->supportsHttp2($url)
+                    'h2' => $this->supportsHttp2($domain)
                 ];
                 continue;
             } catch (Exception $e) {
@@ -63,7 +63,7 @@ class ResponseCollector extends BasicCollector implements InventoryAwareCollecto
             $uptimeStatus[$domain] = [
                 'code' => $result->getStatusCode(),
                 'protocol_version' => $result->getProtocolVersion(),
-                'h2' => $this->supportsHttp2($url)
+                'h2' => $this->supportsHttp2($domain)
             ];
         }
 

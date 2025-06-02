@@ -4,8 +4,6 @@ namespace Startwind\Inventorio\Command;
 
 use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Handler\CurlHandler;
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\RequestOptions;
 use Startwind\Inventorio\Collector\Application\Monitoring\WebProsMonitoringCollector;
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
@@ -74,7 +72,6 @@ class CollectCommand extends InventorioCommand
         $client = new \Startwind\Inventorio\Util\Client(new Client(
             [
                 RequestOptions::VERSION => 2.0,
-                'handler' => HandlerStack::create(new CurlHandler()),
             ]
         ));
 
