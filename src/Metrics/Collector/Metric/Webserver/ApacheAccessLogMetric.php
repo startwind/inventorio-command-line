@@ -6,6 +6,8 @@ use Startwind\Inventorio\Metrics\Collector\Metric\FileLinesMetric;
 
 class ApacheAccessLogMetric extends FileLinesMetric
 {
-    protected string $name = 'apache_access_log_new_lines';
+    public const IDENTIFIER = 'apache_access_log_new_lines';
+
+    protected string $name = self::IDENTIFIER;
     protected string $filename = '/var/log/apache2/access.log';
 }

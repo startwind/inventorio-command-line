@@ -40,6 +40,11 @@ class Memory
         $this->data[$key][] = $value;
     }
 
+    public function hasData(string $key): bool
+    {
+       return array_key_exists($key, $this->data);
+    }
+
     public function getData(string $key): array
     {
         return $this->data[$key] ?? [];
