@@ -23,20 +23,21 @@ abstract class FileLinesMetric implements Metric
 
     public function getValue(float $lastValue): float
     {
+        $lastLineCount = Memory::getInstance()->getLastData($this->getName() . '_absolute', -1);
         $lineCount = $this->getLineCount($this->filename);
+        Memory::getInstance()->addData($this->getName() . '_absolute', $lineCount);
 
-        // this is the first run and last value is therefore -1
-        if ($lastValue < 0) {
-            Memory::getInstance()->addData($this->getName(), $lineCount);
-            return -1;
+        // this is the first run we return 0 to skip this value
+        if ($lastLineCount < 0) {
+            return 0;
         }
 
         // we assume that there was a log rotation done here
-        if ($lineCount < $lastValue) {
+        if ($lineCount < $lastLineCount) {
             return $lineCount;
         }
 
-        return $lineCount - $lastValue;
+        return $lineCount - $lastLineCount;
     }
 
     protected function getLineCount($path): int
