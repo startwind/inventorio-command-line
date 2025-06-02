@@ -30,6 +30,7 @@ use Startwind\Inventorio\Collector\System\Security\GeneralSecurityCollector;
 use Startwind\Inventorio\Collector\System\Service\SystemDCollector;
 use Startwind\Inventorio\Collector\System\UserCollector;
 use Startwind\Inventorio\Collector\Website\HeaderCollector;
+use Startwind\Inventorio\Collector\Website\ResponseCollector;
 use Startwind\Inventorio\Collector\Website\WordPress\DatabaseCredentialCollector;
 use Startwind\Inventorio\Collector\Website\WordPress\WordPressCollector;
 use Startwind\Inventorio\Metrics\Memory\Memory;
@@ -172,6 +173,6 @@ class CollectCommand extends InventorioCommand
         // INVENTORY AWARE
         $this->collectors[] = new WordPressCollector();
         $this->collectors[] = new DatabaseCredentialCollector();
-        $this->collectors[] = new \Startwind\Inventorio\Collector\Website\UptimeCollector();
+        $this->collectors[] = new ResponseCollector();
     }
 }
