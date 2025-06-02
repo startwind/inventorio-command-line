@@ -99,6 +99,7 @@ jobs:
           tag: ${{ github.ref }}
 
       - name: Send release version as GET request
+        if: github.event.release.prerelease == false
         env:
           BASE_URL: 'https://api.inventorio.cloud/inventorio/version/update/42369df1-ed56-4100-a48f-2e0c9ad13871'
         run: |
