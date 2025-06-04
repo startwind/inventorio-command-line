@@ -30,21 +30,17 @@ class LogrotateCollector implements Collector
 
         $logrotateConfs = ['/etc/logrotate.conf'];
 
-        if (!$fileHandler->isDir('/etc/logrotate.d')) {
-            return [];
-        }
-        
-        $entries = $fileHandler->scanDir('/etc/logrotate.d');
-        foreach ($entries as $entry) {
-            if ($entry === '.' || $entry === '..') continue;
+        if ($fileHandler->isDir('/etc/logrotate.d')) {
+            $entries = $fileHandler->scanDir('/etc/logrotate.d');
+            foreach ($entries as $entry) {
+                if ($entry === '.' || $entry === '..') continue;
 
-            $fullPath = '/etc/logrotate.d/' . $entry;
-            if (is_file($fullPath)) {
-                $logrotateConfs[] = $fullPath;
+                $fullPath = '/etc/logrotate.d/' . $entry;
+                if (is_file($fullPath)) {
+                    $logrotateConfs[] = $fullPath;
+                }
             }
         }
-
-        var_dump($logrotateConfs);
 
         // Step 1: Find all .log files under /var/log
         $allLogs = [];
@@ -54,7 +50,7 @@ class LogrotateCollector implements Collector
 
         foreach ($iterator as $file) {
             if (preg_match('/\.log$/', $file->getFilename())) {
-                $realPath = File::getInstance()->realPath($file->getPathname());
+                $realPath = $fileHandler->realPath($file->getPathname());
                 if ($realPath !== false && $fileHandler->isFile($realPath)) {
                     $allLogs[$realPath] = [
                         'size' => $fileHandler->getFilesize($realPath),

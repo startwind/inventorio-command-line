@@ -56,7 +56,7 @@ class File
 
     public function realPath(string $path): string
     {
-        return Runner::getInstance()->run("realpath " . escapeshellarg(trim($path)))->getOutput();
+        return trim(Runner::getInstance()->run("realpath " . escapeshellarg(trim($path)))->getOutput());
     }
 
     public function scanDir($path): array
