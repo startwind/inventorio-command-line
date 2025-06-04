@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\RequestOptions;
 use RuntimeException;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -75,7 +76,10 @@ class InventorioGradeReporter implements Reporter
         $table = new Table($this->output);
         $table->setHeaders(['Name', 'Description', 'Assets']);
 
-        foreach ($result['data']['hints'] as $hint) {
+        $hints = $result['data']['hints'];
+        $lastIndex = count($hints) - 1;
+
+        foreach ($hints as $i => $hint) {
             $row = [
                 'name' => $hint['definition']['name'],
                 'description' => wordwrap($hint['definition']['description'], 40)
@@ -94,6 +98,11 @@ class InventorioGradeReporter implements Reporter
             $row['assets'] = implode("\n", $assets);
 
             $table->addRow($row);
+
+            // Nur hinzufügen, wenn es NICHT das letzte Element ist
+            if ($i < $lastIndex) {
+                $table->addRow(new TableSeparator());
+            }
         }
 
         $table->render();
