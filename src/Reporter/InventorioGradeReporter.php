@@ -87,7 +87,7 @@ class InventorioGradeReporter implements Reporter
                 $assets = array_keys($hint['issue']['parameters']['files']);
             }
 
-            if (array_key_exists('webistes', $hint['issue']['parameters'])) {
+            if (array_key_exists('websites', $hint['issue']['parameters'])) {
                 $assets = $hint['issue']['parameters']['files'];
             }
 
