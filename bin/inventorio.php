@@ -8,6 +8,7 @@ use Startwind\Inventorio\Command\CommandListCommand;
 use Startwind\Inventorio\Command\CommandRemoveCommand;
 use Startwind\Inventorio\Command\ConfigCommand;
 use Startwind\Inventorio\Command\DaemonCommand;
+use Startwind\Inventorio\Command\GradeCommand;
 use Startwind\Inventorio\Command\InitCommand;
 use Symfony\Component\Console\Application;
 
@@ -20,6 +21,7 @@ $application->setVersion(INVENTORIO_VERSION);
 $application->setName(INVENTORIO_NAME);
 
 $application->add(new CollectCommand());
+$application->add(new GradeCommand());
 $application->add(new InitCommand());
 $application->add(new DaemonCommand());
 $application->add(new ConfigCommand());

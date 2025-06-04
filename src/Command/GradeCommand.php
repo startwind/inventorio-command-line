@@ -7,15 +7,15 @@ use GuzzleHttp\Client;
 use Startwind\Inventorio\Collector\ClientAwareCollector;
 use Startwind\Inventorio\Collector\InventoryAwareCollector;
 use Startwind\Inventorio\Metrics\Memory\Memory;
-use Startwind\Inventorio\Reporter\InventorioReporter;
+use Startwind\Inventorio\Reporter\InventorioGradeReporter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CollectCommand extends CollectorCommand
+class GradeCommand extends CollectorCommand
 {
-    protected static $defaultName = 'collect';
-    protected static $defaultDescription = 'Collect metrics for Inventorio';
+    protected static $defaultName = 'grade';
+    protected static $defaultDescription = 'Grade this server';
 
     private const NOT_APPLICABLE = 'not applicable';
 
@@ -25,6 +25,7 @@ class CollectCommand extends CollectorCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->initConfiguration($input->getOption('configFile'));
+
         $debugMode = $input->getOption('debug');
 
         if (!$this->isInitialized()) {
@@ -65,7 +66,7 @@ class CollectCommand extends CollectorCommand
 
         Memory::getInstance()->setCollection($inventory);
 
-        $reporter = new InventorioReporter($output, $this->config->getInventorioServer(), $this->getServerId(), $this->getUserId());
+        $reporter = new InventorioGradeReporter($output, $this->config->getInventorioServer(), $this->getServerId(), $this->getUserId());
 
         try {
             $reporter->report($inventory);
