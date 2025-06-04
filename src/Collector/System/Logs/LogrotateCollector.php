@@ -84,13 +84,13 @@ class LogrotateCollector implements Collector
             $dir = dirname($logFile);
             $base = basename($logFile);
 
-            $entries = File::getInstance()->scanDir($dir);
+            $entries = $fileHandler->scanDir($dir);
             $found = false;
 
             foreach ($entries as $entry) {
                 if (
                     strpos($entry, $base . '.') === 0 &&
-                    File::getInstance()->isFile($dir . '/' . $entry)
+                    $fileHandler->isFile($dir . '/' . $entry)
                 ) {
                     $found = true;
                     break;
