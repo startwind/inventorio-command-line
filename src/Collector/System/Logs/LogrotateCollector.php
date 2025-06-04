@@ -28,7 +28,7 @@ class LogrotateCollector implements Collector
 
         $searchPath = '/var/log';
 
-        $logrotateConfs = ['/etc/logrotate.conf'];
+        $logrotateConfigurations = ['/etc/logrotate.conf'];
 
         if ($fileHandler->isDir('/etc/logrotate.d')) {
             $entries = $fileHandler->scanDir('/etc/logrotate.d');
@@ -37,7 +37,7 @@ class LogrotateCollector implements Collector
 
                 $fullPath = '/etc/logrotate.d/' . $entry;
                 if (is_file($fullPath)) {
-                    $logrotateConfs[] = $fullPath;
+                    $logrotateConfigurations[] = $fullPath;
                 }
             }
         }
@@ -62,7 +62,7 @@ class LogrotateCollector implements Collector
 
         // Step 2: Extract managed log paths from logrotate config files
         $explicitManaged = [];
-        foreach ($logrotateConfs as $confFile) {
+        foreach ($logrotateConfigurations as $confFile) {
             if (!$fileHandler->isReadable($confFile)) continue;
             $lines = $fileHandler->getContents($confFile, true);
             foreach ($lines as $line) {
@@ -89,7 +89,7 @@ class LogrotateCollector implements Collector
 
             foreach ($entries as $entry) {
                 if (
-                    strpos($entry, $base . '.') === 0 &&
+                    str_starts_with($entry, $base . '.') &&
                     $fileHandler->isFile($dir . '/' . $entry)
                 ) {
                     $found = true;

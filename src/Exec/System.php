@@ -34,4 +34,10 @@ class System
     {
         return getenv($name);
     }
+
+    public function getPlatform(): string
+    {
+        $output = trim(Runner::getInstance()->run('uname -s')->getOutput());
+        return strtolower($output);
+    }
 }

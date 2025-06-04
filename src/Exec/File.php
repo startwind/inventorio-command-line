@@ -17,41 +17,59 @@ class File
 
     public function isDir($directory): bool
     {
-        return is_dir($directory);
+        $cmd = '[ -d ' . escapeshellarg($directory) . ' ] && echo "1" || echo "0"';
+        return trim(Runner::getInstance()->run($cmd)->getOutput()) === '1';
     }
 
     public function isFile($filename): bool
     {
-        return is_file($filename);
+        $cmd = '[ -f ' . escapeshellarg($filename) . ' ] && echo "1" || echo "0"';
+        return trim(Runner::getInstance()->run($cmd)->getOutput()) === '1';
     }
 
     public function isLink($filename): bool
     {
-        return is_link($filename);
+        $cmd = '[ -L ' . escapeshellarg($filename) . ' ] && echo "1" || echo "0"';
+        return trim(Runner::getInstance()->run($cmd)->getOutput()) === '1';
     }
 
     public function isReadable($filename): bool
     {
-        return is_readable($filename);
+        $cmd = '[ -r ' . escapeshellarg($filename) . ' ] && echo "1" || echo "0"';
+        return trim(Runner::getInstance()->run($cmd)->getOutput()) === '1';
     }
 
     public function getFilesize($filename): int
     {
-        return filesize($filename);
+        $escaped = escapeshellarg($filename);
+        $platform = System::getInstance()->getPlatform();
+
+        if ($platform === 'darwin' || str_contains($platform, 'bsd')) {
+            $cmd = 'stat -f%z ' . $escaped;
+        } else {
+            $cmd = 'stat -c%s ' . $escaped;
+        }
+
+        $output =trim(Runner::getInstance()->run($cmd)->getOutput());
+        return is_numeric($output) ? (int)$output : 0;
     }
 
     public function fileExists(string $path): bool
     {
-        return file_exists($path);
+        $cmd = '[ -e ' . escapeshellarg($path) . ' ] && echo "1" || echo "0"';
+        return trim(Runner::getInstance()->run($cmd)->getOutput()) === '1';
     }
 
     public function getContents(string $path, bool $asArray = false): string|false|array
     {
-        if ($asArray) {
-            return file($path);
-        } else {
-            return file_get_contents($path);
+        $cmd = 'cat ' . escapeshellarg($path) . ' 2>/dev/null';
+        $output = Runner::getInstance()->run($cmd)->getOutput();
+
+        if ($output === null || $output === '') {
+            return false;
         }
+
+        return $asArray ? explode("\n", rtrim($output)) : $output;
     }
 
     public function realPath(string $path): string
@@ -61,6 +79,8 @@ class File
 
     public function scanDir($path): array
     {
-        return scandir($path);
+        $cmd = 'ls -1A ' . escapeshellarg($path) . ' 2>/dev/null';
+        $output = Runner::getInstance()->run($cmd)->getOutput();
+        return $output !== null ? explode("\n", trim($output)) : [];
     }
 }
