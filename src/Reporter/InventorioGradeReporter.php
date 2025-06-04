@@ -94,10 +94,16 @@ class InventorioGradeReporter implements Reporter
 
             if (array_key_exists('files', $hint['issue']['parameters'])) {
                 $assets = array_keys($hint['issue']['parameters']['files']);
+                foreach ($assets as $key => $asset) {
+                    $assets[$key] = '- ' . $asset;
+                }
             }
 
             if (array_key_exists('websites', $hint['issue']['parameters'])) {
                 $assets = $hint['issue']['parameters']['websites'];
+                foreach ($assets as $key => $asset) {
+                    $assets[$key] = '- https://' . $asset;
+                }
             }
 
             $row['assets'] = implode("\n", $assets);
