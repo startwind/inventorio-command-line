@@ -3,9 +3,9 @@
 namespace Startwind\Inventorio\Collector\Application\WebServer\Apache;
 
 use Startwind\Inventorio\Collector\BasicCollector;
+use Startwind\Inventorio\Exec\File;
 use Startwind\Inventorio\Exec\Runner;
 use Symfony\Component\Console\Command\Command;
-use Startwind\Inventorio\Exec\File;
 
 class ApacheConfigurationCollector extends BasicCollector
 {
@@ -55,17 +55,19 @@ class ApacheConfigurationCollector extends BasicCollector
             return [];
         }
 
-        if (!File::getInstance()->isDir($this->sitesEnabledPath)) {
+        $file = File::getInstance();
+
+        if (!$file->isDir($this->sitesEnabledPath)) {
             return [];
         }
 
-        $configFiles = scandir($this->sitesEnabledPath);
+        $configFiles = $file->scanDir($this->sitesEnabledPath);
         $results = [];
 
         foreach ($configFiles as $file) {
             $filePath = $this->sitesEnabledPath . DIRECTORY_SEPARATOR . $file;
 
-            if (File::getInstance()->isFile($filePath) && !File::getInstance()->isLink($filePath)) {
+            if ($file->isFile($filePath) && !$file->isLink($filePath)) {
                 $serverName = $this->extractServerName($filePath);
                 $results[] = [
                     'file' => $file,
@@ -79,7 +81,7 @@ class ApacheConfigurationCollector extends BasicCollector
 
     private function extractServerName(string $filePath): ?string
     {
-        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $lines = File::getInstance()->getContents($filePath, true);
         foreach ($lines as $line) {
             if (preg_match('/^\s*ServerName\s+(.+)$/i', $line, $matches)) {
                 return trim($matches[1]);

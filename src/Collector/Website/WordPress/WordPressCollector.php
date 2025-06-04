@@ -56,31 +56,38 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
 
     private function extractPlugins(string $documentRoot): array
     {
-        $pluginDir = $documentRoot . 'wp-content/plugins';
-        if (!File::getInstance()->isDir($pluginDir)) return [];
+        $file = File::getInstance();
 
-        $plugins = array_diff(scandir($pluginDir), ['.', '..']);
+        $pluginDir = $documentRoot . 'wp-content/plugins';
+        if (!$file->isDir($pluginDir)) return [];
+
+        $plugins = array_diff($file->scanDir($pluginDir), ['.', '..']);
         $pluginArray = [];
 
         foreach ($plugins as $pluginFolder) {
             $path = $pluginDir . '/' . $pluginFolder;
 
-            if (!File::getInstance()->isDir($path)) continue;
+            if (!$file->isDir($path)) continue;
 
-            $phpFiles = glob("$path/*.php");
-            foreach ($phpFiles as $phpFile) {
-                $info = $this->parsePluginHeader($phpFile);
-                if (!empty($info['Name']) && !empty($info['Version'])) {
-                    $slug = $this->deriveSlugFromHeader($info, $pluginFolder);
-                    $update = $this->checkWordPressPluginUpdate($slug, $info['Version']);
-                    $pluginArray[$info['Name']] = [
-                        'name' => $info['Name'],
-                        'slug' => $slug,
-                        'version' => $info['Version'],
-                        'update_available' => $update['update_available'] ?? false,
-                        'latest_version' => $update['latest_version'] ?? null,
-                    ];
-                    break;
+            $entries = array_diff($file->scanDir($path), ['.', '..']);
+
+            foreach ($entries as $entry) {
+                $fullPath = $path . '/' . $entry;
+
+                if ($file->isFile($fullPath) && pathinfo($entry, PATHINFO_EXTENSION) === 'php') {
+                    $info = $this->parsePluginHeader($fullPath);
+                    if (!empty($info['Name']) && !empty($info['Version'])) {
+                        $slug = $this->deriveSlugFromHeader($info, $pluginFolder);
+                        $update = $this->checkWordPressPluginUpdate($slug, $info['Version']);
+                        $pluginArray[$info['Name']] = [
+                            'name' => $info['Name'],
+                            'slug' => $slug,
+                            'version' => $info['Version'],
+                            'update_available' => $update['update_available'] ?? false,
+                            'latest_version' => $update['latest_version'] ?? null,
+                        ];
+                        break;
+                    }
                 }
             }
         }

@@ -39,6 +39,7 @@ class PortsCollector extends BasicCollector
     private function loadPorts(): void
     {
         $csv = [];
+        // this is a local dev file so no need to use the remote handler
         if (($handle = fopen(__DIR__ . '/ports.csv', "r")) !== false) {
             while (($data = fgetcsv($handle, 1000, ',', '"', '\\')) !== false) {
                 $csv[$data[1]] = $data[2];

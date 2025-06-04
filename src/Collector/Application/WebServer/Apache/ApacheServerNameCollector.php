@@ -3,6 +3,7 @@
 namespace Startwind\Inventorio\Collector\Application\WebServer\Apache;
 
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\File;
 use Startwind\Inventorio\Exec\Runner;
 
 class ApacheServerNameCollector implements Collector
@@ -46,7 +47,7 @@ class ApacheServerNameCollector implements Collector
 
     private function extractServerData(string $vhostFile): array
     {
-        $lines = file($vhostFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $lines = File::getInstance()->getContents($vhostFile, true);
 
         $serverName = '';
         $aliases = [];
@@ -81,10 +82,15 @@ class ApacheServerNameCollector implements Collector
 
     private function getAllConfigurations(string $vhostDir): array
     {
+        $fileHandler = File::getInstance();
+
+        $files = $fileHandler->scanDir($vhostDir);
         $configurations = [];
 
-        foreach (glob($vhostDir . '/*.conf') as $file) {
-            $configurations[] = $file;
+        foreach ($files as $file) {
+            if ($fileHandler->isFile($vhostDir . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'conf') {
+                $configurations[] = $vhostDir . '/' . $file;
+            }
         }
 
         return $configurations;

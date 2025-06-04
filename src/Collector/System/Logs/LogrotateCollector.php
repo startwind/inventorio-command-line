@@ -2,6 +2,9 @@
 
 namespace Startwind\Inventorio\Collector\System\Logs;
 
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Startwind\Inventorio\Collector\Collector;
 use Startwind\Inventorio\Exec\File;
 
@@ -21,21 +24,40 @@ class LogrotateCollector implements Collector
 
     private function getLogFileStatus(): array
     {
+        $fileHandler = File::getInstance();
+
         $searchPath = '/var/log';
-        $logrotateConfs = ['/etc/logrotate.conf', ...glob('/etc/logrotate.d/*')];
+
+        $logrotateConfs = ['/etc/logrotate.conf'];
+
+        if (!$fileHandler->isDir('/etc/logrotate.d')) {
+            return [];
+        }
+        
+        $entries = $fileHandler->scanDir('/etc/logrotate.d');
+        foreach ($entries as $entry) {
+            if ($entry === '.' || $entry === '..') continue;
+
+            $fullPath = '/etc/logrotate.d/' . $entry;
+            if (is_file($fullPath)) {
+                $logrotateConfs[] = $fullPath;
+            }
+        }
+
+        var_dump($logrotateConfs);
 
         // Step 1: Find all .log files under /var/log
         $allLogs = [];
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($searchPath, \FilesystemIterator::SKIP_DOTS)
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($searchPath, FilesystemIterator::SKIP_DOTS)
         );
 
         foreach ($iterator as $file) {
             if (preg_match('/\.log$/', $file->getFilename())) {
-                $realPath = realpath($file->getPathname());
-                if ($realPath !== false && File::getInstance()->isFile($realPath)) {
+                $realPath = File::getInstance()->realPath($file->getPathname());
+                if ($realPath !== false && $fileHandler->isFile($realPath)) {
                     $allLogs[$realPath] = [
-                        'size' => File::getInstance()->getFilesize($realPath),
+                        'size' => $fileHandler->getFilesize($realPath),
                         'last_modified' => filemtime($realPath)
                     ];
                 }
@@ -45,11 +67,11 @@ class LogrotateCollector implements Collector
         // Step 2: Extract managed log paths from logrotate config files
         $explicitManaged = [];
         foreach ($logrotateConfs as $confFile) {
-            if (!File::getInstance()->isReadable($confFile)) continue;
-            $lines = file($confFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            if (!$fileHandler->isReadable($confFile)) continue;
+            $lines = $fileHandler->getContents($confFile, true);
             foreach ($lines as $line) {
                 if (preg_match('#^\s*/[^\s{}]+\.log#', $line, $matches)) {
-                    $path = realpath(trim($matches[0]));
+                    $path = $fileHandler->realPath($matches[0]);
                     if ($path !== false) {
                         $explicitManaged[] = $path;
                     }
@@ -61,9 +83,25 @@ class LogrotateCollector implements Collector
 
         // Step 3: Check for rotated versions (*.log.1, *.log.2.gz, etc.)
         $rotatedManaged = [];
+
         foreach (array_keys($allLogs) as $logFile) {
-            $rotatedGlob = glob($logFile . '.*'); // e.g., /var/log/example.log.*
-            if ($rotatedGlob) {
+            $dir = dirname($logFile);
+            $base = basename($logFile);
+
+            $entries = File::getInstance()->scanDir($dir);
+            $found = false;
+
+            foreach ($entries as $entry) {
+                if (
+                    strpos($entry, $base . '.') === 0 &&
+                    File::getInstance()->isFile($dir . '/' . $entry)
+                ) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if ($found) {
                 $rotatedManaged[] = $logFile;
             }
         }

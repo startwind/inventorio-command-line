@@ -53,4 +53,14 @@ class File
             return file_get_contents($path);
         }
     }
+
+    public function realPath(string $path): string
+    {
+        return Runner::getInstance()->run("realpath " . escapeshellarg(trim($path)))->getOutput();
+    }
+
+    public function scanDir($path): array
+    {
+        return scandir($path);
+    }
 }

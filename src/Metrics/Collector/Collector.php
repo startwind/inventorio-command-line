@@ -70,7 +70,7 @@ class Collector
     {
         $memory = Memory::getInstance();
 
-        $file = new File();
+        $file = File::getInstance();
 
         if (!$file->fileExists('/proc/net/dev')) return 0;
 

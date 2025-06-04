@@ -61,15 +61,11 @@ class Runner
 
     public function getFileContents(string $path, bool $asArray = false): string|false|array
     {
-        if ($asArray) {
-            return file($path);
-        } else {
-            return file_get_contents($path);
-        }
+        return File::getInstance()->getContents($path, $asArray);
     }
 
     public function fileExists(string $path): bool
     {
-        return file_exists($path);
+        return File::getInstance()->fileExists($path);
     }
 }

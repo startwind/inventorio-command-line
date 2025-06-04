@@ -16,11 +16,12 @@ class AuthorizedKeysCollector implements Collector
     public function collect(): array
     {
         $runner = Runner::getInstance();
+        $file = File::getInstance();
 
         $results = [];
 
         // Read all user accounts from /etc/passwd
-        $passwdLines = file('/etc/passwd', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $passwdLines = $file->getContents('/etc/passwd', true);
 
         foreach ($passwdLines as $line) {
             $parts = explode(':', $line);
@@ -32,14 +33,14 @@ class AuthorizedKeysCollector implements Collector
             [$username, , $uid, , , $homeDirectory] = array_slice($parts, 0, 6);
 
             // Only consider regular users (UID >= 1000) with a valid home directory
-            if (!File::getInstance()->isDir($homeDirectory)) {
+            if (!$file->isDir($homeDirectory)) {
                 continue;
             }
 
             $authorizedKeysPath = $homeDirectory . '/.ssh/authorized_keys';
 
             // If authorized_keys exists, parse it
-            if (!$runner->fileExists($authorizedKeysPath)) {
+            if (!$file->fileExists($authorizedKeysPath)) {
                 continue;
             }
 
@@ -63,7 +64,7 @@ class AuthorizedKeysCollector implements Collector
     {
         $entries = [];
 
-        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $lines = File::getInstance()->getContents($filePath, true);
 
         foreach ($lines as $line) {
             $line = trim($line);
