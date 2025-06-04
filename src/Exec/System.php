@@ -19,6 +19,7 @@ class System
     {
         $escaped = escapeshellarg($directory);
         $cmd = "df -k $escaped | awk 'NR==2 {print \$2 * 1024}'";
+        $cmd = 'df -k ' . $escaped . '| awk "NR==2 {print \$2 * 1024}"';
         $output = trim(Runner::getInstance()->run($cmd)->getOutput());
         return is_numeric($output) ? (float)$output : 0.0;
     }
@@ -26,7 +27,7 @@ class System
     public function getDiskFreeSpace($directory): float
     {
         $escaped = escapeshellarg($directory);
-        $cmd = "df -k $escaped | awk 'NR==2 {print \$4 * 1024}'";
+        $cmd = 'df -k ' . $escaped . '| awk "NR==2 {print \$4 * 1024}"';
         $output = trim(Runner::getInstance()->run($cmd)->getOutput());
         return is_numeric($output) ? (float)$output : 0.0;
     }
@@ -55,7 +56,12 @@ class System
 
     public function getPlatform(): string
     {
-        $output = trim(Runner::getInstance()->run('uname -s')->getOutput());
-        return strtolower($output);
+        static $platform;
+
+        if (!$platform) {
+            $platform = trim(Runner::getInstance()->run('uname -s')->getOutput());
+        }
+
+        return $platform;
     }
 }

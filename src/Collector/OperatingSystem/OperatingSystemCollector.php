@@ -4,6 +4,7 @@ namespace Startwind\Inventorio\Collector\OperatingSystem;
 
 use Startwind\Inventorio\Collector\Collector;
 use Startwind\Inventorio\Exec\Runner;
+use Startwind\Inventorio\Exec\System;
 
 /**
  * This collector returns details about the operating system.
@@ -96,7 +97,7 @@ class OperatingSystemCollector implements Collector
      */
     public static function getOsFamily(): string
     {
-        switch (strtolower(PHP_OS_FAMILY)) {
+        switch (strtolower(System::getInstance()->getPlatform())) {
             case 'darwin':
                 return self::OS_FAMILY_MAC;
             case 'linux';

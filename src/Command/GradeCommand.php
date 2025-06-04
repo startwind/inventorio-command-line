@@ -6,10 +6,12 @@ use Exception;
 use GuzzleHttp\Client;
 use Startwind\Inventorio\Collector\ClientAwareCollector;
 use Startwind\Inventorio\Collector\InventoryAwareCollector;
+use Startwind\Inventorio\Exec\Runner;
 use Startwind\Inventorio\Metrics\Memory\Memory;
 use Startwind\Inventorio\Reporter\InventorioGradeReporter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GradeCommand extends CollectorCommand
@@ -18,12 +20,24 @@ class GradeCommand extends CollectorCommand
     protected static $defaultDescription = 'Grade this server';
 
     private const NOT_APPLICABLE = 'not applicable';
-    
+
+    protected function configure(): void
+    {
+        $this->addOption('remote', null, InputOption::VALUE_REQUIRED, 'Remote connection <user>@<ip>');
+        parent::configure();
+    }
+
     /**
      * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $remote = $input->getOption('remote');
+
+        if ($remote) {
+            Runner::getInstance()->setRemote($remote);
+        }
+
         $this->initConfiguration($input->getOption('configFile'));
 
         $debugMode = $input->getOption('debug');

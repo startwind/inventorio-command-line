@@ -2,6 +2,7 @@
 
 namespace Startwind\Inventorio\Exec;
 
+use Spatie\Ssh\Ssh;
 use Symfony\Component\Process\Process;
 
 class Runner
@@ -9,6 +10,19 @@ class Runner
     private bool $timeout = false;
 
     private static ?Runner $instance = null;
+
+    private bool $remoteOn = false;
+    private string $remoteDsn;
+    private Ssh $sshConnection;
+
+    public function setRemote($dsn)
+    {
+        $this->remoteOn = true;
+        $this->remoteDsn = $dsn;
+
+        $sshCredentials = explode('@', $this->remoteDsn);
+        $this->sshConnection = Ssh::create($sshCredentials[0], $sshCredentials[1]);
+    }
 
     static public function getInstance(): Runner
     {
@@ -31,15 +45,21 @@ class Runner
 
     public function run($command, $killAfterSeconds = 5): Process
     {
+
         if ($this->timeout) {
             $shellCommandLine = "timeout --kill-after=" . $killAfterSeconds . "s 1m " . $command;
         } else {
             $shellCommandLine = $command;
         }
 
-        $process = Process::fromShellCommandline($shellCommandLine);
+        // var_dump($command);
 
-        $process->run();
+        if ($this->remoteOn) {
+            $process = $this->sshConnection->execute($command);
+        } else {
+            $process = Process::fromShellCommandline($shellCommandLine);
+            $process->run();
+        }
 
         return $process;
     }

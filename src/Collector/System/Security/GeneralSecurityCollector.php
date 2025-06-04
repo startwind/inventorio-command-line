@@ -19,12 +19,16 @@ class GeneralSecurityCollector extends BasicCollector
 
         $sshOnlyConfig = $this->checkSshKeyOnlyLogin();
 
-        return [
+        $result = [
             'unattendedUpgradesAvailable' => $available,
             'unattendedUpgradesEnabled' => $enabled,
             'sshKeyOnlyAvailable' => $sshOnlyConfig['supported'],
             'sshKeyOnlyEnabled' => $sshOnlyConfig['enforced'],
         ];
+
+        var_dump($result);
+
+        return $result;
     }
 
     private function isUnattendedUpgradesEnabled(): bool

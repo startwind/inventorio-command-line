@@ -4,7 +4,9 @@ namespace Startwind\Inventorio\Collector\System\General;
 
 use DateTime;
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Exec\File;
 use Startwind\Inventorio\Exec\Runner;
+use Startwind\Inventorio\Exec\System;
 
 /**
  * This collector returns details about the operating system.
@@ -30,27 +32,28 @@ class UptimeCollector implements Collector
      */
     public function collect(): array
     {
-        $os = PHP_OS_FAMILY;
+        $os = strtolower(System::getInstance()->getPlatform());
 
         $date = false;
 
         $runner = Runner::getInstance();
+        $file = File::getInstance();
 
-        if ($os === 'Linux') {
+        if ($os === 'linux') {
             if ($runner->fileExists("/proc/uptime")) {
-                $uptime = $runner->getFileContents("/proc/uptime");
+                $uptime = $file->getContents("/proc/uptime");
                 $uptime = explode(" ", $uptime);
                 $seconds = floor((int)$uptime[0]);
                 $bootTimestamp = time() - $seconds;
                 $date = date(DateTime::ATOM, (int)$bootTimestamp);
             }
-        } elseif ($os === 'Darwin') { // macOS
+        } elseif ($os === 'darwin') { // macOS
             $output = $runner->run("sysctl -n kern.boottime")->getOutput();
             if (preg_match('/sec = (\d+)/', $output, $matches)) {
                 $bootTimestamp = (int)$matches[1];
                 $date = date(DateTime::ATOM, $bootTimestamp);
             }
-        } elseif ($os === 'Windows') {
+        } elseif ($os === 'windows') {
             $output = $runner->run("net stats srv")->getOutput();
             if ($output && preg_match('/Statistik seit (.*)/i', $output, $matches)) {
                 $bootTimeStr = trim($matches[1]);

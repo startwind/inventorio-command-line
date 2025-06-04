@@ -2,11 +2,10 @@
 
 namespace Startwind\Inventorio\Collector\System\Logs;
 
-use FilesystemIterator;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 use Startwind\Inventorio\Collector\Collector;
 use Startwind\Inventorio\Exec\File;
+use Startwind\Inventorio\Exec\Runner;
+use Startwind\Inventorio\Exec\System;
 
 class LogrotateCollector implements Collector
 {
@@ -34,43 +33,22 @@ class LogrotateCollector implements Collector
             $entries = $fileHandler->scanDir('/etc/logrotate.d');
             foreach ($entries as $entry) {
                 if ($entry === '.' || $entry === '..') continue;
-
                 $fullPath = '/etc/logrotate.d/' . $entry;
-                if (is_file($fullPath)) {
-                    $logrotateConfigurations[] = $fullPath;
-                }
+                $logrotateConfigurations[] = $fullPath;
             }
         }
 
-        // Step 1: Find all .log files under /var/log
-        $allLogs = [];
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($searchPath, FilesystemIterator::SKIP_DOTS)
-        );
-
-        foreach ($iterator as $file) {
-            if (preg_match('/\.log$/', $file->getFilename())) {
-                $realPath = $fileHandler->realPath($file->getPathname());
-                if ($realPath !== false && $fileHandler->isFile($realPath)) {
-                    $allLogs[$realPath] = [
-                        'size' => $fileHandler->getFilesize($realPath),
-                        'last_modified' => filemtime($realPath)
-                    ];
-                }
-            }
-        }
+        $allLogs = $this->getLogFilesWithStats($searchPath);
 
         // Step 2: Extract managed log paths from logrotate config files
         $explicitManaged = [];
         foreach ($logrotateConfigurations as $confFile) {
-            if (!$fileHandler->isReadable($confFile)) continue;
             $lines = $fileHandler->getContents($confFile, true);
             foreach ($lines as $line) {
                 if (preg_match('#^\s*/[^\s{}]+\.log#', $line, $matches)) {
-                    $path = $fileHandler->realPath($matches[0]);
-                    if ($path !== false) {
-                        $explicitManaged[] = $path;
-                    }
+                    // $path = $fileHandler->realPath($matches[0]);
+                    $path = $matches[0];
+                    $explicitManaged[] = $path;
                 }
             }
         }
@@ -115,7 +93,7 @@ class LogrotateCollector implements Collector
             $entry = [
                 'path' => $path,
                 'size' => $info['size'],
-                'last_modified' => date('c', $info['last_modified']) // ISO 8601 format
+                'last_modified' => date('c', $info['last_modified']) // ISO 8601
             ];
 
             $index = str_replace('/', '-', $path);
@@ -125,6 +103,40 @@ class LogrotateCollector implements Collector
             } else {
                 $result['unmanaged'][$index] = $entry;
             }
+        }
+
+        return $result;
+    }
+
+    function getLogFilesWithStats(string $dir): array
+    {
+        $result = [];
+
+        $os = strtolower(System::getInstance()->getPlatform());
+
+        if ($os === 'linux') {
+            $cmd = "find " . escapeshellarg($dir) . " -type f -name '*.log' -exec stat --format='%n %s %Y' {} + 2>/dev/null";
+        } elseif ($os === 'darwin') {
+            $cmd = "find " . escapeshellarg($dir) . " -type f -name '*.log' -exec stat -f '%N %z %m' {} + 2>/dev/null";
+        } else {
+            return [];
+        }
+
+        $output = Runner::getInstance()->run($cmd)->getOutput();
+        $output = explode("\n", $output);
+
+        foreach ($output as $line) {
+            $parts = preg_split('/\s+/', $line, 3);
+            if (count($parts) !== 3) {
+                continue;
+            }
+
+            [$file, $size, $mtime] = $parts;
+
+            $result[$file] = [
+                'size' => (int)$size,
+                'last_modified' => (int)$mtime,
+            ];
         }
 
         return $result;
