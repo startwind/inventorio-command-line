@@ -1,6 +1,7 @@
 # Inventorio Command Line
 
-[![Build Status](https://scrutinizer-ci.com/g/startwind/inventorio-command-line/badges/build.png?b=master)](https://scrutinizer-ci.com/g/startwind/inventorio-command-line/build-status/master)&nbsp;&nbsp;
+[![Build Status](https://scrutinizer-ci.com/g/startwind/inventorio-command-line/badges/build.png?b=master)](https://scrutinizer-ci.com/g/startwind/inventorio-command-line/build-status/master)
+&nbsp;&nbsp;
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/startwind/inventorio-command-line/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/startwind/inventorio-command-line/?branch=master)
 
 ## Installation
@@ -20,7 +21,20 @@ any directory (global install), using for example:
 sudo mv inventorio.phar /usr/local/bin/inventorio
 ```
 
-## Initialization
+## Grading
+
+Use the command line to retrieve all available hints for this server. The service operates as SaaS, but no data is
+stored.
+
+```shell
+inventorio grade
+```
+
+The expected output should look similar to this.
+
+![grade.png](docs/grade.png)
+
+## Inventorio as SaaS service
 
 ```shell
 inventorio init 
