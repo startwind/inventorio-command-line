@@ -4,6 +4,7 @@ namespace Startwind\Inventorio\Collector\System\Security;
 
 use Startwind\Inventorio\Collector\BasicCollector;
 use Startwind\Inventorio\Exec\Runner;
+use Startwind\Inventorio\Exec\System;
 
 class GeneralSecurityCollector extends BasicCollector
 {
@@ -25,8 +26,6 @@ class GeneralSecurityCollector extends BasicCollector
             'sshKeyOnlyAvailable' => $sshOnlyConfig['supported'],
             'sshKeyOnlyEnabled' => $sshOnlyConfig['enforced'],
         ];
-
-        var_dump($result);
 
         return $result;
     }
@@ -55,7 +54,7 @@ class GeneralSecurityCollector extends BasicCollector
 
     private function isUnattendedUpgradesUsable(): bool
     {
-        if (stripos(PHP_OS, 'Linux') === false) {
+        if (stripos(strtolower(System::getInstance()->getPlatform()), 'linux') === false) {
             return false;
         }
 
@@ -70,7 +69,7 @@ class GeneralSecurityCollector extends BasicCollector
     {
         $result = ['supported' => false, 'enforced' => false];
 
-        if (stripos(PHP_OS, 'Linux') === false) {
+        if (stripos(strtolower(System::getInstance()->getPlatform()), 'linux') === false) {
             return $result;
         }
 

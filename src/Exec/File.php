@@ -65,7 +65,7 @@ class File
         $cmd = 'cat ' . escapeshellarg($path) . ' 2>/dev/null';
         $output = Runner::getInstance()->run($cmd)->getOutput();
 
-        if ($output === null || $output === '') {
+        if ($output === null) {
             return false;
         }
 

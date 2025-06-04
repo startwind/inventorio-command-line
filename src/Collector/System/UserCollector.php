@@ -3,8 +3,8 @@
 namespace Startwind\Inventorio\Collector\System;
 
 use Startwind\Inventorio\Collector\BasicCollector;
-use Startwind\Inventorio\Exec\Runner;
 use Startwind\Inventorio\Exec\File;
+use Startwind\Inventorio\Exec\Runner;
 
 class UserCollector extends BasicCollector
 {
@@ -24,7 +24,7 @@ class UserCollector extends BasicCollector
 
         $users = [];
 
-        foreach (file($passwdFile) as $line) {
+        foreach (File::getInstance()->getContents($passwdFile, true) as $line) {
             $parts = explode(':', trim($line));
 
             if (count($parts) < 7) {

@@ -88,7 +88,7 @@ class ApacheServerNameCollector implements Collector
         $configurations = [];
 
         foreach ($files as $file) {
-            if ($fileHandler->isFile($vhostDir . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'conf') {
+            if (pathinfo($file, PATHINFO_EXTENSION) === 'conf') {
                 $configurations[] = $vhostDir . '/' . $file;
             }
         }

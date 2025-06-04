@@ -4,7 +4,6 @@ namespace Startwind\Inventorio\Collector\System\Security;
 
 use Startwind\Inventorio\Collector\Collector;
 use Startwind\Inventorio\Exec\File;
-use Startwind\Inventorio\Exec\Runner;
 
 class AuthorizedKeysCollector implements Collector
 {
@@ -15,7 +14,6 @@ class AuthorizedKeysCollector implements Collector
 
     public function collect(): array
     {
-        $runner = Runner::getInstance();
         $file = File::getInstance();
 
         $results = [];
@@ -43,7 +41,7 @@ class AuthorizedKeysCollector implements Collector
             if (!$file->fileExists($authorizedKeysPath)) {
                 continue;
             }
-
+    
             $entries = $this->parseAuthorizedKeysFile($authorizedKeysPath, $username);
 
             // Merge entries into the final result list

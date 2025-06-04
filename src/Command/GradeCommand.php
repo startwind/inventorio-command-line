@@ -10,6 +10,7 @@ use Startwind\Inventorio\Exec\Runner;
 use Startwind\Inventorio\Metrics\Memory\Memory;
 use Startwind\Inventorio\Reporter\InventorioGradeReporter;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -53,7 +54,19 @@ class GradeCommand extends CollectorCommand
 
         $client = new \Startwind\Inventorio\Util\Client(new Client());
 
+        $progressBar = new ProgressBar($output, count($this->collectors));
+
+        $progressBar->setFormat(' %current%/%max% [%bar%] %percent:3s%% - %message%');
+        $progressBar->setMessage('initializing');
+
+        $progressBar->start();
+
         foreach ($this->collectors as $collector) {
+            if ($debugMode) $start = time();
+
+            $progressBar->setMessage('collector: ' . $collector->getIdentifier());
+            $progressBar->display();
+
             if ($collector instanceof InventoryAwareCollector) {
                 $collector->setInventory($inventory);
             }
@@ -61,17 +74,24 @@ class GradeCommand extends CollectorCommand
                 $collector->setClient($client);
             }
 
-            if ($debugMode) $start = time();
             $collected = $collector->collect();
+
             if ($collected) {
                 $inventory[$collector->getIdentifier()] = $collected;
             } else {
                 $inventory[$collector->getIdentifier()] = self::NOT_APPLICABLE;
             }
+
+            $progressBar->advance();
+
             if ($debugMode) {
                 $output->writeln('DEBUG: running ' . $collector->getIdentifier() . ' took ' . time() - $start . ' seconds');
             }
         }
+
+        $progressBar->finish();
+
+        $output->writeln(['', '']);
 
         if ($debugMode) {
             $output->writeln('DEBUG: collection result:');

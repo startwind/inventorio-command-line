@@ -59,11 +59,9 @@ class InventorioGradeReporter implements Reporter
                 RequestOptions::CONNECT_TIMEOUT => 2
             ]);
         } catch (ConnectException $e) {
-            var_dump('oosssahh');
             throw new RuntimeException('Unable to connect to ' . $endpoint . '. Message: ' . $e->getMessage());
         } catch (ServerException $e) {
             var_dump($e->getResponse()->getBody()->getContents());
-            var_dump('ooahh');
             throw new RuntimeException('Unable to connect to ' . $endpoint . ' (ServerException). Message: ' . $e->getMessage());
         } catch (Exception $e) {
             // var_dump($e->getMessage());
