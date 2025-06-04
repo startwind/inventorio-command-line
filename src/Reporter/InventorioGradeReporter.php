@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\RequestOptions;
 use RuntimeException;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -71,9 +72,31 @@ class InventorioGradeReporter implements Reporter
             throw new RuntimeException($result['message']);
         }
 
-        var_dump($result);
+        $table = new Table($this->output);
+        $table->setHeaders(['Name', 'Description', 'Assets']);
 
-        $this->output->writeln('<info>Data successfully sent to Inventorio Cloud.</info>');
+        foreach ($result['data']['hints'] as $hint) {
+            $row = [
+                'name' => $hint['definition']['name'],
+                'description' => wordwrap($hint['definition']['description'], 40)
+            ];
+
+            $assets = [];
+
+            if (array_key_exists('files', $hint['issue']['parameters'])) {
+                $assets = array_keys($hint['issue']['parameters']['files']);
+            }
+
+            if (array_key_exists('webistes', $hint['issue']['parameters'])) {
+                $assets = $hint['issue']['parameters']['files'];
+            }
+
+            $row['assets'] = implode("\n", $assets);
+
+            $table->addRow($row);
+        }
+
+        $table->render();
     }
 
     /**
