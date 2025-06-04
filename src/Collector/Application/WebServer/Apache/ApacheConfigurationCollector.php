@@ -55,19 +55,19 @@ class ApacheConfigurationCollector extends BasicCollector
             return [];
         }
 
-        $file = File::getInstance();
+        $fileHandler = File::getInstance();
 
-        if (!$file->isDir($this->sitesEnabledPath)) {
+        if (!$fileHandler->isDir($this->sitesEnabledPath)) {
             return [];
         }
 
-        $configFiles = $file->scanDir($this->sitesEnabledPath);
+        $configFiles = $fileHandler->scanDir($this->sitesEnabledPath);
         $results = [];
 
         foreach ($configFiles as $file) {
             $filePath = $this->sitesEnabledPath . DIRECTORY_SEPARATOR . $file;
 
-            if ($file->isFile($filePath) && !$file->isLink($filePath)) {
+            if ($fileHandler->isFile($filePath) && !$fileHandler->isLink($filePath)) {
                 $serverName = $this->extractServerName($filePath);
                 $results[] = [
                     'file' => $file,
