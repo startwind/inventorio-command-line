@@ -24,6 +24,12 @@ class InventorioGradeReporter implements Reporter
     private string $serverId;
     private string $inventorioServer;
 
+    const SEVERITIES = [
+        0 => '<fg=white;bg=blue>low</>',
+        500 => '<fg=white;bg=yellow>medium</>',
+        1000 => '<fg=white;bg=red>high</>',
+    ];
+
     public function __construct(OutputInterface $output, string $inventorioServer, string $serverId, string $userId)
     {
         $this->output = $output;
@@ -61,8 +67,6 @@ class InventorioGradeReporter implements Reporter
             throw $e;
         }
 
-        // var_dump((string)$response->getBody());die;
-
         $result = json_decode((string)$response->getBody(), true);
 
         if (!is_array($result) || !array_key_exists('status', $result)) {
@@ -74,13 +78,14 @@ class InventorioGradeReporter implements Reporter
         }
 
         $table = new Table($this->output);
-        $table->setHeaders(['Name', 'Description', 'Assets']);
+        $table->setHeaders(['Severity', 'Name', 'Description', 'Assets']);
 
         $hints = $result['data']['hints'];
         $lastIndex = count($hints) - 1;
 
         foreach ($hints as $i => $hint) {
             $row = [
+                'severity' => self::SEVERITIES[$hint['definition']['severity']],
                 'name' => $hint['definition']['name'],
                 'description' => wordwrap($hint['definition']['description'], 40)
             ];
@@ -99,7 +104,6 @@ class InventorioGradeReporter implements Reporter
 
             $table->addRow($row);
 
-            // Nur hinzufügen, wenn es NICHT das letzte Element ist
             if ($i < $lastIndex) {
                 $table->addRow(new TableSeparator());
             }

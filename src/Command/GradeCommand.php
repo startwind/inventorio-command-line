@@ -18,7 +18,7 @@ class GradeCommand extends CollectorCommand
     protected static $defaultDescription = 'Grade this server';
 
     private const NOT_APPLICABLE = 'not applicable';
-
+    
     /**
      * @inheritDoc
      */
