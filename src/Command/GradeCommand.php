@@ -33,6 +33,8 @@ class GradeCommand extends CollectorCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $startRun = time();
+
         $remote = $input->getOption('remote');
 
         if ($remote) {
@@ -40,6 +42,8 @@ class GradeCommand extends CollectorCommand
         }
 
         $this->initConfiguration($input->getOption('configFile'));
+
+        $reporter = new InventorioGradeReporter($output, $this->config->getInventorioServer(), $this->getServerId(), $this->getUserId());
 
         $debugMode = $input->getOption('debug');
 
@@ -88,6 +92,8 @@ class GradeCommand extends CollectorCommand
                 $output->writeln('DEBUG: running ' . $collector->getIdentifier() . ' took ' . time() - $start . ' seconds');
             }
         }
+        
+        $progressBar->setMessage('finished after ' . time() - $startRun . ' seconds');
 
         $progressBar->finish();
 
@@ -99,8 +105,6 @@ class GradeCommand extends CollectorCommand
         }
 
         Memory::getInstance()->setCollection($inventory);
-
-        $reporter = new InventorioGradeReporter($output, $this->config->getInventorioServer(), $this->getServerId(), $this->getUserId());
 
         try {
             $reporter->report($inventory);

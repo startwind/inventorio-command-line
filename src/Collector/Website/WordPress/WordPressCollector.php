@@ -103,11 +103,7 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
             'PluginURI' => 'Plugin URI',
         ];
 
-        $fp = fopen($file, 'r');
-        if (!$fp) return [];
-
-        $data = fread($fp, 8192);
-        fclose($fp);
+        $data = File::getInstance()->getContents($file);
 
         $info = [];
         foreach ($headers as $key => $header) {

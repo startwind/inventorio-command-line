@@ -93,7 +93,7 @@ class LogrotateCollector implements Collector
             $entry = [
                 'path' => $path,
                 'size' => $info['size'],
-                'last_modified' => date('c', $info['last_modified']) // ISO 8601
+                'last_modified' => date('c', $info['last_modified'])
             ];
 
             $index = str_replace('/', '-', $path);
@@ -115,9 +115,9 @@ class LogrotateCollector implements Collector
         $os = strtolower(System::getInstance()->getPlatform());
 
         if ($os === 'linux') {
-            $cmd = "find " . escapeshellarg($dir) . " -type f -name '*.log' -exec stat --format='%n %s %Y' {} + 2>/dev/null";
+            $cmd = "find " . escapeshellarg($dir) . " -type f -name '*.log' -exec stat --format='%n\t%s\t%Y' {} + 2>/dev/null";
         } elseif ($os === 'darwin') {
-            $cmd = "find " . escapeshellarg($dir) . " -type f -name '*.log' -exec stat -f '%N %z %m' {} + 2>/dev/null";
+            $cmd = "find " . escapeshellarg($dir) . " -type f -name '*.log' -exec stat -f '%N\t%z\t%m' {} + 2>/dev/null";
         } else {
             return [];
         }
@@ -127,6 +127,7 @@ class LogrotateCollector implements Collector
 
         foreach ($output as $line) {
             $parts = preg_split('/\s+/', $line, 3);
+
             if (count($parts) !== 3) {
                 continue;
             }

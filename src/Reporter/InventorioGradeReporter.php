@@ -13,7 +13,7 @@ use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Send the collected dato to the Inventorio Cloud.
+ * Send the collected data to the Inventorio Cloud.
  */
 class InventorioGradeReporter implements Reporter
 {
@@ -30,12 +30,15 @@ class InventorioGradeReporter implements Reporter
         1000 => '<fg=white;bg=red> high </>',
     ];
 
+    private int $startTime;
+
     public function __construct(OutputInterface $output, string $inventorioServer, string $serverId, string $userId)
     {
         $this->output = $output;
         $this->userId = $userId;
         $this->serverId = $serverId;
         $this->inventorioServer = $inventorioServer;
+        $this->startTime = time();
     }
 
     /**
@@ -118,6 +121,16 @@ class InventorioGradeReporter implements Reporter
         }
 
         $table->render();
+
+        $duration = time() - $this->startTime;
+
+        /*if ($duration > 60) {
+            $minutes = floor($duration / 60);
+            $seconds = $duration - $minutes * 60;
+            $this->output->writeln('Grading took ' . $minutes . ' minutes and ' . $seconds . ' seconds');
+        } else {
+            $this->output->writeln('Grading took ' . (time() - $this->startTime) . ' seconds');
+        }*/
     }
 
     /**
