@@ -105,7 +105,7 @@ class GeneralSecurityCollector extends BasicCollector
         $challengeOff = isset($settings['challengeresponseauthentication']) && $settings['challengeresponseauthentication'] === 'no';
         $usePamOff = isset($settings['usepam']) && $settings['usepam'] === 'no';
 
-        $result['enforced'] = $passwordOff && $challengeOff && $usePamOff;
+        $result['enforced'] = $passwordOff; // && $challengeOff && $usePamOff;
 
         return $result;
     }
