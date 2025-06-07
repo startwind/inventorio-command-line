@@ -76,6 +76,7 @@ class ApacheServerNameCollector implements Collector
         return [
             self::FIELD_SERVER_NAME => $serverName,
             self::FIELD_DOCUMENT_ROOT => $documentRoot,
+            'vhostFile' => $vhostFile,
             'aliases' => $aliases
         ];
     }
