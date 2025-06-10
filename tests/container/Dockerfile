@@ -4,7 +4,7 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y wget php php-dom && \
+    apt-get install -y wget php php-dom git vim && \
     apt-get clean
 
 # Create a 100MB log file
