@@ -16,12 +16,14 @@ class InventorioCollector implements Collector
 
     private Config $config;
     private bool $areMetricsEnabled;
+    private bool $isSmartCareEnabled;
 
-    public function __construct(bool $isRemoteEnabled, bool $areLogfileEnabled, bool $areMetricsEnabled, Config $config)
+    public function __construct(bool $isRemoteEnabled, bool $areLogfileEnabled, bool $areMetricsEnabled, bool $isSmartCareEnabled, Config $config)
     {
         $this->isRemoteEnabled = $isRemoteEnabled;
         $this->areLogfileEnabled = $areLogfileEnabled;
         $this->areMetricsEnabled = $areMetricsEnabled;
+        $this->isSmartCareEnabled = $isSmartCareEnabled;
         $this->config = $config;
     }
 
@@ -42,6 +44,7 @@ class InventorioCollector implements Collector
             'client' => [
                 'version' => INVENTORIO_VERSION,
                 'isRemoteEnabled' => $this->isRemoteEnabled,
+                'isSmartCareEnabled' => $this->isSmartCareEnabled,
                 'areMetricsEnabled' => $this->areMetricsEnabled,
                 'areLogfilesEnabled' => $this->areLogfileEnabled
             ],

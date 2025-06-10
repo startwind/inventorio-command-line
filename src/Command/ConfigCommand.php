@@ -18,7 +18,8 @@ class ConfigCommand extends InventorioCommand
         $this->addOption('remote', null, InputOption::VALUE_REQUIRED, 'Start remote command mode');
         $this->addOption('logfile', null, InputOption::VALUE_REQUIRED, 'Start logfile mode');
         $this->addOption('metrics', null, InputOption::VALUE_REQUIRED, 'Start metrics collection mode');
-        $this->addOption('serverApi', null, InputOption::VALUE_REQUIRED, 'Start metrics collection mode');
+        $this->addOption('serverApi', null, InputOption::VALUE_REQUIRED, 'Set the server API');
+        $this->addOption('smartCare', null, InputOption::VALUE_REQUIRED, 'Start smart care mode');
         // $this->addOption('show', null, InputOption::VALUE_REQUIRED, 'Show config');
 
         parent::configure();
@@ -80,6 +81,23 @@ class ConfigCommand extends InventorioCommand
             $output->writeln('Metrics collection mode: <info>' . ($value ? 'on' : 'off') . '</info>');
 
             $this->setCollectEnabled($value);
+
+            $set = true;
+        }
+
+        if ($input->getOption('smartCare')) {
+            $value = $input->getOption('smartCare');
+
+            if ($value == 'on' || $value == 'true' || $value === true) {
+                $value = true;
+            } else {
+                $value = false;
+            }
+
+            $output->writeln("");
+            $output->writeln('SmartCare mode: <info>' . ($value ? 'on' : 'off') . '</info>');
+
+            $this->setSmartCareEnabled($value);
 
             $set = true;
         }

@@ -50,6 +50,7 @@ abstract class CollectorCommand extends InventorioCommand
             $this->isRemoteEnabled(),
             $this->areLogfilesEnabled(),
             $this->isCollectEnabled(),
+            $this->isSmartCareEnabled(),
             $this->config
         );
 

@@ -86,6 +86,21 @@ abstract class InventorioCommand extends Command
         return $config['collect'];
     }
 
+    protected function isSmartCareEnabled(): bool
+    {
+        if (!$this->isInitialized()) {
+            throw new RuntimeException('System was not initialized yet.');
+        }
+
+        $config = json_decode(file_get_contents($this->getConfigFile()), true);
+
+        if (!array_key_exists('smartCare', $config)) {
+            return false;
+        }
+
+        return $config['smartCare'];
+    }
+
 
     protected function areLogfilesEnabled(): bool
     {
@@ -140,6 +155,20 @@ abstract class InventorioCommand extends Command
 
         file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);
     }
+
+    protected function setSmartCareEnabled(bool $isEnabled): void
+    {
+        if (!$this->isInitialized()) {
+            throw new RuntimeException('System was not initialized yet.');
+        }
+
+        $config = json_decode(file_get_contents($this->getConfigFile()), true);
+
+        $config['smartCare'] = $isEnabled;
+
+        file_put_contents($this->getConfigFile(), json_encode($config), JSON_PRETTY_PRINT);
+    }
+
 
     protected function setServerApi(string $serverApi): void
     {
