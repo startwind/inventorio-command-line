@@ -26,7 +26,7 @@ class RemoteConnect
         $this->secret = $secret;
     }
 
-    public function run(): string
+    public function run($remoteEnabled, $smartCareEnabled): string
     {
         $client = new Client();
 
@@ -40,22 +40,43 @@ class RemoteConnect
             $commandResponse = $client->get($this->inventorioServer . $popUrl);
             $commandResult = json_decode($commandResponse->getBody(), true);
 
-            $commandId = $commandResult['data']['command']['command'];
-
-            $expectedProof = md5($commandId . $this->secret);
-            $cloudProof = $commandResult['data']['command']['proof'];
-
-            if ($expectedProof !== $cloudProof) {
-                $cloudCommand = $commandResult['data']['command']['storedCommand']['command'];
-                $identifier = $commandResult['data']['command']['id'];
-                $commandOutput = $this->runCommand($commandId, $cloudCommand);
-            } else {
+            if ($commandResult['type'] === 'smartCare' || !$smartCareEnabled) {
                 $commandOutput = [
                     "output" => '',
-                    'error' => 'The authenticity of the job could not be verified.',
+                    'error' => 'SmartCare is not activated on this server',
                     'actualCommand' => '<unknown>',
                     'exitCode' => Command::FAILURE
                 ];
+            } elseif ($commandResult['type'] === 'remote' || !$remoteEnabled) {
+                $commandOutput = [
+                    "output" => '',
+                    'error' => 'Remote commands are not enabled on this server',
+                    'actualCommand' => '<unknown>',
+                    'exitCode' => Command::FAILURE
+                ];
+            } else {
+                if ($commandResult['type'] === 'remote') {
+
+                    $commandId = $commandResult['data']['command']['command'];
+
+                    $expectedProof = md5($commandId . $this->secret);
+                    $cloudProof = $commandResult['data']['command']['proof'];
+
+                    if ($expectedProof !== $cloudProof) {
+                        $cloudCommand = $commandResult['data']['command']['storedCommand']['command'];
+                        $identifier = $commandResult['data']['command']['id'];
+                        $commandOutput = $this->runCommand($commandId, $cloudCommand);
+                    } else {
+                        $commandOutput = [
+                            "output" => '',
+                            'error' => 'The authenticity of the job could not be verified.',
+                            'actualCommand' => '<unknown>',
+                            'exitCode' => Command::FAILURE
+                        ];
+                    }
+                } else {
+                    var_dump($commandResult);
+                }
             }
 
             $sendUrl = str_replace('{commandId}', $identifier, self::URL_SEND_OUTPUT);

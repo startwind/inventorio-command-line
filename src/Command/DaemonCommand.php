@@ -17,6 +17,7 @@ class DaemonCommand extends InventorioCommand
     private array $intervals = [
         'default' => 60 * 60 * 1, // 1 hour
         'remote' => 10, // 10 seconds
+        'smartCare' => 10, // 10 seconds
         'collect' => 5 * 60 // 5 minutes
     ];
 
@@ -45,6 +46,7 @@ class DaemonCommand extends InventorioCommand
 
         $remoteEnabled = $this->isRemoteEnabled();
         $collectEnabled = $this->isCollectEnabled();
+        $smartCareEnabled = $this->isSmartCareEnabled();
 
         if ($collectEnabled) {
             $collectReporter = new InventorioCloudReporter();
@@ -55,6 +57,13 @@ class DaemonCommand extends InventorioCommand
             if ($lastRun['default'] <= time() - $this->intervals['default']) {
                 $this->getApplication()->find('collect')->run($input, $output);
                 $lastRun['default'] = time();
+            }
+
+            if ($remoteEnabled || $smartCareEnabled) {
+                if ($lastRun['remote'] <= time() - $this->intervals['remote']) {
+                    $remoteConnect->run($remoteEnabled, $smartCareEnabled);
+                    $lastRun['remote'] = time();
+                }
             }
 
             if ($remoteEnabled) {
