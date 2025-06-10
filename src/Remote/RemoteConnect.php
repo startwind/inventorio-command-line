@@ -40,6 +40,8 @@ class RemoteConnect
             $commandResponse = $client->get($this->inventorioServer . $popUrl);
             $commandResult = json_decode($commandResponse->getBody(), true);
 
+            $identifier = $commandResult['data']['command']['id'];
+
             if ($commandResult['data']['command']['type'] === 'smartCare' || !$smartCareEnabled) {
                 $commandOutput = [
                     "output" => '',
@@ -64,7 +66,6 @@ class RemoteConnect
 
                     if ($expectedProof !== $cloudProof) {
                         $cloudCommand = $commandResult['data']['command']['storedCommand']['command'];
-                        $identifier = $commandResult['data']['command']['id'];
                         $commandOutput = $this->runCommand($commandId, $cloudCommand);
                     } else {
                         $commandOutput = [
@@ -76,6 +77,7 @@ class RemoteConnect
                     }
                 } else {
                     var_dump($commandResult);
+                    $identifier = $commandResult['data']['command']['id'];
                 }
             }
 
