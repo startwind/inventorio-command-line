@@ -40,14 +40,14 @@ class RemoteConnect
             $commandResponse = $client->get($this->inventorioServer . $popUrl);
             $commandResult = json_decode($commandResponse->getBody(), true);
 
-            if ($commandResult['data']['type'] === 'smartCare' || !$smartCareEnabled) {
+            if ($commandResult['data']['command']['type'] === 'smartCare' || !$smartCareEnabled) {
                 $commandOutput = [
                     "output" => '',
                     'error' => 'SmartCare is not activated on this server',
                     'actualCommand' => '<unknown>',
                     'exitCode' => Command::FAILURE
                 ];
-            } elseif ($commandResult['data']['type'] === 'remote' || !$remoteEnabled) {
+            } elseif ($commandResult['data']['command']['type'] === 'remote' || !$remoteEnabled) {
                 $commandOutput = [
                     "output" => '',
                     'error' => 'Remote commands are not enabled on this server',
