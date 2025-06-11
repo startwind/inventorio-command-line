@@ -58,7 +58,7 @@ if [ -z "$INVENTORIO_PATH" ]; then
     exit 1
 fi
 
-echo -e "${GREEN}Found at: $INVENTORIO_PATH${NC}"
+# echo -e "${GREEN}Found at: $INVENTORIO_PATH${NC}"
 
 # 4. Backup der alten Version
 start_progress_bar "Backing up existing version..."
@@ -86,7 +86,7 @@ if $HAS_SYSTEMD; then
         start_progress_bar "Restarting inventorio.service..."
         sudo systemctl restart inventorio.service
         stop_progress_bar
-        echo -e "${GREEN}Service restarted successfully.${NC}"
+        # echo -e "${GREEN}Service restarted successfully.${NC}"
     else
         stop_progress_bar
         echo -e "${RED}inventorio.service not active or not found.${NC}"
