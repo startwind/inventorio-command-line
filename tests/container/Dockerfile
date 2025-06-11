@@ -30,3 +30,6 @@ COPY config.yml /root/.inventorio/config.yml
 
 # Keep the container running
 CMD ["tail", "-f", "/dev/null"]
+
+# commands
+# rm /var/log/inventorio.log.1.gz; rm /etc/logrotate.d/inventorio; dd if=/dev/zero of=/var/log/inventorio.log bs=1M count=100

@@ -2,6 +2,8 @@
 
 namespace Startwind\Inventorio\Command;
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Startwind\Inventorio\Metrics\Collector\Collector;
 use Startwind\Inventorio\Metrics\Memory\Memory;
 use Startwind\Inventorio\Metrics\Reporter\InventorioCloudReporter;
@@ -27,6 +29,13 @@ class DaemonCommand extends InventorioCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->initConfiguration($input->getOption('configFile'));
+
+        $isDebug = $input->getOption('debug');
+
+        if ($isDebug) {
+            $logger = new Logger('name');
+            $logger->pushHandler(new StreamHandler('daemon.log', Logger::DEBUG));
+        }
 
         $lastRun = [
             'default' => time() - (24 * 60 * 60),
@@ -61,7 +70,10 @@ class DaemonCommand extends InventorioCommand
 
             if ($remoteEnabled || $smartCareEnabled) {
                 if ($lastRun['remote'] <= time() - $this->intervals['remote']) {
-                    $remoteConnect->run($remoteEnabled, $smartCareEnabled);
+                    $result = $remoteConnect->run($remoteEnabled, $smartCareEnabled);
+                    if ($isDebug) {
+                        $logger->debug('Running command: ' . $result);
+                    }
                     $lastRun['remote'] = time();
                 }
             }
