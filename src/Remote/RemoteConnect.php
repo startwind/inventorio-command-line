@@ -118,7 +118,8 @@ class RemoteConnect
         return [
             "output" => implode("\n", $output),
             "error" => $error,
-            'actualCommand' => $actualCommands,
+            'actualCommand' => $command,
+            'splittedCommands' => $actualCommands,
             'exitCode' => $exitCode
         ];
     }
