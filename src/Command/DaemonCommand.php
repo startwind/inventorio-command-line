@@ -82,7 +82,7 @@ class DaemonCommand extends InventorioCommand
 
     private function getInterval(): int
     {
-        if ($this->isRemoteEnabled()) {
+        if ($this->isRemoteEnabled() || $this->isSmartCareEnabled()) {
             return $this->intervals['remote'];
         }
 
