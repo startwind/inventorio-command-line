@@ -101,8 +101,14 @@ class RemoteConnect
         $expectedProof = md5($command . $this->secret);
         $cloudProof = $commandObject['command']['proof'];
 
-        var_dump($expectedProof);
-        var_dump($cloudProof);
+        if ($expectedProof !== $cloudProof) {
+            return [
+                "output" => '',
+                'error' => 'The authenticity of the job could not be verified.',
+                'actualCommand' => '<unknown>',
+                'exitCode' => Command::FAILURE
+            ];
+        }
 
         $actualCommands = CommandUtil::splitCommands($command);
 
