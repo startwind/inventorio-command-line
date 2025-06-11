@@ -4,6 +4,7 @@ namespace Startwind\Inventorio\Remote;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Startwind\Inventorio\Util\CommandUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Process\Process;
 
@@ -76,8 +77,7 @@ class RemoteConnect
                         ];
                     }
                 } else {
-                    var_dump($commandResult);
-                    $identifier = $commandResult['data']['command']['id'];
+                    $commandOutput = $this->runSmartCareCommand($commandResult['data']);
                 }
             }
 
@@ -91,6 +91,22 @@ class RemoteConnect
         }
 
         return "";
+    }
+
+    private function runSmartCareCommand(array $commandObject): array
+    {
+        $command = $commandObject['command'];
+
+        $actualCommand = CommandUtil::splitCommands($command);
+
+        var_dump($actualCommand);
+
+        return [
+            "output" => '',
+            "error" => "Not implemented yet",
+            'actualCommand' => '<unknown>',
+            'exitCode' => Command::FAILURE
+        ];
     }
 
     private function runCommand(string $command, string $cloudCommand): array
@@ -126,5 +142,4 @@ class RemoteConnect
             ];
         }
     }
-
 }
