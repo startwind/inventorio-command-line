@@ -16,7 +16,7 @@ start_progress_bar() {
         while true; do
             local spin='-\|/'
             local char="${spin:i++%${#spin}:1}"
-            echo -ne "   [${char}] Working...\r"
+            echo -ne "   [${char}] Working \r"
             sleep 0.1
         done
     ) &
@@ -27,9 +27,10 @@ stop_progress_bar() {
     kill "$PROGRESS_PID" &>/dev/null || true
     wait "$PROGRESS_PID" 2>/dev/null || true
     echo -ne "\r [✔] Done.          \n"
+    echo ""
 }
 
-echo -e " Starting Inventorio update process..."
+echo -e " Starting Inventorio update process "
 echo ""
 
 # 1. Version prüfen
@@ -47,12 +48,12 @@ echo ""
 TMP_PHAR="/tmp/inventorio.phar"
 
 # 2. PHAR herunterladen
-start_progress_bar "Downloading inventorio.phar..."
+start_progress_bar "Downloading inventorio.phar "
 curl -sSL "$PHAR_URL" -o "$TMP_PHAR"
 stop_progress_bar
 
 # 3. Vorhandene Binärdatei finden
-start_progress_bar "Searching for current 'inventorio' executable..."
+start_progress_bar "Searching for current 'inventorio' executable "
 INVENTORIO_PATH=$(which inventorio || true)
 stop_progress_bar
 
@@ -64,18 +65,18 @@ fi
 # echo -e "${GREEN}Found at: $INVENTORIO_PATH${NC}"
 
 # 4. Backup der alten Version
-start_progress_bar "Backing up existing version..."
+start_progress_bar "Backing up existing version"
 cp -f "$INVENTORIO_PATH" "${INVENTORIO_PATH}.bak"
 stop_progress_bar
 
 # 5. Neue Version kopieren
-start_progress_bar "Replacing with new version..."
+start_progress_bar "Replacing with new version"
 cp -f "$TMP_PHAR" "$INVENTORIO_PATH"
 chmod +x "$INVENTORIO_PATH"
 stop_progress_bar
 
 # 6. Systemd prüfen & Dienst neustarten
-start_progress_bar "Checking for systemd..."
+start_progress_bar "Checking for systemd"
 HAS_SYSTEMD=false
 if pidof systemd &> /dev/null && [ -d /run/systemd/system ]; then
     HAS_SYSTEMD=true
@@ -83,10 +84,10 @@ fi
 stop_progress_bar
 
 if $HAS_SYSTEMD; then
-    start_progress_bar "Checking for inventorio.service..."
+    start_progress_bar "Checking for inventorio.service"
     if systemctl list-units --type=service | grep -q "inventorio.service"; then
         stop_progress_bar
-        start_progress_bar "Restarting inventorio.service..."
+        start_progress_bar "Restarting inventorio.service"
         sudo systemctl restart inventorio.service
         stop_progress_bar
         # echo -e "${GREEN}Service restarted successfully.${NC}"
@@ -95,19 +96,21 @@ if $HAS_SYSTEMD; then
         echo -e "${RED}inventorio.service not active or not found.${NC}"
     fi
 else
-    start_progress_bar "Systemd not detected – running 'inventorio collect'..."
+    start_progress_bar "Systemd not detected – running 'inventorio collect'"
     inventorio collect
     stop_progress_bar
 fi
 
 # 7. Aufräumen
-start_progress_bar "Cleaning up temporary files..."
+start_progress_bar "Cleaning up temporary files"
 rm -f "$TMP_PHAR"
 stop_progress_bar
 
 # 8. Script löschen
-start_progress_bar "Deleting update script..."
+start_progress_bar "Deleting update script"
 rm -- "$0"
 stop_progress_bar
 
-echo -e "${GREEN}==> Update process completed successfully.${NC}"
+echo ""
+echo ""
+echo -e "${GREEN} Update process completed successfully.${NC}"
