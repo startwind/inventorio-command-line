@@ -112,5 +112,4 @@ rm -- "$0"
 stop_progress_bar
 
 echo ""
-echo ""
 echo -e "${GREEN} Update process completed successfully.${NC}"
