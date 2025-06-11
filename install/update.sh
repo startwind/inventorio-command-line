@@ -16,7 +16,7 @@ start_progress_bar() {
         while true; do
             local spin='-\|/'
             local char="${spin:i++%${#spin}:1}"
-            echo -ne "[${char}] Working \r"
+            echo -ne " [${char}] Working \r"
             sleep 0.1
         done
     ) &
