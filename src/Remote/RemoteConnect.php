@@ -99,7 +99,7 @@ class RemoteConnect
         $command = $commandObject['command']['command'];
 
         $expectedProof = md5($command . $this->secret);
-        $cloudProof = $commandObject['data']['command']['proof'];
+        $cloudProof = $commandObject['command']['proof'];
 
         var_dump($expectedProof);
         var_dump($cloudProof);
