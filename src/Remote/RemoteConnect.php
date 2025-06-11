@@ -79,8 +79,6 @@ class RemoteConnect
                     }
                 } else {
                     $commandOutput = $this->runSmartCareCommand($commandResult['data']);
-
-                    var_dump($commandOutput);
                 }
             }
 
@@ -99,6 +97,12 @@ class RemoteConnect
     private function runSmartCareCommand(array $commandObject): array
     {
         $command = $commandObject['command']['command'];
+
+        $expectedProof = md5($command . $this->secret);
+        $cloudProof = $commandObject['data']['command']['proof'];
+
+        var_dump($expectedProof);
+        var_dump($cloudProof);
 
         $actualCommands = CommandUtil::splitCommands($command);
 
