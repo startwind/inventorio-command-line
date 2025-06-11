@@ -96,7 +96,7 @@ class RemoteConnect
 
     private function runSmartCareCommand(array $commandObject): array
     {
-        $command = $commandObject['command'];
+        $command = $commandObject['command']['command'];
 
         $actualCommand = CommandUtil::splitCommands($command);
 
