@@ -79,6 +79,8 @@ class RemoteConnect
                     }
                 } else {
                     $commandOutput = $this->runSmartCareCommand($commandResult['data']);
+
+                    var_dump($commandOutput);
                 }
             }
 
