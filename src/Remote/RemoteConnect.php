@@ -98,15 +98,28 @@ class RemoteConnect
     {
         $command = $commandObject['command']['command'];
 
-        $actualCommand = CommandUtil::splitCommands($command);
+        $actualCommands = CommandUtil::splitCommands($command);
 
-        var_dump($actualCommand);
+        $output = [];
+        $error = '';
+        $exitCode = Command::SUCCESS;
+
+        foreach ($actualCommands as $actualCommand) {
+            $process = $this->runActualCommand($actualCommand);
+            $output[] = $process->getOutput();
+
+            if ($process->getExitCode() !== Command::SUCCESS) {
+                $error = $process->getErrorOutput();
+                $exitCode = $process->getExitCode();
+                break;
+            }
+        }
 
         return [
-            "output" => '',
-            "error" => "Not implemented yet",
-            'actualCommand' => '<unknown>',
-            'exitCode' => Command::FAILURE
+            "output" => implode("\n", $output),
+            "error" => $error,
+            'actualCommand' => $actualCommands,
+            'exitCode' => $exitCode
         ];
     }
 
@@ -124,9 +137,7 @@ class RemoteConnect
         $actualCommand = $this->commands[$command];
 
         if ($cloudCommand === $actualCommand['command']) {
-            $shellCommandLine = "timeout --kill-after=5s 1m " . $actualCommand['command'];
-            $process = Process::fromShellCommandline($shellCommandLine);
-            $process->run();
+            $process = $this->runActualCommand($actualCommand['command']);
 
             return [
                 'output' => $process->getOutput(),
@@ -142,5 +153,14 @@ class RemoteConnect
                 'exitCode' => Command::FAILURE
             ];
         }
+    }
+
+    private function runActualCommand(string $command): Process
+    {
+        $shellCommandLine = "timeout --kill-after=5s 1m " . $command;
+        $process = Process::fromShellCommandline($shellCommandLine);
+        $process->run();
+
+        return $process;
     }
 }
