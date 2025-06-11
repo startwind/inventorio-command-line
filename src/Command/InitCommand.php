@@ -31,6 +31,7 @@ class InitCommand extends InventorioCommand
         parent::configure();
 
         $this->addOption('remote', null, InputOption::VALUE_REQUIRED, 'Start remote command mode');
+        $this->addOption('smartCare', null, InputOption::VALUE_REQUIRED, 'Start remote command mode');
         $this->addOption('logfile', null, InputOption::VALUE_REQUIRED, 'Start logfile mode');
         $this->addOption('metrics', null, InputOption::VALUE_REQUIRED, 'Start metrics collection mode');
         $this->addOption('serverApi', null, InputOption::VALUE_REQUIRED, 'Start metrics collection mode');
@@ -104,6 +105,9 @@ class InitCommand extends InventorioCommand
         }
         if ($input->getOption('metrics')) {
             $array['--metrics'] = $input->getOption('metrics');
+        }
+        if ($input->getOption('smartCare')) {
+            $array['--smartCare'] = $input->getOption('smartCare');
         }
         if ($input->getOption('serverApi')) {
             $array['--serverApi'] = $input->getOption('serverApi');

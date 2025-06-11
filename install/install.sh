@@ -19,7 +19,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 if [ -z "$1" ]; then
-  echo "Usage: $0 <ID> [metrics=on] [remote=on]"
+  echo "Usage: $0 <ID> [metrics=on] [remote=on] [smartCare=on]"
   exit 1
 fi
 
@@ -29,12 +29,16 @@ shift
 # Default Parameter leer
 METRICS_PARAM=""
 REMOTE_PARAM=""
+SMARTCARE_PARAM=""
 
 # Parameter auslesen
 for param in "$@"; do
   case "$param" in
     metrics=on)
       METRICS_PARAM="--metrics=on"
+      ;;
+    smartCare=on)
+      SMARTCARE_PARAM="--smartCare=on"
       ;;
     remote=on)
       REMOTE_PARAM="--remote=on"
@@ -84,7 +88,7 @@ chmod +x "$PHAR_PATH"
 
 # Führe init mit der ID und optionalen Parametern aus
 echo "Initializing for user ID: $ID with parameters: $METRICS_PARAM $REMOTE_PARAM"
-"$PHAR_PATH" init "$ID" $METRICS_PARAM $REMOTE_PARAM
+"$PHAR_PATH" init "$ID" $METRICS_PARAM $REMOTE_PARAM $SMARTCARE_PARAM
 
 # Prüfe ob systemd vorhanden ist
 if pidof systemd &>/dev/null; then
