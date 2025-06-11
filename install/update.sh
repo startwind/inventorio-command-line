@@ -29,18 +29,20 @@ stop_progress_bar() {
     echo -ne "\r [✔] Done.          \n"
 }
 
-echo -e "${GREEN}Starting Inventorio update process...${NC}"
-echo -e "$ ${NC}"
+echo -e " Starting Inventorio update process..."
+echo ""
 
 # 1. Version prüfen
 VERSION="$1"
 if [ -n "$VERSION" ]; then
     PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/download/$VERSION/inventorio.phar"
-    echo -e "${GREEN}     Selected version: $VERSION${NC}"
+    echo -e "${GREEN} Selected version: $VERSION${NC}"
 else
     PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/latest/download/inventorio.phar"
-    echo -e "${GREEN}     Using latest version${NC}"
+    echo -e "${GREEN} Using latest version${NC}"
 fi
+
+echo ""
 
 TMP_PHAR="/tmp/inventorio.phar"
 
