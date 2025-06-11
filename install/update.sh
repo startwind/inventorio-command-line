@@ -10,7 +10,7 @@ NC='\033[0m'
 # Spinner-Progressbar
 start_progress_bar() {
     local msg="$1"
-    echo -e "${GREEN}==> $msg${NC}"
+    echo -e "${GREEN} $msg${NC}"
     (
         i=0
         while true; do
@@ -26,19 +26,20 @@ start_progress_bar() {
 stop_progress_bar() {
     kill "$PROGRESS_PID" &>/dev/null || true
     wait "$PROGRESS_PID" 2>/dev/null || true
-    echo -ne "\r   [✔] Done.          \n"
+    echo -ne "\r [✔] Done.          \n"
 }
 
-echo -e "${GREEN}==> Starting Inventorio update process...${NC}"
+echo -e "${GREEN}Starting Inventorio update process...${NC}"
+echo -e "$ ${NC}"
 
 # 1. Version prüfen
 VERSION="$1"
 if [ -n "$VERSION" ]; then
     PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/download/$VERSION/inventorio.phar"
-    echo -e "${GREEN}Selected version: $VERSION${NC}"
+    echo -e "${GREEN}     Selected version: $VERSION${NC}"
 else
     PHAR_URL="https://github.com/startwind/inventorio-command-line/releases/latest/download/inventorio.phar"
-    echo -e "${GREEN}Using latest version${NC}"
+    echo -e "${GREEN}     Using latest version${NC}"
 fi
 
 TMP_PHAR="/tmp/inventorio.phar"
