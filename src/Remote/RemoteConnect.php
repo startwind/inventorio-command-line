@@ -42,15 +42,16 @@ class RemoteConnect
             $commandResult = json_decode($commandResponse->getBody(), true);
 
             $identifier = $commandResult['data']['command']['id'];
+            $type = $commandResult['data']['command']['type'];
 
-            if ($commandResult['data']['command']['type'] === 'smartCare' && !$smartCareEnabled) {
+            if ($type === 'smartCare' && !$smartCareEnabled) {
                 $commandOutput = [
                     "output" => '',
                     'error' => 'SmartCare is not activated on this server',
                     'actualCommand' => '<unknown>',
                     'exitCode' => Command::FAILURE
                 ];
-            } elseif ($commandResult['data']['command']['type'] === 'remote' && !$remoteEnabled) {
+            } elseif ($type === 'remote' && !$remoteEnabled) {
                 $commandOutput = [
                     "output" => '',
                     'error' => 'Remote commands are not enabled on this server',
@@ -58,7 +59,7 @@ class RemoteConnect
                     'exitCode' => Command::FAILURE
                 ];
             } else {
-                if ($commandResult['type'] === 'remote') {
+                if ($type === 'remote') {
 
                     $commandId = $commandResult['data']['command']['command'];
 
