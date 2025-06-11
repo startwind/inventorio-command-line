@@ -61,14 +61,8 @@ class DaemonCommand extends InventorioCommand
 
             if ($remoteEnabled || $smartCareEnabled) {
                 if ($lastRun['remote'] <= time() - $this->intervals['remote']) {
+                    echo('RUN COMMAND');
                     $remoteConnect->run($remoteEnabled, $smartCareEnabled);
-                    $lastRun['remote'] = time();
-                }
-            }
-
-            if ($remoteEnabled) {
-                if ($lastRun['remote'] <= time() - $this->intervals['remote']) {
-                    $remoteConnect->run();
                     $lastRun['remote'] = time();
                 }
             }
