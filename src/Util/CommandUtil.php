@@ -4,7 +4,8 @@ namespace Startwind\Inventorio\Util;
 
 abstract class CommandUtil
 {
-    function splitCommands(string $input): array {
+    public static function splitCommands(string $input): array
+    {
         $lines = explode("\n", $input);
         $commands = [];
         $current = '';
