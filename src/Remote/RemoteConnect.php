@@ -119,7 +119,7 @@ class RemoteConnect
             "output" => implode("\n", $output),
             "error" => $error,
             'actualCommand' => $command,
-            'splittedCommands' => $actualCommands,
+            'splitCommands' => $actualCommands,
             'exitCode' => $exitCode
         ];
     }
