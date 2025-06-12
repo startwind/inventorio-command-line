@@ -45,6 +45,8 @@ class DnfPackageCollector implements Collector
 
         $output = Runner::getInstance()->run($command)->getOutput();
 
+        var_dump($output);
+
         // Format as JSON array
         $output = "[" . preg_replace("/,\n$/", "\n", trim($output)) . "]";
 
