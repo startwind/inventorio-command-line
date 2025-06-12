@@ -41,10 +41,8 @@ class DnfPackageCollector implements Collector
             return [];
         }
 
-        $command = <<<EOD
-bash -c 'echo "["; rpm -qa --qf "%{NAME} %{VERSION}-%{RELEASE}\\n" | awk \'BEGIN{ORS="";} {printf "{\\"package\\":\\"%s\\", \\"version\\":\\"%s\\"},\\n", \$1, \$2}\' | sed "\$s/},/}/"; echo "]"'
-EOD;
-        
+        $command = 'bash -c \'echo "["; rpm -qa --qf "%{NAME} %{VERSION}-%{RELEASE}\\n" | awk \'\'BEGIN{ORS="";} {printf "{\\\"package\\\":\\\"%s\\\", \\\"version\\\":\\\"%s\\\"},\\n", $1, $2}\'\' | sed "$s/},/}/"; echo "]"\'';
+
         $output = Runner::getInstance()->run($command)->getOutput();
 
         // Format as JSON array
