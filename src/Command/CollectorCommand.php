@@ -46,6 +46,8 @@ abstract class CollectorCommand extends InventorioCommand
      */
     protected function initCollectors(): void
     {
+        $this->collectors[] = new DnfPackageCollector();
+        
         // Inventorio
         $this->collectors[] = new InventorioCollector(
             $this->isRemoteEnabled(),
@@ -86,7 +88,6 @@ abstract class CollectorCommand extends InventorioCommand
 
         // Package Managers
         $this->collectors[] = new BrewPackageCollector();
-        $this->collectors[] = new DnfPackageCollector();
         $this->collectors[] = new DpkgPackageCollector();
 
 

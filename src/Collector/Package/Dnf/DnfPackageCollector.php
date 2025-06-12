@@ -38,9 +38,6 @@ class DnfPackageCollector implements Collector
 
         $output = Runner::getInstance()->run('rpm -qa --qf \'{"package":"%{NAME}", "version":"%{VERSION}-%{RELEASE}"},\n\'')->getOutput();
 
-        var_dump($output);
-        die;
-
         // Format as JSON array
         $output = "[" . preg_replace("/,\n$/", "\n", trim($output)) . "]";
 

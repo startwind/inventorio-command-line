@@ -45,7 +45,6 @@ class Runner
 
     public function run($command, $killAfterSeconds = 5): Process
     {
-
         if ($this->timeout) {
             $shellCommandLine = "timeout --kill-after=" . $killAfterSeconds . "s 1m " . $command;
         } else {
@@ -54,9 +53,11 @@ class Runner
 
         // var_dump($command);
 
+        var_dump($shellCommandLine);
+
         if ($this->remoteOn) {
             // echo "DEBUG: " . $command . "\n";
-            $process = $this->sshConnection->execute($command);
+            $process = $this->sshConnection->execute($shellCommandLine);
         } else {
             $process = Process::fromShellCommandline($shellCommandLine);
             $process->run();
