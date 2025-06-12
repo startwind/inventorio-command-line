@@ -29,7 +29,8 @@ class DnfPackageCollector implements Collector
             'updatable' => $this->collectUpdatablePackages()
         ];
 
-        var_dump($result); die;
+        var_dump($result);
+        die;
 
         return $result;
     }
@@ -40,8 +41,10 @@ class DnfPackageCollector implements Collector
             return [];
         }
 
-        $command = 'echo "["; rpm -qa --qf \'{"package":"%{NAME}", "version":"%{VERSION}-%{RELEASE}"},\n\' | sed \'$s/},/}/\'; echo "]"';
-
+        $command = <<<EOD
+bash -c 'echo "["; rpm -qa --qf "%{NAME} %{VERSION}-%{RELEASE}\\n" | awk \'BEGIN{ORS="";} {printf "{\\"package\\":\\"%s\\", \\"version\\":\\"%s\\"},\\n", \$1, \$2}\' | sed "\$s/},/}/"; echo "]"'
+EOD;
+        
         $output = Runner::getInstance()->run($command)->getOutput();
 
         // Format as JSON array
