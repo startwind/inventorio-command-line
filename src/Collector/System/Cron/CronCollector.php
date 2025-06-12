@@ -29,6 +29,12 @@ class CronCollector implements Collector
      */
     public function collect(): array
     {
+        $runner = Runner::getInstance();
+
+        if(!$runner->commandExists('crontab')) {
+            return [];
+        }
+
         $cronJobs = Runner::getInstance()->run('crontab -l 2>&1')->getOutput();
 
         if (strpos($cronJobs, 'no crontab for') !== false) {
