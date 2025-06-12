@@ -41,7 +41,7 @@ class DnfPackageCollector implements Collector
             return [];
         }
 
-        $command = 'rpm -qa --qf "[\"package\":\"%{NAME}\", \"version\":\"%{VERSION}-%{RELEASE}\"],\n"';
+        $command = 'rpm -qa --qf "[{\"package\":\"%{NAME}\", \"version\":\"%{VERSION}-%{RELEASE}\"}],\n"';
 
         $output = Runner::getInstance()->run($command)->getOutput();
 
