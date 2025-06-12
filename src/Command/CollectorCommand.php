@@ -13,6 +13,7 @@ use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
 use Startwind\Inventorio\Collector\Metrics\MetricThresholdCollector;
 use Startwind\Inventorio\Collector\OperatingSystem\OperatingSystemCollector;
 use Startwind\Inventorio\Collector\Package\Brew\BrewPackageCollector;
+use Startwind\Inventorio\Collector\Package\Dnf\DnfPackageCollector;
 use Startwind\Inventorio\Collector\Package\Dpkg\DpkgPackageCollector;
 use Startwind\Inventorio\Collector\System\Cron\CronCollector;
 use Startwind\Inventorio\Collector\System\General\ConfigurationCollector;
@@ -85,7 +86,9 @@ abstract class CollectorCommand extends InventorioCommand
 
         // Package Managers
         $this->collectors[] = new BrewPackageCollector();
+        $this->collectors[] = new DnfPackageCollector();
         $this->collectors[] = new DpkgPackageCollector();
+
 
         // Application / Programming Language
         $this->collectors[] = new PhpCollector();

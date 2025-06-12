@@ -152,7 +152,7 @@ class InitCommand extends InventorioCommand
     /**
      * Return the final endpoint where the collected data should be sent to.
      */
-    private function getPreparedEndpoint($serverId, string $inventorioServer = null): string
+    private function getPreparedEndpoint($serverId, $inventorioServer = null): string
     {
         if ($inventorioServer) {
             return str_replace('{serverId}', $serverId, $inventorioServer . self::ENDPOINT_INIT);
