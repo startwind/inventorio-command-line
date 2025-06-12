@@ -53,7 +53,9 @@ class DnfPackageCollector implements Collector
 
         foreach ($packages as $packageObject) {
             $parts = explode(' ', $packageObject);
-            $packageList[$parts[0]] = $parts[1];
+            if (count($parts) > 0 && $parts[0]) {
+                $packageList[$parts[0]] = $parts[1];
+            }
         }
 
 
