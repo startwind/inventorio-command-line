@@ -29,9 +29,6 @@ class DnfPackageCollector implements Collector
             'updatable' => $this->collectUpdatablePackages()
         ];
 
-        var_dump($result);
-        die;
-
         return $result;
     }
 
@@ -45,8 +42,6 @@ class DnfPackageCollector implements Collector
 
         $output = Runner::getInstance()->run($command)->getOutput();
 
-        // var_dump($output);
-
         $packages = (explode("\n", $output));
 
         $packageList = [];
@@ -58,26 +53,7 @@ class DnfPackageCollector implements Collector
             }
         }
 
-
-        // Format as JSON array
-        // $output = "[" . preg_replace("/,\n$/", "\n", trim($output)) . "]";
-
-        var_dump($packageList);
-
         return $packageList;
-
-        // $packageList = json_decode($output, true);
-
-        if (!is_array($packageList)) {
-            return [];
-        }
-
-        $result = [];
-        foreach ($packageList as $package) {
-            $result[$package['package']] = [$package['version']];
-        }
-
-        return $result;
     }
 
     private function collectUpdatablePackages(): array
