@@ -41,8 +41,8 @@ class DnfPackageCollector implements Collector
             return [];
         }
 
-        $command = 'bash -c \'echo "["; rpm -qa --qf \'\'{"package":"%{NAME}", "version":"%{VERSION}-%{RELEASE}"},\n\'\' | sed "$s/},/}/"; echo "]"\'';
-
+        $command = 'bash -c \'echo "["; rpm -qa --qf "{\"package\":\"%{NAME}\", \"version\":\"%{VERSION}-%{RELEASE}\"},\n" | sed "$s/},$/}/"; echo "]"\'';
+        
         $output = Runner::getInstance()->run($command)->getOutput();
 
         // var_dump($output);
