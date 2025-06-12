@@ -30,6 +30,10 @@ class DpkgPackageCollector implements Collector
             return [];
         }
 
+        if (!Runner::getInstance()->commandExists('apt')) {
+            return [];
+        }
+
         return [
             'packages' => $this->collectPackages(),
             'updatable' => $this->collectUpdatablePackages()
