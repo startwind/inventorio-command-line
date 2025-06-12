@@ -69,7 +69,7 @@ class InitCommand extends InventorioCommand
         ];
 
         try {
-            $response = $client->post($this->getPreparedEndpoint($serverId), [
+            $response = $client->post($this->getPreparedEndpoint($serverId, $input->getOption('serverApi')), [
                 RequestOptions::JSON => $payload
             ]);
         } catch (ClientException $exception) {
@@ -84,6 +84,8 @@ class InitCommand extends InventorioCommand
             'serverId' => $serverId,
             'userId' => $userId,
             'remote' => false,
+            'smartCare' => false,
+            'metrics' => false,
             'commands' => $this->config->getCommands(false),
             'secret' => $result['data']['secret']
         ];
@@ -150,9 +152,13 @@ class InitCommand extends InventorioCommand
     /**
      * Return the final endpoint where the collected data should be sent to.
      */
-    private function getPreparedEndpoint($serverId): string
+    private function getPreparedEndpoint($serverId, string $inventorioServer = null): string
     {
-        return str_replace('{serverId}', $serverId, $this->config->getInventorioServer() . self::ENDPOINT_INIT);
+        if ($inventorioServer) {
+            return str_replace('{serverId}', $serverId, $inventorioServer . self::ENDPOINT_INIT);
+        } else {
+            return str_replace('{serverId}', $serverId, $this->config->getInventorioServer() . self::ENDPOINT_INIT);
+        }
     }
 
     /**

@@ -1,0 +1,18 @@
+{
+  "serverId":"inv-srv-310ce7a7-abed-45fd-b26b-f381eabefd8b",
+  "userId":"1f019c5e-3afe-65d8-8e0c-97ec04579c1a",
+  "remote":false,
+  "commands":{
+    "reboot":{
+      "name":"Reboot the server",
+      "command":"reboot"
+    },
+    "inventorio-collect":{
+      "name":"Collect server status via inventorio agent",
+      "command":"inventorio collect"
+    }
+  },
+  "secret":"25f11b982a7fe4a62875f6046ac3e5dc7c5579f6",
+  "collect":true,
+  "serverApi":"https:\/\/api.stage.inventorio.cloud"
+}
