@@ -41,7 +41,6 @@ class DnfPackageCollector implements Collector
             return [];
         }
 
-        $command = 'rpm -qa --qf "[\"package\":\"%{NAME}\", \"version\":\"%{VERSION}-%{RELEASE}\"],\n"';
         $command = 'bash -c \'echo "["; rpm -qa --qf \'\'{"package":"%{NAME}", "version":"%{VERSION}-%{RELEASE}"},\n\'\' | sed "$s/},/}/"; echo "]"\'';
 
         $output = Runner::getInstance()->run($command)->getOutput();
@@ -49,7 +48,7 @@ class DnfPackageCollector implements Collector
         // var_dump($output);
 
         // Format as JSON array
-        $output = "[" . preg_replace("/,\n$/", "\n", trim($output)) . "]";
+        // $output = "[" . preg_replace("/,\n$/", "\n", trim($output)) . "]";
 
         $packageList = json_decode($output, true);
 
