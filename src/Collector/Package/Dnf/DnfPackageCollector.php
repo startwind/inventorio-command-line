@@ -24,10 +24,14 @@ class DnfPackageCollector implements Collector
             return [];
         }
 
-        return [
+        $result = [
             'packages' => $this->collectPackages(),
             'updatable' => $this->collectUpdatablePackages()
         ];
+
+        var_dump($result); die;
+
+        return $result;
     }
 
     private function collectPackages(): array

@@ -51,10 +51,6 @@ class Runner
             $shellCommandLine = $command;
         }
 
-        // var_dump($command);
-
-        var_dump($shellCommandLine);
-
         if ($this->remoteOn) {
             // echo "DEBUG: " . $command . "\n";
             $process = $this->sshConnection->execute($shellCommandLine);
