@@ -7,6 +7,7 @@ use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheConfigurationCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\Collector;
+use Startwind\Inventorio\Collector\Container\DockerCollector;
 use Startwind\Inventorio\Collector\Hosting\HostingCompany\ASNCollector;
 use Startwind\Inventorio\Collector\Inventorio\CommandCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
@@ -78,6 +79,7 @@ abstract class CollectorCommand extends InventorioCommand
         $this->collectors[] = new UserCollector();
         $this->collectors[] = new LogrotateCollector();
         $this->collectors[] = new DiskCollector();
+        $this->collectors[] = new DockerCollector();
 
         // System / Services
         $this->collectors[] = new SystemDCollector();
