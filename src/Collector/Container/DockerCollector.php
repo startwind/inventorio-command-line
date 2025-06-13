@@ -24,7 +24,7 @@ class DockerCollector implements Collector
 
         if (!$runner->commandExists('docker')) return [];
 
-        $cmd = 'docker ps --format {{.ID}}|{{.Image}}|{{.Names}}|{{.Ports}}';
+        $cmd = "docker ps --format '{{.ID}}|{{.Image}}|{{.Names}}|{{.Ports}}'";
         $output = Runner::getInstance()->run($cmd)->getOutput();
 
         $lines = explode("\n", trim($output));
