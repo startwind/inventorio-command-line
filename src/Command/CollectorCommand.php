@@ -8,6 +8,7 @@ use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheConfigurat
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\Collector;
 use Startwind\Inventorio\Collector\Container\DockerCollector;
+use Startwind\Inventorio\Collector\Frameworks\Php\SymfonyCollector;
 use Startwind\Inventorio\Collector\Hosting\HostingCompany\ASNCollector;
 use Startwind\Inventorio\Collector\Inventorio\CommandCollector;
 use Startwind\Inventorio\Collector\Inventorio\InventorioCollector;
@@ -48,7 +49,7 @@ abstract class CollectorCommand extends InventorioCommand
     protected function initCollectors(): void
     {
         $this->collectors[] = new DnfPackageCollector();
-        
+
         // Inventorio
         $this->collectors[] = new InventorioCollector(
             $this->isRemoteEnabled(),
@@ -92,7 +93,6 @@ abstract class CollectorCommand extends InventorioCommand
         $this->collectors[] = new BrewPackageCollector();
         $this->collectors[] = new DpkgPackageCollector();
 
-
         // Application / Programming Language
         $this->collectors[] = new PhpCollector();
         $this->collectors[] = new WebProsMonitoringCollector();
@@ -106,5 +106,6 @@ abstract class CollectorCommand extends InventorioCommand
         $this->collectors[] = new WordPressCollector();
         $this->collectors[] = new DatabaseCredentialCollector();
         $this->collectors[] = new ResponseCollector();
+        $this->collectors[] = new SymfonyCollector();
     }
 }
