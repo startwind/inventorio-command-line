@@ -37,6 +37,7 @@ class NginxConfigurationCollector extends BasicCollector
         foreach ($output as $line) {
             if (preg_match_all('/--with-(\S+)/', $line, $matches)) {
                 foreach ($matches[1] as $module) {
+                    if (str_contains($module, '=')) continue;
                     $modules[] = $module;
                 }
             }
