@@ -6,6 +6,7 @@ use Startwind\Inventorio\Collector\Application\Monitoring\WebProsMonitoringColle
 use Startwind\Inventorio\Collector\Application\ProgrammingLanguage\PhpCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheConfigurationCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
+use Startwind\Inventorio\Collector\Application\WebServer\Nginx\NginxConfigurationCollector;
 use Startwind\Inventorio\Collector\Application\WebServer\Nginx\NginxServerNameCollector;
 use Startwind\Inventorio\Collector\Collector;
 use Startwind\Inventorio\Collector\Container\DockerCollector;
@@ -103,6 +104,7 @@ abstract class CollectorCommand extends InventorioCommand
         $this->collectors[] = new ApacheConfigurationCollector();
 
         $this->collectors[] = new NginxServerNameCollector();
+        $this->collectors[] = new NginxConfigurationCollector();
 
         $this->collectors[] = new HeaderCollector();
 
