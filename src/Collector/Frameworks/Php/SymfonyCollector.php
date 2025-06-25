@@ -41,7 +41,7 @@ class SymfonyCollector extends BasicCollector implements InventoryAwareCollector
                     foreach ($composerLock['packages'] as $package) {
                         if ($package['name'] === 'symfony/framework-bundle') {
                             $symfonyDomains[$domain] = [
-                                'version' => $package['version'],
+                                'version' => trim($package['version'], 'v'),
                                 'path' => $file->realPath($documentRoot . '/../')
                             ];
                             break;
