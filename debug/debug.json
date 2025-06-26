@@ -1,0 +1,1501 @@
+{
+  "DnfPackages": "not applicable",
+  "_Inventorio": {
+    "client": {
+      "version": "##INVENTORIO_VERSION##",
+      "isRemoteEnabled": true,
+      "isSmartCareEnabled": true,
+      "areMetricsEnabled": true,
+      "areLogfilesEnabled": false
+    },
+    "logfiles": []
+  },
+  "_InventorioCommands": {
+    "commands": {
+      "reboot": {
+        "name": "Reboot the server",
+        "command": "reboot"
+      },
+      "inventorio-collect": {
+        "name": "Collect server status via inventorio agent",
+        "command": "inventorio collect"
+      }
+    }
+  },
+  "OperatingSystem": {
+    "family": "macos",
+    "version": "15.5"
+  },
+  "AutonomousSystem": {
+    "as": "Nils @ home",
+    "asn": "3209",
+    "short": "AS3209 Vodafone GmbH"
+  },
+  "MetricsThreshold": "not applicable",
+  "SystemIp": {
+    "ip": "37.4.254.190"
+  },
+  "Uptime": {
+    "date": "2025-05-29T15:39:12+00:00"
+  },
+  "SystemOpenPorts": {
+    "ports": []
+  },
+  "SystemConfiguration": {
+    "cpu": 14,
+    "memory": 49,
+    "disk": 460.43
+  },
+  "CronJobs": "not applicable",
+  "SystemUser": {
+    "users": [
+      {
+        "username": "nobody",
+        "uid": -2,
+        "gid": -2,
+        "comment": "Unprivileged User",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "root",
+        "uid": 0,
+        "gid": 0,
+        "comment": "System Administrator",
+        "home": "\/var\/root",
+        "shell": "\/bin\/sh"
+      },
+      {
+        "username": "daemon",
+        "uid": 1,
+        "gid": 1,
+        "comment": "System Services",
+        "home": "\/var\/root",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_uucp",
+        "uid": 4,
+        "gid": 4,
+        "comment": "Unix to Unix Copy Protocol",
+        "home": "\/var\/spool\/uucp",
+        "shell": "\/usr\/sbin\/uucico"
+      },
+      {
+        "username": "_taskgated",
+        "uid": 13,
+        "gid": 13,
+        "comment": "Task Gate Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_networkd",
+        "uid": 24,
+        "gid": 24,
+        "comment": "Network Services",
+        "home": "\/var\/networkd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_installassistant",
+        "uid": 25,
+        "gid": 25,
+        "comment": "Install Assistant",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_lp",
+        "uid": 26,
+        "gid": 26,
+        "comment": "Printing Services",
+        "home": "\/var\/spool\/cups",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_postfix",
+        "uid": 27,
+        "gid": 27,
+        "comment": "Postfix Mail Server",
+        "home": "\/var\/spool\/postfix",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_scsd",
+        "uid": 31,
+        "gid": 31,
+        "comment": "Service Configuration Service",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_ces",
+        "uid": 32,
+        "gid": 32,
+        "comment": "Certificate Enrollment Service",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_appstore",
+        "uid": 33,
+        "gid": 33,
+        "comment": "Mac App Store Service",
+        "home": "\/var\/db\/appstore",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_mcxalr",
+        "uid": 54,
+        "gid": 54,
+        "comment": "MCX AppLaunch",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_appleevents",
+        "uid": 55,
+        "gid": 55,
+        "comment": "AppleEvents Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_geod",
+        "uid": 56,
+        "gid": 56,
+        "comment": "Geo Services Daemon",
+        "home": "\/var\/db\/geod",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_devdocs",
+        "uid": 59,
+        "gid": 59,
+        "comment": "Developer Documentation",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_sandbox",
+        "uid": 60,
+        "gid": 60,
+        "comment": "Seatbelt",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_mdnsresponder",
+        "uid": 65,
+        "gid": 65,
+        "comment": "mDNSResponder",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_ard",
+        "uid": 67,
+        "gid": 67,
+        "comment": "Apple Remote Desktop",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_www",
+        "uid": 70,
+        "gid": 70,
+        "comment": "World Wide Web Server",
+        "home": "\/Library\/WebServer",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_eppc",
+        "uid": 71,
+        "gid": 71,
+        "comment": "Apple Events User",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_cvs",
+        "uid": 72,
+        "gid": 72,
+        "comment": "CVS Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_svn",
+        "uid": 73,
+        "gid": 73,
+        "comment": "SVN Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_mysql",
+        "uid": 74,
+        "gid": 74,
+        "comment": "MySQL Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_sshd",
+        "uid": 75,
+        "gid": 75,
+        "comment": "sshd Privilege separation",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_qtss",
+        "uid": 76,
+        "gid": 76,
+        "comment": "QuickTime Streaming Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_cyrus",
+        "uid": 77,
+        "gid": 6,
+        "comment": "Cyrus Administrator",
+        "home": "\/var\/imap",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_mailman",
+        "uid": 78,
+        "gid": 78,
+        "comment": "Mailman List Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_appserver",
+        "uid": 79,
+        "gid": 79,
+        "comment": "Application Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_clamav",
+        "uid": 82,
+        "gid": 82,
+        "comment": "ClamAV Daemon",
+        "home": "\/var\/virusmails",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_amavisd",
+        "uid": 83,
+        "gid": 83,
+        "comment": "AMaViS Daemon",
+        "home": "\/var\/virusmails",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_jabber",
+        "uid": 84,
+        "gid": 84,
+        "comment": "Jabber XMPP Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_appowner",
+        "uid": 87,
+        "gid": 87,
+        "comment": "Application Owner",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_windowserver",
+        "uid": 88,
+        "gid": 88,
+        "comment": "WindowServer",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_spotlight",
+        "uid": 89,
+        "gid": 89,
+        "comment": "Spotlight",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_tokend",
+        "uid": 91,
+        "gid": 91,
+        "comment": "Token Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_securityagent",
+        "uid": 92,
+        "gid": 92,
+        "comment": "SecurityAgent",
+        "home": "\/var\/db\/securityagent",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_calendar",
+        "uid": 93,
+        "gid": 93,
+        "comment": "Calendar",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_teamsserver",
+        "uid": 94,
+        "gid": 94,
+        "comment": "TeamsServer",
+        "home": "\/var\/teamsserver",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_update_sharing",
+        "uid": 95,
+        "gid": -2,
+        "comment": "Update Sharing",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_installer",
+        "uid": 96,
+        "gid": -2,
+        "comment": "Installer",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_atsserver",
+        "uid": 97,
+        "gid": 97,
+        "comment": "ATS Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_ftp",
+        "uid": 98,
+        "gid": -2,
+        "comment": "FTP Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_unknown",
+        "uid": 99,
+        "gid": 99,
+        "comment": "Unknown User",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_softwareupdate",
+        "uid": 200,
+        "gid": 200,
+        "comment": "Software Update Service",
+        "home": "\/var\/db\/softwareupdate",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_coreaudiod",
+        "uid": 202,
+        "gid": 202,
+        "comment": "Core Audio Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_screensaver",
+        "uid": 203,
+        "gid": 203,
+        "comment": "Screensaver",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_locationd",
+        "uid": 205,
+        "gid": 205,
+        "comment": "Location Daemon",
+        "home": "\/var\/db\/locationd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_trustevaluationagent",
+        "uid": 208,
+        "gid": 208,
+        "comment": "Trust Evaluation Agent",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_timezone",
+        "uid": 210,
+        "gid": 210,
+        "comment": "AutoTimeZoneDaemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_lda",
+        "uid": 211,
+        "gid": 211,
+        "comment": "Local Delivery Agent",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_cvmsroot",
+        "uid": 212,
+        "gid": 212,
+        "comment": "CVMS Root",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_usbmuxd",
+        "uid": 213,
+        "gid": 213,
+        "comment": "iPhone OS Device Helper",
+        "home": "\/var\/db\/lockdown",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_dovecot",
+        "uid": 214,
+        "gid": 6,
+        "comment": "Dovecot Administrator",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_dpaudio",
+        "uid": 215,
+        "gid": 215,
+        "comment": "DP Audio",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_postgres",
+        "uid": 216,
+        "gid": 216,
+        "comment": "PostgreSQL Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_krbtgt",
+        "uid": 217,
+        "gid": -2,
+        "comment": "Kerberos Ticket Granting Ticket",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_kadmin_admin",
+        "uid": 218,
+        "gid": -2,
+        "comment": "Kerberos Admin Service",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_kadmin_changepw",
+        "uid": 219,
+        "gid": -2,
+        "comment": "Kerberos Change Password Service",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_devicemgr",
+        "uid": 220,
+        "gid": 220,
+        "comment": "Device Management Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_webauthserver",
+        "uid": 221,
+        "gid": 221,
+        "comment": "Web Auth Server",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_netbios",
+        "uid": 222,
+        "gid": 222,
+        "comment": "NetBIOS",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_warmd",
+        "uid": 224,
+        "gid": 224,
+        "comment": "Warm Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_dovenull",
+        "uid": 227,
+        "gid": 227,
+        "comment": "Dovecot Authentication",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_netstatistics",
+        "uid": 228,
+        "gid": 228,
+        "comment": "Network Statistics Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_avbdeviced",
+        "uid": 229,
+        "gid": -2,
+        "comment": "Ethernet AVB Device Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_krb_krbtgt",
+        "uid": 230,
+        "gid": -2,
+        "comment": "Open Directory Kerberos Ticket Granting Ticket",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_krb_kadmin",
+        "uid": 231,
+        "gid": -2,
+        "comment": "Open Directory Kerberos Admin Service",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_krb_changepw",
+        "uid": 232,
+        "gid": -2,
+        "comment": "Open Directory Kerberos Change Password Service",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_krb_kerberos",
+        "uid": 233,
+        "gid": -2,
+        "comment": "Open Directory Kerberos",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_krb_anonymous",
+        "uid": 234,
+        "gid": -2,
+        "comment": "Open Directory Kerberos Anonymous",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_assetcache",
+        "uid": 235,
+        "gid": 235,
+        "comment": "Asset Cache Service",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_coremediaiod",
+        "uid": 236,
+        "gid": 236,
+        "comment": "Core Media IO Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_launchservicesd",
+        "uid": 239,
+        "gid": 239,
+        "comment": "_launchservicesd",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_iconservices",
+        "uid": 240,
+        "gid": 240,
+        "comment": "IconServices",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_distnote",
+        "uid": 241,
+        "gid": 241,
+        "comment": "DistNote",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_nsurlsessiond",
+        "uid": 242,
+        "gid": 242,
+        "comment": "NSURLSession Daemon",
+        "home": "\/var\/db\/nsurlsessiond",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_displaypolicyd",
+        "uid": 244,
+        "gid": 244,
+        "comment": "Display Policy Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_astris",
+        "uid": 245,
+        "gid": 245,
+        "comment": "Astris Services",
+        "home": "\/var\/db\/astris",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_krbfast",
+        "uid": 246,
+        "gid": -2,
+        "comment": "Kerberos FAST Account",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_gamecontrollerd",
+        "uid": 247,
+        "gid": 247,
+        "comment": "Game Controller Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_mbsetupuser",
+        "uid": 248,
+        "gid": 248,
+        "comment": "Setup User",
+        "home": "\/var\/setup",
+        "shell": "\/bin\/bash"
+      },
+      {
+        "username": "_ondemand",
+        "uid": 249,
+        "gid": 249,
+        "comment": "On Demand Resource Daemon",
+        "home": "\/var\/db\/ondemand",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_xserverdocs",
+        "uid": 251,
+        "gid": 251,
+        "comment": "macOS Server Documents Service",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_wwwproxy",
+        "uid": 252,
+        "gid": 252,
+        "comment": "WWW Proxy",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_mobileasset",
+        "uid": 253,
+        "gid": 253,
+        "comment": "MobileAsset User",
+        "home": "\/var\/ma",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_findmydevice",
+        "uid": 254,
+        "gid": 254,
+        "comment": "Find My Device Daemon",
+        "home": "\/var\/db\/findmydevice",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_datadetectors",
+        "uid": 257,
+        "gid": 257,
+        "comment": "DataDetectors",
+        "home": "\/var\/db\/datadetectors",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_captiveagent",
+        "uid": 258,
+        "gid": 258,
+        "comment": "captiveagent",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_ctkd",
+        "uid": 259,
+        "gid": 259,
+        "comment": "ctkd Account",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_applepay",
+        "uid": 260,
+        "gid": 260,
+        "comment": "applepay Account",
+        "home": "\/var\/db\/applepay",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_hidd",
+        "uid": 261,
+        "gid": 261,
+        "comment": "HID Service User",
+        "home": "\/var\/db\/hidd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_cmiodalassistants",
+        "uid": 262,
+        "gid": 262,
+        "comment": "CoreMedia IO Assistants User",
+        "home": "\/var\/db\/cmiodalassistants",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_analyticsd",
+        "uid": 263,
+        "gid": 263,
+        "comment": "Analytics Daemon",
+        "home": "\/var\/db\/analyticsd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_fpsd",
+        "uid": 265,
+        "gid": 265,
+        "comment": "FPS Daemon",
+        "home": "\/var\/db\/fpsd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_timed",
+        "uid": 266,
+        "gid": 266,
+        "comment": "Time Sync Daemon",
+        "home": "\/var\/db\/timed",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_nearbyd",
+        "uid": 268,
+        "gid": 268,
+        "comment": "Proximity and Ranging Daemon",
+        "home": "\/var\/db\/nearbyd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_reportmemoryexception",
+        "uid": 269,
+        "gid": 269,
+        "comment": "ReportMemoryException",
+        "home": "\/var\/db\/reportmemoryexception",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_driverkit",
+        "uid": 270,
+        "gid": 270,
+        "comment": "DriverKit",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_diskimagesiod",
+        "uid": 271,
+        "gid": 271,
+        "comment": "DiskImages IO Daemon",
+        "home": "\/var\/db\/diskimagesiod",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_logd",
+        "uid": 272,
+        "gid": 272,
+        "comment": "Log Daemon",
+        "home": "\/var\/db\/diagnostics",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_appinstalld",
+        "uid": 273,
+        "gid": 273,
+        "comment": "App Install Daemon",
+        "home": "\/var\/db\/appinstalld",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_installcoordinationd",
+        "uid": 274,
+        "gid": 274,
+        "comment": "Install Coordination Daemon",
+        "home": "\/var\/db\/installcoordinationd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_demod",
+        "uid": 275,
+        "gid": 275,
+        "comment": "Demo Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_rmd",
+        "uid": 277,
+        "gid": 277,
+        "comment": "Remote Management Daemon",
+        "home": "\/var\/db\/rmd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_accessoryupdater",
+        "uid": 278,
+        "gid": 278,
+        "comment": "Accessory Update Daemon",
+        "home": "\/var\/db\/accessoryupdater",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_knowledgegraphd",
+        "uid": 279,
+        "gid": 279,
+        "comment": "Knowledge Graph Daemon",
+        "home": "\/var\/db\/knowledgegraphd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_coreml",
+        "uid": 280,
+        "gid": 280,
+        "comment": "CoreML Services",
+        "home": "\/var\/db\/coreml",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_sntpd",
+        "uid": 281,
+        "gid": 281,
+        "comment": "SNTP Server Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_trustd",
+        "uid": 282,
+        "gid": 282,
+        "comment": "trustd",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_mmaintenanced",
+        "uid": 283,
+        "gid": 283,
+        "comment": "mmaintenanced",
+        "home": "\/var\/db\/mmaintenanced",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_darwindaemon",
+        "uid": 284,
+        "gid": 284,
+        "comment": "Darwin Daemon",
+        "home": "\/var\/db\/darwindaemon",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_notification_proxy",
+        "uid": 285,
+        "gid": 285,
+        "comment": "Notification Proxy",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_avphidbridge",
+        "uid": 288,
+        "gid": 288,
+        "comment": "Apple Virtual Platform HID Bridge",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_biome",
+        "uid": 289,
+        "gid": 289,
+        "comment": "Biome",
+        "home": "\/var\/db\/biome",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_backgroundassets",
+        "uid": 291,
+        "gid": 291,
+        "comment": "Background Assets Service",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_mobilegestalthelper",
+        "uid": 293,
+        "gid": 293,
+        "comment": "MobileGestaltHelper",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_audiomxd",
+        "uid": 294,
+        "gid": 294,
+        "comment": "Audio and MediaExperience Daemon",
+        "home": "\/var\/db\/audiomxd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_terminusd",
+        "uid": 295,
+        "gid": 295,
+        "comment": "Terminus",
+        "home": "\/var\/db\/terminus",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_neuralengine",
+        "uid": 296,
+        "gid": 296,
+        "comment": "AppleNeuralEngine",
+        "home": "\/var\/db\/neuralengine",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_eligibilityd",
+        "uid": 297,
+        "gid": 297,
+        "comment": "OS Eligibility Daemon",
+        "home": "\/var\/db\/eligibilityd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_systemstatusd",
+        "uid": 298,
+        "gid": 298,
+        "comment": "SystemStatus Services",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_aonsensed",
+        "uid": 300,
+        "gid": 300,
+        "comment": "Always On Sense Daemon",
+        "home": "\/var\/db\/aonsensed",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_modelmanagerd",
+        "uid": 301,
+        "gid": 301,
+        "comment": "Model Manager",
+        "home": "\/var\/db\/modelmanagerd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_reportsystemmemory",
+        "uid": 302,
+        "gid": 302,
+        "comment": "ReportSystemMemory",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_swtransparencyd",
+        "uid": 303,
+        "gid": 303,
+        "comment": "Software Transparency Services",
+        "home": "\/var\/db\/swtransparencyd",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_naturallanguaged",
+        "uid": 304,
+        "gid": 304,
+        "comment": "Natural Language Services",
+        "home": "\/var\/db\/com.apple.naturallanguaged",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_corespeechd",
+        "uid": 306,
+        "gid": 306,
+        "comment": "CoreSpeech Services",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_diagnosticservicesd",
+        "uid": 307,
+        "gid": 307,
+        "comment": "Diagnostic Services",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      },
+      {
+        "username": "_oahd",
+        "uid": 441,
+        "gid": 441,
+        "comment": "OAH Daemon",
+        "home": "\/var\/empty",
+        "shell": "\/usr\/bin\/false"
+      }
+    ]
+  },
+  "SystemLogLogrotate": {
+    "logfiles": {
+      "managed": {
+        "-var-log-com.apple.xpc.launchd-launchd.log": {
+          "path": "\/var\/log\/com.apple.xpc.launchd\/launchd.log",
+          "size": 1013028,
+          "last_modified": "2025-06-26T04:29:40+00:00"
+        },
+        "-var-log-system.log": {
+          "path": "\/var\/log\/system.log",
+          "size": 4201,
+          "last_modified": "2025-06-26T04:27:45+00:00"
+        },
+        "-var-log-wifi.log": {
+          "path": "\/var\/log\/wifi.log",
+          "size": 356581,
+          "last_modified": "2025-06-26T04:29:24+00:00"
+        },
+        "-var-log-install.log": {
+          "path": "\/var\/log\/install.log",
+          "size": 5157600,
+          "last_modified": "2025-06-26T04:27:47+00:00"
+        }
+      },
+      "unmanaged": {
+        "-var-log-fsck_apfs_error.log": {
+          "path": "\/var\/log\/fsck_apfs_error.log",
+          "size": 0,
+          "last_modified": "2025-06-22T10:50:50+00:00"
+        },
+        "-var-log-secureclient-csc_vpn_uninstall.log": {
+          "path": "\/var\/log\/secureclient\/csc_vpn_uninstall.log",
+          "size": 4980,
+          "last_modified": "2025-05-15T10:37:34+00:00"
+        },
+        "-var-log-secureclient-csc_dart_uninstall.log": {
+          "path": "\/var\/log\/secureclient\/csc_dart_uninstall.log",
+          "size": 1252,
+          "last_modified": "2025-05-15T10:37:43+00:00"
+        },
+        "-var-log-post-migration-cleanup.log": {
+          "path": "\/var\/log\/post-migration-cleanup.log",
+          "size": 380,
+          "last_modified": "2025-05-14T10:25:37+00:00"
+        },
+        "-var-log-bootstrap_token.log": {
+          "path": "\/var\/log\/bootstrap_token.log",
+          "size": 140,
+          "last_modified": "2025-05-14T10:25:37+00:00"
+        },
+        "-var-log-alf.log": {
+          "path": "\/var\/log\/alf.log",
+          "size": 0,
+          "last_modified": "2025-01-07T14:45:50+00:00"
+        },
+        "-var-log-fsck_hfs.log": {
+          "path": "\/var\/log\/fsck_hfs.log",
+          "size": 23781,
+          "last_modified": "2025-06-25T03:32:17+00:00"
+        },
+        "-var-log-shutdown_monitor.log": {
+          "path": "\/var\/log\/shutdown_monitor.log",
+          "size": 2750,
+          "last_modified": "2025-05-22T07:23:31+00:00"
+        },
+        "-var-log-logirightsight-RightSight4WebCams_a.log": {
+          "path": "\/var\/log\/logirightsight\/RightSight4WebCams_a.log",
+          "size": 247536,
+          "last_modified": "2025-06-25T15:41:41+00:00"
+        },
+        "-var-log-logirightsight-RightSight4WebCams_b.log": {
+          "path": "\/var\/log\/logirightsight\/RightSight4WebCams_b.log",
+          "size": 0,
+          "last_modified": "2025-06-05T12:13:38+00:00"
+        },
+        "-var-log-fsck_apfs.log": {
+          "path": "\/var\/log\/fsck_apfs.log",
+          "size": 26901,
+          "last_modified": "2025-05-29T15:39:46+00:00"
+        }
+      }
+    }
+  },
+  "SystemHardDisk": {
+    "\/": {
+      "gb_free": 360.68,
+      "percent_free": 78,
+      "score": 25
+    }
+  },
+  "ContainerDocker": {
+    "isDockerInstalled": false,
+    "isInsideDocker": false,
+    "containers": []
+  },
+  "ServerServiceSystemD": {
+    "services": []
+  },
+  "SystemSecurity": {
+    "unattendedUpgradesAvailable": false,
+    "unattendedUpgradesEnabled": false,
+    "sshKeyOnlyAvailable": false,
+    "sshKeyOnlyEnabled": false
+  },
+  "SystemSecurityAuthorizedKeys": "not applicable",
+  "HomeBrewPackages": {
+    "packages": {
+      "aom": [
+        "3.12.1"
+      ],
+      "apr": [
+        "1.7.5"
+      ],
+      "apr-util": [
+        "1.6.3_1"
+      ],
+      "argon2": [
+        "20190702_1"
+      ],
+      "autoconf": [
+        "2.72"
+      ],
+      "brotli": [
+        "1.1.0"
+      ],
+      "c-ares": [
+        "1.34.5"
+      ],
+      "ca-certificates": [
+        "2025-02-25"
+      ],
+      "curl": [
+        "8.13.0"
+      ],
+      "fontconfig": [
+        "2.16.0"
+      ],
+      "freetds": [
+        "1.5.1"
+      ],
+      "freetype": [
+        "2.13.3"
+      ],
+      "gd": [
+        "2.3.3_6"
+      ],
+      "gettext": [
+        "0.25"
+      ],
+      "giflib": [
+        "5.2.2"
+      ],
+      "gmp": [
+        "6.3.0"
+      ],
+      "highway": [
+        "1.2.0"
+      ],
+      "htop": [
+        "3.4.1"
+      ],
+      "icu4c@77": [
+        "77.1"
+      ],
+      "imath": [
+        "3.1.12"
+      ],
+      "jpeg-turbo": [
+        "3.1.0"
+      ],
+      "jpeg-xl": [
+        "0.11.1_1"
+      ],
+      "krb5": [
+        "1.21.3"
+      ],
+      "libavif": [
+        "1.3.0"
+      ],
+      "libdeflate": [
+        "1.24"
+      ],
+      "libnghttp2": [
+        "1.65.0"
+      ],
+      "libpng": [
+        "1.6.48"
+      ],
+      "libpq": [
+        "17.5"
+      ],
+      "libsodium": [
+        "1.0.20"
+      ],
+      "libssh2": [
+        "1.11.1"
+      ],
+      "libtiff": [
+        "4.7.0"
+      ],
+      "libtool": [
+        "2.5.4"
+      ],
+      "libunistring": [
+        "1.3"
+      ],
+      "libuv": [
+        "1.51.0"
+      ],
+      "libvmaf": [
+        "3.0.0"
+      ],
+      "libzip": [
+        "1.11.3"
+      ],
+      "little-cms2": [
+        "2.17"
+      ],
+      "lz4": [
+        "1.10.0"
+      ],
+      "m4": [
+        "1.4.20"
+      ],
+      "ncurses": [
+        "6.5"
+      ],
+      "net-snmp": [
+        "5.9.4"
+      ],
+      "node": [
+        "23.11.0"
+      ],
+      "nvm": [
+        "0.40.3"
+      ],
+      "oniguruma": [
+        "6.9.10"
+      ],
+      "openexr": [
+        "3.3.3"
+      ],
+      "openldap": [
+        "2.6.9"
+      ],
+      "openssl@3": [
+        "3.5.0"
+      ],
+      "pcre2": [
+        "10.45"
+      ],
+      "php": [
+        "8.4.7"
+      ],
+      "readline": [
+        "8.2.13"
+      ],
+      "rtmpdump": [
+        "2.4-20151223_3"
+      ],
+      "sqlite": [
+        "3.49.2"
+      ],
+      "telnet": [
+        "306"
+      ],
+      "tidy-html5": [
+        "5.8.0"
+      ],
+      "unixodbc": [
+        "2.3.12"
+      ],
+      "webp": [
+        "1.5.0"
+      ],
+      "xz": [
+        "5.8.1"
+      ],
+      "zstd": [
+        "1.5.7"
+      ]
+    }
+  },
+  "DpkgPackages": "not applicable",
+  "PHP": {
+    "versions": [
+      "8.4.7"
+    ],
+    "modules": [
+      "Core",
+      "date",
+      "libxml",
+      "openssl",
+      "pcre",
+      "sqlite3",
+      "zlib",
+      "bcmath",
+      "bz2",
+      "calendar",
+      "ctype",
+      "curl",
+      "dba",
+      "dom",
+      "json",
+      "FFI",
+      "fileinfo",
+      "filter",
+      "ftp",
+      "gd",
+      "gettext",
+      "gmp",
+      "hash",
+      "iconv",
+      "intl",
+      "SPL",
+      "ldap",
+      "mbstring",
+      "session",
+      "standard",
+      "mysqlnd",
+      "mysqli",
+      "odbc",
+      "pcntl",
+      "PDO",
+      "pdo_dblib",
+      "pdo_mysql",
+      "PDO_ODBC",
+      "pdo_pgsql",
+      "pdo_sqlite",
+      "pgsql",
+      "Phar",
+      "posix",
+      "random",
+      "readline",
+      "Reflection",
+      "exif",
+      "shmop",
+      "SimpleXML",
+      "snmp",
+      "soap",
+      "sockets",
+      "sodium",
+      "sysvmsg",
+      "sysvsem",
+      "sysvshm",
+      "tidy",
+      "tokenizer",
+      "xml",
+      "xmlreader",
+      "xmlwriter",
+      "xsl",
+      "zip",
+      "Zend OPcache"
+    ],
+    "fpm": false
+  },
+  "WebProsMonitoring": "not applicable",
+  "ApacheServerName": "not applicable",
+  "ApacheConfiguration": {
+    "modules": [],
+    "nonLinkedSitesEnabled": []
+  },
+  "NginxServerName": [
+    {
+      "serverName": "localhost",
+      "documentRoot": "",
+      "configFile": "\/etc\/nginx\/sites-enabled\/agent360_status.conf",
+      "aliases": []
+    },
+    {
+      "serverName": "api.cluster1.koalityengine.com",
+      "documentRoot": "\/var\/www\/api.cluster1.koalityengine.com\/current\/public",
+      "configFile": "\/etc\/nginx\/sites-enabled\/api.cluster1.koalityengine.com.conf",
+      "aliases": []
+    },
+    {
+      "serverName": "monitor.cluster1.koalityengine.com",
+      "documentRoot": "\/var\/www\/api.cluster1.koalityengine.com\/current\/public",
+      "configFile": "\/etc\/nginx\/sites-enabled\/monitor.cluster1.koalityengine.com.conf",
+      "aliases": []
+    }
+  ],
+  "NginxConfiguration": {
+    "modules": [
+      "compat",
+      "debug",
+      "pcre-jit",
+      "http_ssl_module",
+      "http_stub_status_module",
+      "http_realip_module",
+      "http_auth_request_module",
+      "http_v2_module",
+      "http_dav_module",
+      "http_slice_module",
+      "threads",
+      "http_addition_module",
+      "http_gunzip_module",
+      "http_gzip_static_module",
+      "http_sub_module"
+    ],
+    "nonLinkedSitesEnabled": []
+  },
+  "WebsiteHeader": "not applicable",
+  "WordPress": "not applicable",
+  "WordPressDatabaseCredential": "not applicable",
+  "WebsiteResponse": "not applicable",
+  "FrameworkPHPSymfony": "not applicable"
+}

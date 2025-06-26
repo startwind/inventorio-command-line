@@ -42,7 +42,7 @@ class ApacheServerNameCollector implements Collector
             }
         }
 
-        return array_values($result);
+        return $result;
     }
 
     private function extractServerData(string $vhostFile): array

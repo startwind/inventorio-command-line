@@ -41,14 +41,13 @@ abstract class CollectorCommand extends InventorioCommand
      * @var Collector[]
      */
     protected array $collectors = [];
-
-
+    
     /**
      * Initialize all collectors.
      *
      * @todo use a config file to add collectors
      */
-    protected function initCollectors(): void
+    protected function initCollectors(bool $addDebugCollector = false): void
     {
         $this->collectors[] = new DnfPackageCollector();
 
@@ -60,6 +59,10 @@ abstract class CollectorCommand extends InventorioCommand
             $this->isSmartCareEnabled(),
             $this->config
         );
+
+        if ($addDebugCollector) {
+            // for later
+        }
 
         $this->collectors[] = new CommandCollector($this->config);
         // $this->collectors[] = new RandomCollector();

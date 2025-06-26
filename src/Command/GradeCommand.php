@@ -52,7 +52,7 @@ class GradeCommand extends CollectorCommand
             return Command::FAILURE;
         }
 
-        $this->initCollectors();
+        $this->initCollectors($debugMode);
 
         $inventory = [];
 

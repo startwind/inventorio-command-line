@@ -38,7 +38,7 @@ class NginxServerNameCollector implements Collector
             }
         }
 
-        return array_values($result);
+        return $result;
     }
 
     private function extractServerData(string $configFile): array

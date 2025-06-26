@@ -26,44 +26,47 @@ class CollectCommand extends CollectorCommand
     {
         $this->initConfiguration($input->getOption('configFile'));
         $debugMode = $input->getOption('debug');
+        $debugFile = $input->getOption('debugFile');
 
         if (!$this->isInitialized()) {
             $output->writeln('<error>System was not initialized. Please run inventorio init.</error>');
             return Command::FAILURE;
         }
 
-        $this->initCollectors();
+        if (!$debugFile) {
+            $this->initCollectors($debugMode);
+            $inventory = [];
+            $client = new \Startwind\Inventorio\Util\Client(new Client());
 
-        $inventory = [];
+            foreach ($this->collectors as $collector) {
+                if ($collector instanceof InventoryAwareCollector) {
+                    $collector->setInventory($inventory);
+                }
+                if ($collector instanceof ClientAwareCollector) {
+                    $collector->setClient($client);
+                }
 
-        $client = new \Startwind\Inventorio\Util\Client(new Client());
-
-        foreach ($this->collectors as $collector) {
-            if ($collector instanceof InventoryAwareCollector) {
-                $collector->setInventory($inventory);
+                if ($debugMode) $start = time();
+                $collected = $collector->collect();
+                if ($collected) {
+                    $inventory[$collector->getIdentifier()] = $collected;
+                } else {
+                    $inventory[$collector->getIdentifier()] = self::NOT_APPLICABLE;
+                }
+                if ($debugMode) {
+                    $output->writeln('DEBUG: running ' . $collector->getIdentifier() . ' took ' . time() - $start . ' seconds');
+                }
             }
-            if ($collector instanceof ClientAwareCollector) {
-                $collector->setClient($client);
-            }
-
-            if ($debugMode) $start = time();
-            $collected = $collector->collect();
-            if ($collected) {
-                $inventory[$collector->getIdentifier()] = $collected;
-            } else {
-                $inventory[$collector->getIdentifier()] = self::NOT_APPLICABLE;
-            }
-            if ($debugMode) {
-                $output->writeln('DEBUG: running ' . $collector->getIdentifier() . ' took ' . time() - $start . ' seconds');
-            }
+            
+            Memory::getInstance()->setCollection($inventory);
+        } else {
+            $inventory = json_decode(file_get_contents(__DIR__ . '/../../debug/debug.json'), true);
         }
 
         if ($debugMode) {
             $output->writeln('DEBUG: collection result:');
             $output->writeln(json_encode($inventory, JSON_PRETTY_PRINT));
         }
-
-        Memory::getInstance()->setCollection($inventory);
 
         $reporter = new InventorioReporter($output, $this->config->getInventorioServer(), $this->getServerId(), $this->getUserId());
 

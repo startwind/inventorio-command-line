@@ -15,6 +15,7 @@ abstract class InventorioCommand extends Command
     {
         $this->addOption('configFile', 'c', InputOption::VALUE_OPTIONAL, 'The configuration file', __DIR__ . '/../../config/default.yml');
         $this->addOption('debug', '', InputOption::VALUE_NONE, 'Switch on debug mode');
+        $this->addOption('debugFile', '', InputOption::VALUE_NONE, 'Send collection from file content');
     }
 
     /**
