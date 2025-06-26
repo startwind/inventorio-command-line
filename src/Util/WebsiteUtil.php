@@ -26,7 +26,7 @@ abstract class WebsiteUtil
         $domains = [];
 
         foreach ($configs as $config) {
-            $domains[] = $config[$key];
+            $domains[] = $config[ApacheServerNameCollector::FIELD_SERVER_NAME];
         }
 
         return $domains;
