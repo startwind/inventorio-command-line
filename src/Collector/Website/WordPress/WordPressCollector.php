@@ -23,12 +23,14 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
 
     public function collect(): array
     {
-        if (!array_key_exists(ApacheServerNameCollector::COLLECTION_IDENTIFIER, $this->inventory)
-            || !is_array($this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER])
-        ) return [];
+        $configs = [];
 
-        $configs = $this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER];
-
+        if (array_key_exists(ApacheServerNameCollector::COLLECTION_IDENTIFIER, $this->inventory)
+            && is_array($this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER])
+        ) {
+            $configs = array_merge($configs, $this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER]);
+        }
+        
         $wordPressInstallations = [];
 
         $runner = Runner::getInstance();

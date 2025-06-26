@@ -1453,26 +1453,26 @@
     "modules": [],
     "nonLinkedSitesEnabled": []
   },
-  "NginxServerName": [
-    {
+  "NginxServerName": {
+    "localhost": {
       "serverName": "localhost",
       "documentRoot": "",
       "configFile": "\/etc\/nginx\/sites-enabled\/agent360_status.conf",
       "aliases": []
     },
-    {
+      "api.cluster1.koalityengine.com": {
       "serverName": "api.cluster1.koalityengine.com",
       "documentRoot": "\/var\/www\/api.cluster1.koalityengine.com\/current\/public",
       "configFile": "\/etc\/nginx\/sites-enabled\/api.cluster1.koalityengine.com.conf",
       "aliases": []
     },
-    {
+    "monitor.cluster1.koalityengine.com": {
       "serverName": "monitor.cluster1.koalityengine.com",
       "documentRoot": "\/var\/www\/api.cluster1.koalityengine.com\/current\/public",
       "configFile": "\/etc\/nginx\/sites-enabled\/monitor.cluster1.koalityengine.com.conf",
       "aliases": []
     }
-  ],
+  },
   "NginxConfiguration": {
     "modules": [
       "compat",

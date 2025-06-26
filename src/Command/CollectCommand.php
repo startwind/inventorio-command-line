@@ -47,6 +47,7 @@ class CollectCommand extends CollectorCommand
                 }
 
                 if ($debugMode) $start = time();
+
                 $collected = $collector->collect();
                 if ($collected) {
                     $inventory[$collector->getIdentifier()] = $collected;
@@ -54,10 +55,10 @@ class CollectCommand extends CollectorCommand
                     $inventory[$collector->getIdentifier()] = self::NOT_APPLICABLE;
                 }
                 if ($debugMode) {
-                    $output->writeln('DEBUG: running ' . $collector->getIdentifier() . ' took ' . time() - $start . ' seconds');
+                    $output->writeln('DEBUG: running ' . $collector->getIdentifier() . ' took ' . (time() - $start) . ' seconds');
                 }
             }
-            
+
             Memory::getInstance()->setCollection($inventory);
         } else {
             $inventory = json_decode(file_get_contents(__DIR__ . '/../../debug/debug.json'), true);
