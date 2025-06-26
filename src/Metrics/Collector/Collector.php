@@ -8,6 +8,8 @@ use Startwind\Inventorio\Exec\System;
 use Startwind\Inventorio\Metrics\Collector\Metric\Metric;
 use Startwind\Inventorio\Metrics\Collector\Metric\Webserver\ApacheAccessLogMetric;
 use Startwind\Inventorio\Metrics\Collector\Metric\Webserver\ApacheErrorLogMetric;
+use Startwind\Inventorio\Metrics\Collector\Metric\Webserver\NginxAccessLogMetric;
+use Startwind\Inventorio\Metrics\Collector\Metric\Webserver\NginxErrorLogMetric;
 use Startwind\Inventorio\Metrics\Memory\Memory;
 
 class Collector
@@ -20,6 +22,9 @@ class Collector
     {
         $this->metrics[] = new ApacheAccessLogMetric();
         $this->metrics[] = new ApacheErrorLogMetric();
+
+        $this->metrics[] = new NginxAccessLogMetric();
+        $this->metrics[] = new NginxErrorLogMetric();
     }
 
     public function collect(): array
