@@ -2,10 +2,10 @@
 
 namespace Startwind\Inventorio\Collector\Frameworks\Php;
 
-use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\BasicCollector;
 use Startwind\Inventorio\Collector\InventoryAwareCollector;
 use Startwind\Inventorio\Exec\File;
+use Startwind\Inventorio\Util\WebserverUtil;
 
 class SymfonyCollector extends BasicCollector implements InventoryAwareCollector
 {
@@ -19,20 +19,13 @@ class SymfonyCollector extends BasicCollector implements InventoryAwareCollector
 
     public function collect(): array
     {
-        if (!array_key_exists(ApacheServerNameCollector::COLLECTION_IDENTIFIER, $this->inventory)
-            || !is_array($this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER])
-        ) return [];
-
-        $configs = $this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER];
-
         $file = File::getInstance();
 
         $symfonyDomains = [];
 
-        foreach ($configs as $config) {
-            $domain = $config[ApacheServerNameCollector::FIELD_SERVER_NAME];
-            $documentRoot = $config[ApacheServerNameCollector::FIELD_DOCUMENT_ROOT];
+        $documentRoots = WebserverUtil::extractDocumentRoots($this->inventory);
 
+        foreach ($documentRoots as $domain => $documentRoot) {
             if ($file->fileExists($documentRoot . '/../composer.lock')) {
                 $composerLockRaw = File::getInstance()->getContents($documentRoot . '/../composer.lock');
                 $composerLock = json_decode($composerLockRaw, true);

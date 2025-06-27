@@ -15,35 +15,52 @@ class NginxConfigurationCollector extends BasicCollector
 
     public function collect(): array
     {
+        $nginxInfo = $this->getNginxInfo();
+
         return [
-            'modules' => $this->getActiveNginxModules(),
+            'version' => $nginxInfo['version'],
+            'modules' => $nginxInfo['modules'],
             'nonLinkedSitesEnabled' => $this->getRealConfigFilesWithServerNames()
         ];
     }
 
-    private function getActiveNginxModules(): array
+    private function getNginxInfo(): array
     {
         $runner = Runner::getInstance();
         $result = $runner->run('nginx -V 2>&1');
 
         if ($result->getExitCode() !== Command::SUCCESS) {
-            return [];
+            return [
+                'version' => null,
+                'modules' => [],
+            ];
         }
 
         $output = Runner::outputToArray($result->getOutput());
 
+        $version = null;
         $modules = [];
 
         foreach ($output as $line) {
+            if (str_starts_with($line, 'nginx version:')) {
+                if (preg_match('/nginx\/([^\s]+)/', $line, $matches)) {
+                    $version = $matches[1];
+                }
+            }
+
             if (preg_match_all('/--with-(\S+)/', $line, $matches)) {
                 foreach ($matches[1] as $module) {
-                    if (str_contains($module, '=')) continue;
-                    $modules[] = $module;
+                    if (!str_contains($module, '=')) {
+                        $modules[] = $module;
+                    }
                 }
             }
         }
 
-        return $modules;
+        return [
+            'version' => $version,
+            'modules' => $modules,
+        ];
     }
 
     public function isNginxInstalled(): bool

@@ -33,7 +33,7 @@ class NginxServerNameCollector implements Collector
 
         foreach ($configurations as $configuration) {
             $config = $this->extractServerData($configuration);
-            if (!empty($config['serverName'])) {
+            if (!empty($config['serverName']) && $config['serverName'] !== 'localhost') {
                 $result[$config['serverName']] = $config;
             }
         }

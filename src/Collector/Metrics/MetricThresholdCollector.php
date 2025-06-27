@@ -5,6 +5,8 @@ namespace Startwind\Inventorio\Collector\Metrics;
 use Startwind\Inventorio\Collector\BasicCollector;
 use Startwind\Inventorio\Metrics\Collector\Metric\Webserver\ApacheAccessLogMetric;
 use Startwind\Inventorio\Metrics\Collector\Metric\Webserver\ApacheErrorLogMetric;
+use Startwind\Inventorio\Metrics\Collector\Metric\Webserver\NginxAccessLogMetric;
+use Startwind\Inventorio\Metrics\Collector\Metric\Webserver\NginxErrorLogMetric;
 use Startwind\Inventorio\Metrics\Memory\Memory;
 
 class MetricThresholdCollector extends BasicCollector
@@ -32,7 +34,17 @@ class MetricThresholdCollector extends BasicCollector
             'type' => self::THRESHOLD_STANDARD_DEVIATION,
             'factor' => 3,
             'outlinerMinLimit' => 10
-        ]
+        ],
+        NginxErrorLogMetric::IDENTIFIER => [
+            'type' => self::THRESHOLD_STANDARD_DEVIATION,
+            'factor' => 3,
+            'outlinerMinLimit' => 10
+        ],
+        NginxAccessLogMetric::IDENTIFIER => [
+            'type' => self::THRESHOLD_STANDARD_DEVIATION,
+            'factor' => 3,
+            'outlinerMinLimit' => 10
+        ],
     ];
 
     public function collect(): array

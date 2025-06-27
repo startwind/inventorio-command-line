@@ -2,11 +2,11 @@
 
 namespace Startwind\Inventorio\Collector\Website\WordPress;
 
-use Startwind\Inventorio\Collector\Application\WebServer\Apache\ApacheServerNameCollector;
 use Startwind\Inventorio\Collector\BasicCollector;
 use Startwind\Inventorio\Collector\InventoryAwareCollector;
 use Startwind\Inventorio\Exec\File;
 use Startwind\Inventorio\Exec\Runner;
+use Startwind\Inventorio\Util\WebserverUtil;
 
 class WordPressCollector extends BasicCollector implements InventoryAwareCollector
 {
@@ -23,22 +23,12 @@ class WordPressCollector extends BasicCollector implements InventoryAwareCollect
 
     public function collect(): array
     {
-        $configs = [];
-
-        if (array_key_exists(ApacheServerNameCollector::COLLECTION_IDENTIFIER, $this->inventory)
-            && is_array($this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER])
-        ) {
-            $configs = array_merge($configs, $this->inventory[ApacheServerNameCollector::COLLECTION_IDENTIFIER]);
-        }
-        
+        $runner = Runner::getInstance();
         $wordPressInstallations = [];
 
-        $runner = Runner::getInstance();
+        $documentRoots = WebserverUtil::extractDocumentRoots($this->inventory);
 
-        foreach ($configs as $config) {
-            $domain = $config[ApacheServerNameCollector::FIELD_SERVER_NAME];
-            $documentRoot = $config[ApacheServerNameCollector::FIELD_DOCUMENT_ROOT];
-
+        foreach ($documentRoots as $domain => $documentRoot) {
             if ($runner->fileExists($documentRoot . '/wp-config.php')) {
                 if (!str_ends_with($documentRoot, '/')) {
                     $documentRoot .= '/';
