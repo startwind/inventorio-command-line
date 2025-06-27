@@ -24,7 +24,7 @@ class DockerCollector implements Collector
 
         if (!$runner->commandExists('docker')) return [];
 
-        $cmd = "docker ps --format '{{.ID}}|{{.Image}}|{{.Names}}|{{.Ports}}'";
+        $cmd = "docker ps --format '{{.ID}}|{{.Image}}|{{.Names}}|{{.Ports}}|{{.CreatedAt}}|{{.Status}}|{{.Command}}'";
         $output = Runner::getInstance()->run($cmd)->getOutput();
 
         $lines = explode("\n", trim($output));
@@ -33,12 +33,15 @@ class DockerCollector implements Collector
         foreach ($lines as $line) {
             if (empty($line)) continue;
 
-            [$id, $image, $name, $ports] = explode('|', $line);
+            [$id, $image, $name, $ports, $created, $status, $command] = explode('|', $line);
             $containers[] = [
                 'id' => $id,
                 'image' => $image,
                 'name' => $name,
                 'ports' => $ports,
+                'created' => $created,
+                'status' => $status,
+                'command' => trim($command, '"')
             ];
         }
 

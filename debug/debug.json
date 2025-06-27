@@ -1182,9 +1182,16 @@
     }
   },
   "ContainerDocker": {
-    "isDockerInstalled": false,
+    "isDockerInstalled": true,
     "isInsideDocker": false,
-    "containers": []
+    "containers": [
+      {
+        "id": "85c9399f14e2",
+        "image": "leankoala\/worker",
+        "name": "worker_worker_1",
+        "ports": ""
+      }
+    ]
   },
   "ServerServiceSystemD": {
     "services": []
